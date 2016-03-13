@@ -1,0 +1,2 @@
+file_dir: /home/ansible/ansible/step-01/file
+dest_file: /home/ansible/ansible/step-01/file/step-01.txt

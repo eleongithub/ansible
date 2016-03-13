@@ -1,0 +1,8 @@
+localhost ansible_connection=local
+st-db-villeurbanne ansible_connection=ssh
+
+[serv1]
+localhost
+
+[serv2]
+st-db-villeurbanne

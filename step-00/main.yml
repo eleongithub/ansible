@@ -1,0 +1,6 @@
+---
+- name: Hello world Ansible
+  hosts: all 
+  tasks:
+    - shell: echo "Hello World. Current moment is "`date +'%F %H-%M'` > helloworld.txt.`date +'%F %H-%M'`
+

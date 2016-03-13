@@ -1,0 +1,33 @@
+---
+# This playbook contains jdk-installation plays that will be run on all nodes.
+
+#1 - Create a jdk home directory
+- name: Create  directory
+  sudo: yes
+  file: path={{ jdk_home }} state=directory owner=root
+
+#2 - Copy jdk archiv file .tar.gz into the distant jdk home directory  
+- name: Copy jdk archive tarball into the server
+  copy: src=files/{{ jdk_tarball_name }} dest={{ jdk_home }}
+  
+#3 - Delete java home link 
+- name: Delete java home link 
+  file: dest={{ java_home }} state=absent
+  
+#4 - Unzip  jdk archiv .tar.gz
+- name: Unzip the jdk archive
+  shell: tar zxvf {{ jdk_home }}/{{ jdk_tarball_name }}
+    
+#5 - Create a java home link to the new jdk directory
+- name: Create link to the new jdk directory
+  file: src={{ jdk_directory_name }} dest={{ java_home }} state=link
+    
+
+#6 - Update alternatives
+- name: Update alternatives
+  command: "{{ item }}"
+  with_items:
+    - update-alternatives --install /usr/bin/java java {{ java_home }}/bin/java 1
+    - update-alternatives --install /usr/bin/javac javac {{ java_home }}/bin/javac 1
+    - update-alternatives --set java {{ java_home }}/bin/java
+    - update-alternatives --set javac {{ java_home }}/bin/javac

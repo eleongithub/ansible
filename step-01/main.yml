@@ -1,0 +1,9 @@
+---
+- hosts: serv1:serv2
+  tasks:
+  - name: First use of group vars
+    shell: echo "Hello World. Current moment is "`date +'%F %H-%M'` > {{ hello_world_file_path }}
+  - name: Create directory
+    file: path={{ file_dir }} state=directory
+  - name: Transfert file
+    copy: template src=templates/step-01.txt dest={{ dest_file }}

@@ -1,0 +1,4 @@
+jdk_home: "/opt/jdk"
+jdk_directory_name: "{{ jdk_home }}/jdk1.8.0_73"
+java_home: /opt/java
+jdk_tarball_name: jdk-8u73-linux-x64.tar.gz
