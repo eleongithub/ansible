@@ -1,0 +1,4 @@
+tomcat_version: "/opt/tomcat_version"
+last_tomcat: "{{ tomcat_version }}/apache-tomcat8.0.32"
+tomcat_home: /opt/tomcat
+tomcat_tarball_name: apache-tomcat-8.0.32.tar.gz

@@ -6,4 +6,4 @@
   - name: Create directory
     file: path={{ file_dir }} state=directory
   - name: Transfert file
-    copy: template src=templates/step-01.txt dest={{ dest_file }}
+    copy: src=templates/step-01.txt dest={{ dest_file }}

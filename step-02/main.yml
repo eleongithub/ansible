@@ -7,6 +7,5 @@
 # 2 - Apply jdk roles to all nodes
 #- name: apply jdk installation to all nodes
 - hosts: all
-  su_user: root
   roles:
-      - jdk     
+    - jdk
