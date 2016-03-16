@@ -9,33 +9,39 @@
   ignore_errors: true
 
 - name: Create jdk_version directory
+  become: yes
   file: path={{ jdk_version }} state=directory
   when: check_jdk_version_dir_exists.rc|int > 0
   
 #2 - Copy jdk archiv file .tar.gz into the distant jdk home directory  
-#- name: Copy jdk archive tarball into the server
-  #copy: src=roles/jdk/files/{{ jdk_tarball_name }} dest="{{ jdk_version }}/"
+- name: Copy jdk archive tarball into the server
+  become: yes
+  copy: src=roles/jdk/files/{{ jdk_tarball_name }} dest="{{ jdk_version }}/"
   
-##3 - Delete java home link 
-#- name: Delete java home link 
-  #file: dest={{ java_home }} state=absent
+#3 - Delete java home link 
+- name: Delete java home link 
+  become: yes
+  file: dest={{ java_home }} state=absent
+
  
-  
 #4 - Unzip  jdk archiv .tar.gz
-#- name: Unzip the jdk archive
-  #unarchive: src={{ jdk_version }}/{{ jdk_tarball_name }} dest={{ last_jdk }}
+- name: Unzip the jdk archive
+  become: yes
+  unarchive: src={{ jdk_version }}/{{ jdk_tarball_name }} dest="{{ jdk_version }}/"
   #shell: tar -zxvf {{ jdk_version }}/{{ jdk_tarball_name }}
     
 #5 - Create a java home link to the new jdk directory
-#- name: Create link to the new jdk directory
-  #file: src={{ last_jdk }} dest={{ java_home }} state=link
+- name: Create link to the new jdk directory
+  become: yes
+  file: src={{ last_jdk }} dest={{ java_home }} state=link
     
 
 #6 - Update alternatives
-#- name: Update alternatives
-  #command: "{{ item }}"
-  #with_items:
-    #- update-alternatives --install /usr/bin/java java {{ java_home }}/bin/java 1
-    #- update-alternatives --install /usr/bin/javac javac {{ java_home }}/bin/javac 1
-    #- update-alternatives --set java {{ java_home }}/bin/java
-    #- update-alternatives --set javac {{ java_home }}/bin/javac
+- name: Update alternatives
+  become: yes
+  command: "{{ item }}"
+  with_items:
+    - update-alternatives --install /usr/bin/java java {{ java_home }}/bin/java 1
+    - update-alternatives --install /usr/bin/javac javac {{ java_home }}/bin/javac 1
+    - update-alternatives --set java {{ java_home }}/bin/java
+    - update-alternatives --set javac {{ java_home }}/bin/javac

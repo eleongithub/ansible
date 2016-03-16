@@ -10,4 +10,4 @@ send "${passphrase}\n"
 expect eof
 exit
 EOF
-ansible-playbook -i inventory/hosts main.yml -vvvv
+ansible-playbook -i inventory/hosts main.yml -vvvv 
