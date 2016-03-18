@@ -1,4 +1,8 @@
 jdk_version: /opt/jdk_version
 last_jdk: "{{ jdk_version }}/jdk1.8.0_73"
 java_home: /opt/java
-jdk_tarball_name: jdk-8u73-linux-x64.tar.gz
+os_32: 32
+os_64: 64
+jdk_tarball_name_32: jdk-8u73-linux-i586.tar.gz
+jdk_tarball_name_64: jdk-8u73-linux-x64.tar.gz
+
