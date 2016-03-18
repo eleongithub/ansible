@@ -1,4 +1,17 @@
 tomcat_version: "/opt/tomcat_version"
-last_tomcat: "{{ tomcat_version }}/apache-tomcat8.0.32"
+tomcat_group: tomcat
+tomcat_user: tomcat
+tomcat_last: "{{ tomcat_version }}/apache-tomcat-8.0.32"
 tomcat_home: /opt/tomcat
 tomcat_tarball_name: apache-tomcat-8.0.32.tar.gz
+
+
+
+jdk_version: /opt/jdk_version
+last_jdk: "{{ jdk_version }}/jdk1.8.0_73"
+java_home: /opt/java
+os_32: 32
+os_64: 64
+jdk_tarball_name_32: jdk-8u73-linux-i586.tar.gz
+jdk_tarball_name_64: jdk-8u73-linux-x64.tar.gz
+

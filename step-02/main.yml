@@ -4,9 +4,15 @@
 # 1 - Apply common roles to all nodes
 
 
-# 2 - Apply jdk roles to all nodes
 #- name: apply jdk installation to all nodes
-- hosts: all
+#- hosts: all
+  #become: yes
+  #roles:
+    #- jdk
+    
+# 2 - Apply Tomcat role to tomcat web server
+
+- hosts: webserver
   become: yes
   roles:
-    - jdk
+    - tomcat
