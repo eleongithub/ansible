@@ -1,0 +1,74 @@
+---
+# This playbook contains tomcat-installation plays that will be run on web server node.
+
+#0 - Delete User tomcat if exists
+- name: Delete User Tomcat 
+  user: name={{ tomcat_user }} state=absent
+
+#1 - Delete Group tomcat if exists
+- name: Delete Group Tomcat 
+  group: name={{ tomcat_group }} state=absent
+  
+#2 - Create Group Tomcat
+- name: Create Group Tomcat 
+  group: name={{ tomcat_group }} state=present
+
+#3 - Create User Tomcat
+- name: Create User Tomcat 
+  user: name={{ tomcat_user }} createhome=no group={{ tomcat_group }} shell=no state=present
+  ignore_errors: true
+
+#4 - Check tomcat version directory exists
+- name : Check tomcat version directory exists
+  shell: ls {{ tomcat_version }}
+  register: check_tomcat_version_dir_exists
+  ignore_errors: true
+
+#5 - Create tomcat version directory if not exists
+- name: Create tomcat version directory
+  file: path={{ tomcat_version }} state=directory recurse=yes
+  #file: path={{ tomcat_version }} owner={{ tomcat_user }} group={{ tomcat_group }} state=directory recurse=yes
+  when: check_tomcat_version_dir_exists.rc|int > 0
+
+#6 - Delete the current tomcat link if exists 
+- name: Delete the current tomcat home link 
+  file: dest={{ tomcat_home }} state=absent
+  
+#7 - Unzip tomcat archive
+- name: Unzip the tomcat archive
+  unarchive: src={{ tomcat_tarball_name }} dest="{{ tomcat_version }}/"
+  
+#8 - Create link to the new tomcat directory
+- name: Create link to the new tomcat directory
+  file: src={{ tomcat_last }} dest={{ tomcat_home }} state=link
+
+#9 - Change the owner of tomcat directory.
+#- name: Change the owner of tomcat directory.
+  #file: path={{ tomcat_home }}
+  #file: path={{ tomcat_home }} owner={{ tomcat_user }} group={{ tomcat_group }} recurse=yes
+
+#10 - name: Configure Tomcat server
+  #template: src=server.xml dest=/usr/share/tomcat/conf/
+  #notify: restart tomcat
+
+#11 - name: Configure Tomcat users
+  #template: src=tomcat-users.xml dest=/usr/share/tomcat/conf/
+  #notify: restart tomcat
+
+#12 Install Tomcat init script
+- name: Install Tomcat init script
+  template: src=tomcat.sh dest=/etc/init.d/tomcat mode=0755
+  
+- name: Synchronize Tomcat init script 
+  shell: update-rc.d tomcat defaults
+
+#13 Start Tomcat
+- name: Start Tomcat
+  service: name=tomcat state=started enabled=yes
+
+#14 - name: deploy iptables rules
+  #template: src=iptables-save dest=/etc/sysconfig/iptables
+  #notify: restart iptables
+
+#15 - name: wait for tomcat to start
+  #wait_for: port={{http_port}}
