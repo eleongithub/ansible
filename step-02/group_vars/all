@@ -1,6 +1,6 @@
 java_version: 1.8.0_73
 jdk_version: /opt/jdk_version
-last_jdk: "{{ jdk_version }}/jdk1.8.0_73"
+last_jdk: "{{ jdk_version }}/jdk{{ java_version }}"
 java_home: /opt/java
 os_32: 32
 os_64: 64
