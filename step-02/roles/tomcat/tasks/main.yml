@@ -15,8 +15,7 @@
 
 #3 - Create User Tomcat
 - name: Create User Tomcat 
-  user: name={{ tomcat_user }} createhome=no group={{ tomcat_group }} shell=no state=present
-  ignore_errors: true
+  user: name={{ tomcat_user }} createhome=no group={{ tomcat_group }} shell=/bin/false state=present
 
 #4 - Check tomcat version directory exists
 - name : Check tomcat version directory exists
@@ -26,8 +25,7 @@
 
 #5 - Create tomcat version directory if not exists
 - name: Create tomcat version directory
-  file: path={{ tomcat_version }} state=directory recurse=yes
-  #file: path={{ tomcat_version }} owner={{ tomcat_user }} group={{ tomcat_group }} state=directory recurse=yes
+  file: path={{ tomcat_version }} owner={{ tomcat_user }} group={{ tomcat_group }} state=directory recurse=yes
   when: check_tomcat_version_dir_exists.rc|int > 0
 
 #6 - Delete the current tomcat link if exists 
@@ -37,38 +35,38 @@
 #7 - Unzip tomcat archive
 - name: Unzip the tomcat archive
   unarchive: src={{ tomcat_tarball_name }} dest="{{ tomcat_version }}/"
+
+#8 - Change the owner of tomcat directory.
+- name: Change the owner of tomcat directory.
+  file: path={{ tomcat_last }} owner={{ tomcat_user }} group={{ tomcat_group }} state=directory recurse=yes
   
-#8 - Create link to the new tomcat directory
+#9 - Create link to the new tomcat directory
 - name: Create link to the new tomcat directory
-  file: src={{ tomcat_last }} dest={{ tomcat_home }} state=link
+  file: src={{ tomcat_last }} path={{ tomcat_home }} owner={{ tomcat_user }} group={{ tomcat_group }} state=link
 
-#9 - Change the owner of tomcat directory.
-#- name: Change the owner of tomcat directory.
-  #file: path={{ tomcat_home }}
-  #file: path={{ tomcat_home }} owner={{ tomcat_user }} group={{ tomcat_group }} recurse=yes
-
-#10 - name: Configure Tomcat server
+#10 - name: Configure Tomcat server TODO
   #template: src=server.xml dest=/usr/share/tomcat/conf/
   #notify: restart tomcat
 
-#11 - name: Configure Tomcat users
+#11 - name: Configure Tomcat users TODO
   #template: src=tomcat-users.xml dest=/usr/share/tomcat/conf/
   #notify: restart tomcat
 
 #12 Install Tomcat init script
 - name: Install Tomcat init script
   template: src=tomcat.sh dest=/etc/init.d/tomcat mode=0755
-  
+
+#13 Synchronize Tomcat init script 
 - name: Synchronize Tomcat init script 
   shell: update-rc.d tomcat defaults
 
-#13 Start Tomcat
+#14 Start Tomcat
 - name: Start Tomcat
   service: name=tomcat state=started enabled=yes
 
-#14 - name: deploy iptables rules
+#15 - name: deploy iptables rules TODO
   #template: src=iptables-save dest=/etc/sysconfig/iptables
   #notify: restart iptables
 
-#15 - name: wait for tomcat to start
+#16 - name: wait for tomcat to start TODO
   #wait_for: port={{http_port}}

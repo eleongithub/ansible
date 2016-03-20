@@ -4,11 +4,15 @@
 # 1 - Apply common roles to all nodes
 
 
-#- name: apply jdk installation to all nodes
-#- hosts: all
-  #become: yes
-  #roles:
-    #- jdk
+# 2  - Install java/jdk to all nodes 
+- hosts: all
+  become: yes
+  pre_tasks:
+   - name: Get java version installed on the nodes
+     shell: java -version 2>&1 | head -n 1 | cut -d'"' -f2
+     register: java_installed_version
+  roles:
+    - { role: jdk, when: " '{{ java_installed_version.stdout }}' != '{{ java_version }}'" }
     
 # 2 - Apply Tomcat role to tomcat web server
 
