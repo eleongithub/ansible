@@ -1,0 +1,31 @@
+---
+# This playbook contains firewall plays that will be run on all nodes.
+
+#1 - Installed iptables if it wasn't
+- name: Installed iptables if it's absent
+  apt: pkg=iptables state=present
+  ignore_errors: true
+
+##2 - Reinit iptables
+#- name: Reinit iptables
+  #command: iptables -F
+  
+
+##3 - Copy firewall-rules into /etc
+#- name: Copy firewall-rules into /etc
+  #template: src=firewall-rules.sh.j2 dest=/etc/firewall-rules.sh owner=root group=root mode=0744
+   
+##4 - Copy iptables script into /etc/init.d/
+#- name: Copy iptables script into /etc/init.d
+  #template: src=iptables.j2 dest=/etc/init.d/iptables owner=root group=root mode=0755
+
+##5 Synchronize iptables init script 
+#- name: Synchronize iptables init script 
+  #shell: update-rc.d iptables defaults
+  
+##6 - Enabled/Start iptables script
+#- name: Ensure the firewall is enabled and will start on boot.
+  #service: name=iptables state=started enabled=yes
+  
+
+
