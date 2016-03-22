@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # description: Start/Stop/Status Apache Tomcat
-
  
 #Define JAVA_HOME
 export JAVA_HOME="{{ java_home }}"
@@ -34,16 +33,7 @@ start() {
   else
     # Start tomcat
     echo -e "\e[00;32mStarting tomcat\e[00m"
-    #ulimit -n 100000
-    #umask 007
-    #/bin/su -p -s /bin/sh tomcat
-        if [ `user_exists $TOMCAT_USER` = "1" ]
-        then
-                su $TOMCAT_USER -c $CATALINA_HOME/bin/startup.sh
-        else
-                sh $CATALINA_HOME/bin/startup.sh
-        fi
-        status
+    /bin/su $TOMCAT_USER -c "cd $CATALINA_HOME/bin && $CATALINA_HOME/bin/startup.sh" 
   fi
   return 0
 }
@@ -60,9 +50,7 @@ stop() {
   if [ -n "$pid" ]
   then
     echo -e "\e[00;31mStoping Tomcat\e[00m"
-    #/bin/su -p -s /bin/sh tomcat
-        sh $CATALINA_HOME/bin/shutdown.sh
- 
+    /bin/su $TOMCAT_USER -c "cd $CATALINA_HOME/bin && $CATALINA_HOME/bin/shutdown.sh"
     let kwait=$SHUTDOWN_WAIT
     count=0;
     until [ `ps -p $pid | grep -c $pid` = '0' ] || [ $count -gt $kwait ]
@@ -82,15 +70,7 @@ stop() {
  
   return 0
 }
- 
-user_exists(){
-        if id -u $1 >/dev/null 2>&1; then
-        echo "1"
-        else
-                echo "0"
-        fi
-}
- 
+
 case $1 in
  
         start)
@@ -107,12 +87,12 @@ case $1 in
         ;;
        
         status)
-                status
+          status
                
         ;;
        
         *)
-                echo -e $TOMCAT_USAGE
+          echo -e $TOMCAT_USAGE
         ;;
 esac    
 exit 0

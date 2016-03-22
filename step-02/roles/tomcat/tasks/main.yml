@@ -4,10 +4,12 @@
 #0 - Delete User tomcat if exists
 - name: Delete User Tomcat 
   user: name={{ tomcat_user }} state=absent
+  ignore_errors: true
 
 #1 - Delete Group tomcat if exists
 - name: Delete Group Tomcat 
   group: name={{ tomcat_group }} state=absent
+  ignore_errors: true
   
 #2 - Create Group Tomcat
 - name: Create Group Tomcat 
@@ -15,7 +17,7 @@
 
 #3 - Create User Tomcat
 - name: Create User Tomcat 
-  user: name={{ tomcat_user }} createhome=no group={{ tomcat_group }} shell=/bin/false state=present
+  user: name={{ tomcat_user }} createhome=no group={{ tomcat_group }} shell=/sbin/nologin state=present
 
 #4 - Check tomcat version directory exists
 - name : Check tomcat version directory exists
@@ -64,7 +66,7 @@
 - name: Start Tomcat
   service: name=tomcat state=started enabled=yes
 
-#15 - name: deploy iptables rules TODO
+#15 - name: deploy iptables rules to open tomcat port TODO
   #template: src=iptables-save dest=/etc/sysconfig/iptables
   #notify: restart iptables
 
