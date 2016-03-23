@@ -1,6 +1,13 @@
 #!/bin/bash
-
-# description: Start/Stop/Status Apache Tomcat
+### BEGIN INIT INFO
+# Provides:          Tomcat Server
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start tomcat at boot time
+# Description:       Enable service provided by tomcat
+### END INIT INFO
  
 #Define JAVA_HOME
 export JAVA_HOME="{{ java_home }}"
@@ -33,7 +40,7 @@ start() {
   else
     # Start tomcat
     echo -e "\e[00;32mStarting tomcat\e[00m"
-    /bin/su $TOMCAT_USER -c "cd $CATALINA_HOME/bin && $CATALINA_HOME/bin/startup.sh" 
+    /bin/su $TOMCAT_USER $CATALINA_HOME/bin/startup.sh
   fi
   return 0
 }
@@ -50,7 +57,7 @@ stop() {
   if [ -n "$pid" ]
   then
     echo -e "\e[00;31mStoping Tomcat\e[00m"
-    /bin/su $TOMCAT_USER -c "cd $CATALINA_HOME/bin && $CATALINA_HOME/bin/shutdown.sh"
+    /bin/su $TOMCAT_USER $CATALINA_HOME/bin/shutdown.sh
     let kwait=$SHUTDOWN_WAIT
     count=0;
     until [ `ps -p $pid | grep -c $pid` = '0' ] || [ $count -gt $kwait ]

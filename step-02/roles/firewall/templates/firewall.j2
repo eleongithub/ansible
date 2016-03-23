@@ -14,15 +14,15 @@
 case "$1" in
   start)
     echo "Starting Firewall."
-    /bin/su /etc/firewall-rules.sh
+    /bin/sh /etc/firewall-start-rules.sh
     ;;
   stop)
     echo "Stopping Firewall."
-    iptables -F
+    /bin/sh /etc/firewall-stop-rules.sh
     ;;
   restart)
     echo "Restarting firewall."
-    /bin/su /etc/firewall-rules.sh
+    /bin/sh /etc/firewall-start-rules.sh
     ;;
   status)
     echo -e "`iptables -L -n`"

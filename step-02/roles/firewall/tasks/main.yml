@@ -6,26 +6,45 @@
   apt: pkg=iptables state=present
   ignore_errors: true
 
-##2 - Reinit iptables
-#- name: Reinit iptables
-  #command: iptables -F
-  
+#2 Stop eventual firewall runing
+- name: Stop eventual firewall runing
+  service: name=firewall state=stopped enabled=no
+  ignore_errors: true
 
-##3 - Copy firewall-rules into /etc
-#- name: Copy firewall-rules into /etc
-  #template: src=firewall-rules.sh.j2 dest=/etc/firewall-rules.sh owner=root group=root mode=0744
+#3 Remove eventual firewall from boot service
+- name: Remove eventual firewall from boot service
+  shell: insserv -r firewall
+  ignore_errors: true
+  
+#4 - Remove eventual firewall init script from the system
+- name : Remove eventual firewall init script from the system
+  file: path={{ item }} state=absent
+  with_items:
+   - /etc/firewall-start-rules.sh
+   - /etc/firewall-stop-rules.sh
+   - /etc/init.d/firewall
+  ignore_errors: true
+    
+#5 - Copy firewall-start-rules into /etc
+- name: Copy firewall start rules into /etc
+  template: src=firewall-start-rules.sh.j2 dest=/etc/firewall-start-rules.sh owner=root group=root mode=0744
+    
+#6 - Copy firewall-stop-rules into /etc
+- name: Copy firewall stop rules into /etc
+  template: src=firewall-stop-rules.sh.j2 dest=/etc/firewall-stop-rules.sh owner=root group=root mode=0744
    
-##4 - Copy iptables script into /etc/init.d/
-#- name: Copy iptables script into /etc/init.d
-  #template: src=iptables.j2 dest=/etc/init.d/iptables owner=root group=root mode=0755
+#7 - Copy firewall script into /etc/init.d/
+- name: Copy firewall script into /etc/init.d
+  template: src=firewall.j2 dest=/etc/init.d/firewall owner=root group=root mode=0755
 
-##5 Synchronize iptables init script 
-#- name: Synchronize iptables init script 
-  #shell: update-rc.d iptables defaults
+# TODO :  Make one task for #5, #6 & #7 by usinf with_items and list
   
-##6 - Enabled/Start iptables script
-#- name: Ensure the firewall is enabled and will start on boot.
-  #service: name=iptables state=started enabled=yes
+#8 Enable/Start firewall
+- name: Enable/Start firewall
+  service: name=firewall state=started enabled=yes
+  
+  
+
   
 
 

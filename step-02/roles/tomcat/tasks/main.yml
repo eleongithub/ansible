@@ -1,74 +1,91 @@
 ---
 # This playbook contains tomcat-installation plays that will be run on web server node.
 
-#0 - Delete User tomcat if exists
+#1 Stop eventual firewall runing
+- name: Stop eventual tomcat server runing
+  service: name=tomcat state=stopped enabled=no
+  ignore_errors: true
+
+#2 Remove eventual tomcat from boot service
+- name: Remove eventual tomcat from boot service
+  shell: insserv -r tomcat
+  ignore_errors: true
+  
+#3 - Remove eventual tomcat init script from the system
+- name : Remove eventual firewall init script from the system
+  file: path=/etc/init.d/tomcat state=absent
+  ignore_errors: true
+  
+#4 - Delete User tomcat if exists
 - name: Delete User Tomcat 
   user: name={{ tomcat_user }} state=absent
   ignore_errors: true
 
-#1 - Delete Group tomcat if exists
+#5 - Delete Group tomcat if exists
 - name: Delete Group Tomcat 
   group: name={{ tomcat_group }} state=absent
   ignore_errors: true
   
-#2 - Create Group Tomcat
+#6 - Create Group Tomcat
 - name: Create Group Tomcat 
   group: name={{ tomcat_group }} state=present
 
-#3 - Create User Tomcat
+#7 - Create User Tomcat
 - name: Create User Tomcat 
-  user: name={{ tomcat_user }} createhome=no group={{ tomcat_group }} shell=/sbin/nologin state=present
+  user: name={{ tomcat_user }} createhome=no group={{ tomcat_group }} shell=/bin/bash state=present
+  
+#8 - Remove eventual tomcat init script from the system
+- name : Remove eventual tomcat init script from the system
+  shell: insserv -r tomcat
+  ignore_errors: true
 
-#4 - Check tomcat version directory exists
+#9 - Check tomcat version directory exists
 - name : Check tomcat version directory exists
   shell: ls {{ tomcat_version }}
   register: check_tomcat_version_dir_exists
   ignore_errors: true
 
-#5 - Create tomcat version directory if not exists
+#10 - Create tomcat version directory if not exists
 - name: Create tomcat version directory
   file: path={{ tomcat_version }} owner={{ tomcat_user }} group={{ tomcat_group }} state=directory recurse=yes
   when: check_tomcat_version_dir_exists.rc|int > 0
 
-#6 - Delete the current tomcat link if exists 
+#11 - Delete the current tomcat link if exists 
 - name: Delete the current tomcat home link 
   file: dest={{ tomcat_home }} state=absent
   
-#7 - Unzip tomcat archive
+#12 - Unzip tomcat archive
 - name: Unzip the tomcat archive
   unarchive: src={{ tomcat_tarball_name }} dest="{{ tomcat_version }}/"
 
-#8 - Change the owner of tomcat directory.
+#13 - Change the owner of tomcat directory.
 - name: Change the owner of tomcat directory.
   file: path={{ tomcat_last }} owner={{ tomcat_user }} group={{ tomcat_group }} state=directory recurse=yes
   
-#9 - Create link to the new tomcat directory
+#14 - Create link to the new tomcat directory
 - name: Create link to the new tomcat directory
   file: src={{ tomcat_last }} path={{ tomcat_home }} owner={{ tomcat_user }} group={{ tomcat_group }} state=link
 
-#10 - name: Configure Tomcat server TODO
+#15 - name: Configure Tomcat server TODO
   #template: src=server.xml dest=/usr/share/tomcat/conf/
   #notify: restart tomcat
 
-#11 - name: Configure Tomcat users TODO
+#16 - name: Configure Tomcat users TODO
   #template: src=tomcat-users.xml dest=/usr/share/tomcat/conf/
   #notify: restart tomcat
 
-#12 Install Tomcat init script
-- name: Install Tomcat init script
+#17 Copy Tomcat init script
+- name: Copy Tomcat init script
   template: src=tomcat.sh dest=/etc/init.d/tomcat mode=0755
 
-#13 Synchronize Tomcat init script 
-- name: Synchronize Tomcat init script 
-  shell: update-rc.d tomcat defaults
 
-#14 Start Tomcat
-- name: Start Tomcat
+#18 Enable/Start Tomcat
+- name: Enable/Start Tomcat
   service: name=tomcat state=started enabled=yes
 
-#15 - name: deploy iptables rules to open tomcat port TODO
+#19 - name: deploy iptables rules to open tomcat port TODO
   #template: src=iptables-save dest=/etc/sysconfig/iptables
   #notify: restart iptables
 
-#16 - name: wait for tomcat to start TODO
+#20 - name: wait for tomcat to start TODO
   #wait_for: port={{http_port}}
