@@ -6,8 +6,8 @@
   apt: pkg=iptables state=present
   ignore_errors: true
 
-#2 Stop eventual firewall runing
-- name: Stop eventual firewall runing
+#2 Stop eventual firewall service runing
+- name: Stop eventual firewall service runing
   service: name=firewall state=stopped enabled=no
   ignore_errors: true
 
@@ -15,31 +15,14 @@
 - name: Remove eventual firewall from boot service
   shell: insserv -r firewall
   ignore_errors: true
-  
-#4 - Remove eventual firewall init script from the system
-- name : Remove eventual firewall init script from the system
-  file: path={{ item }} state=absent
-  with_items:
-   - /etc/firewall-start-rules.sh
-   - /etc/firewall-stop-rules.sh
-   - /etc/init.d/firewall
-  ignore_errors: true
-    
-#5 - Copy firewall-start-rules into /etc
-- name: Copy firewall start rules into /etc
-  template: src=firewall-start-rules.sh.j2 dest=/etc/firewall-start-rules.sh owner=root group=root mode=0744
-    
-#6 - Copy firewall-stop-rules into /etc
-- name: Copy firewall stop rules into /etc
-  template: src=firewall-stop-rules.sh.j2 dest=/etc/firewall-stop-rules.sh owner=root group=root mode=0744
-   
-#7 - Copy firewall script into /etc/init.d/
-- name: Copy firewall script into /etc/init.d
-  template: src=firewall.j2 dest=/etc/init.d/firewall owner=root group=root mode=0755
 
-# TODO :  Make one task for #5, #6 & #7 by usinf with_items and list
-  
-#8 Enable/Start firewall
+#4 - Copy firewall files into directories
+- name: Copy firewall files into directories
+  template: src={{item.src}} dest={{item.dest}} force={{item.force}} owner={{item.owner}} group={{item.group}} mode={{item.mode}}   
+  with_items:
+   - "{{ firewall_files }}"
+
+#5 Enable/Start firewall
 - name: Enable/Start firewall
   service: name=firewall state=started enabled=yes
   

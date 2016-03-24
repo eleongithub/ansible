@@ -7,3 +7,9 @@ os_64: 64
 jdk_tarball_name_32: jdk-8u73-linux-i586.tar.gz
 jdk_tarball_name_64: jdk-8u73-linux-x64.tar.gz
 
+firewall_files:
+ - { src: 'firewall-start-rules.sh.j2', dest: '/etc/firewall-start-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
+ - { src: 'firewall-stop-rules.sh.j2', dest: '/etc/firewall-stop-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
+ - { src: 'firewall.j2', dest: '/etc/init.d/firewall', force: yes, owner: 'root', group: 'root', mode: '0755' }
+
+ 

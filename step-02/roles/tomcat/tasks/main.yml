@@ -57,6 +57,14 @@
 #12 - Unzip tomcat archive
 - name: Unzip the tomcat archive
   unarchive: src={{ tomcat_tarball_name }} dest="{{ tomcat_version }}/"
+  
+#13 : Delete unused directories
+- name: Delete unused directories
+  file: path={{ tomcat_last }}/{{item.path}} state=absent
+  with_items:
+   - "{{ tomcat_unused_directories }}"
+
+# TODO : Check/Install APR
 
 #13 - Change the owner of tomcat directory.
 - name: Change the owner of tomcat directory.
