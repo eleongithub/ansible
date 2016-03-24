@@ -33,32 +33,27 @@
 #7 - Create User Tomcat
 - name: Create User Tomcat 
   user: name={{ tomcat_user }} createhome=no group={{ tomcat_group }} shell=/bin/bash state=present
-  
-#8 - Remove eventual tomcat init script from the system
-- name : Remove eventual tomcat init script from the system
-  shell: insserv -r tomcat
-  ignore_errors: true
 
-#9 - Check tomcat version directory exists
+#8 - Check tomcat version directory exists
 - name : Check tomcat version directory exists
   shell: ls {{ tomcat_version }}
   register: check_tomcat_version_dir_exists
   ignore_errors: true
 
-#10 - Create tomcat version directory if not exists
+#9 - Create tomcat version directory if not exists
 - name: Create tomcat version directory
   file: path={{ tomcat_version }} owner={{ tomcat_user }} group={{ tomcat_group }} state=directory recurse=yes
   when: check_tomcat_version_dir_exists.rc|int > 0
 
-#11 - Delete the current tomcat link if exists 
+#10 - Delete the current tomcat link if exists 
 - name: Delete the current tomcat home link 
   file: dest={{ tomcat_home }} state=absent
   
-#12 - Unzip tomcat archive
+#11 - Unzip tomcat archive
 - name: Unzip the tomcat archive
   unarchive: src={{ tomcat_tarball_name }} dest="{{ tomcat_version }}/"
   
-#13 : Delete unused directories
+#12 : Delete unused directories
 - name: Delete unused directories
   file: path={{ tomcat_last }}/{{item.path}} state=absent
   with_items:
@@ -84,7 +79,7 @@
 
 #17 Copy Tomcat init script
 - name: Copy Tomcat init script
-  template: src=tomcat.sh dest=/etc/init.d/tomcat mode=0755
+  template: src=tomcat.sh dest=/etc/init.d/tomcat force=yes mode=0755
 
 
 #18 Enable/Start Tomcat
