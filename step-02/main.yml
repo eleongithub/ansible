@@ -4,20 +4,20 @@
 # 1 - Apply common roles to all nodes
 
 # 2 - Apply firewall roles to all nodes
-#- hosts: all
-  #become: yes
-  #roles:
-    #- firewall
+- hosts: all
+  become: yes
+  roles:
+    - firewall
     
-## 3  - Install java/jdk to all nodes 
-#- hosts: all
-  #become: yes
-  #pre_tasks:
-   #- name: Get java version installed on the nodes
-     #shell: java -version 2>&1 | head -n 1 | cut -d'"' -f2
-     #register: java_installed_version
-  #roles:
-    #- { role: jdk, when: " '{{ java_installed_version.stdout }}' != '{{ java_version }}'" }
+# 3  - Install java/jdk to all nodes 
+- hosts: all
+  become: yes
+  pre_tasks:
+   - name: Get java version installed on the nodes
+     shell: java -version 2>&1 | head -n 1 | cut -d'"' -f2
+     register: java_installed_version
+  roles:
+    - { role: jdk, when: " '{{ java_installed_version.stdout }}' != '{{ java_version }}'" }
     
 #4 - Apply Tomcat role to tomcat web server
 - hosts: webserver
