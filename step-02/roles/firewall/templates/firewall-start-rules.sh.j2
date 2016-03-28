@@ -15,7 +15,6 @@ iptables -P OUTPUT DROP
 # Drop forward.
 iptables -P FORWARD DROP
 
-
 ################### TODO - Rework later
 # Drop XMAS and NULL scans.
 # iptables -A INPUT -p tcp --tcp-flags FIN,URG,PSH FIN,URG,PSH -j DROP
@@ -42,44 +41,30 @@ iptables -t filter -A INPUT -p icmp -i eth0 -j ACCEPT
 # Authorize output ICMP - PING request
 iptables -t filter -A OUTPUT -p icmp -m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT
 
-# SSH In
-iptables -t filter -A INPUT -p tcp --dport 22 -j ACCEPT
+# Add a rule for each allow port
+{% for allowed_port in firewall_allowed_ports %}
+iptables -t filter -A {{ allowed_port.direction }} -p {{ allowed_port.protocol }} --dport {{ allowed_port.port }} -j ACCEPT -m comment --comment "{{ allowed_port.comment }}"
+{% endfor %}
 
-# SSH Out
-iptables -t filter -A OUTPUT -p tcp --dport 22 -j ACCEPT
+# Add a rule for each specific environnement port
+{% for allowed_env_port in firewall_specific_env_ports %}
+iptables -t filter -A {{ allowed_env_port.direction }} -p {{ allowed_env_port.protocol }} --dport {{ allowed_env_port.port }} -j ACCEPT -m comment --comment "{{ allowed_env_port.comment }}"
+{% endfor %}
 
-
-# Authorize HTTP & HTTPS In
-iptables -t filter -A INPUT -p tcp --dport 80 -j ACCEPT
-iptables -t filter -A INPUT -p tcp --dport 443 -j ACCEPT
-
-# Authorize HTTP & HTTPS Out
-iptables -t filter -A OUTPUT -p tcp --dport 80 -j ACCEPT
-iptables -t filter -A OUTPUT -p tcp --dport 443 -j ACCEPT
-
-# Authorize Tomcat input 8080
-iptables -t filter -A INPUT -p tcp --dport 8080 -j ACCEPT 
-#TODO : remove that line and add iptables rules after installation of Tomcat
-
-# Authorize Tomcat output 8080
-iptables -t filter -A OUTPUT -p tcp --dport 8080 -j ACCEPT
-#TODO : remove that line and add iptables rules after installation of Tomcat
-
-# DNS In/Out
-iptables -t filter -A INPUT -p tcp --dport 53 -j ACCEPT
-iptables -t filter -A INPUT -p udp --dport 53 -j ACCEPT
-iptables -t filter -A OUTPUT -p tcp --dport 53 -j ACCEPT
-iptables -t filter -A OUTPUT -p udp --dport 53 -j ACCEPT
-
-
-# NTP Out
-iptables -t filter -A OUTPUT -p udp --dport 123 -j ACCEPT
+# Add a rule for each allow port belongs to web provider (OVH, etc...)
+{% for allowed_specific_port in firewall_allowed_web_provider_specific_ports %}
+iptables -t filter -A {{ allowed_specific_port.direction }} -p {{ allowed_specific_port.protocol }} --dport {{ allowed_specific_port.port }} -j ACCEPT -m comment --comment "{{ allowed_specific_port.comment }}"
+{% endfor %}
 
   
 # Log input trafic.
+{% if firewall_logs_input_trafic %}
 iptables -A INPUT -j LOG
-  
+{% endif %} 
+
 # Log forward trafic.
+{% if firewall_logs_output_trafic %}
 iptables -A FORWARD -j LOG 
+{% endif %}
 
 exit 0

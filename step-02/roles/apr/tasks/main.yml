@@ -1,0 +1,49 @@
+---
+# This playbook contains APR & APR-UTIL plays that will be run on web server node (Apache and Apache Tomcat).
+
+#0 Check version file exists
+- name : Get the contain of version file
+  shell: more {{ apr_version_file }}
+  register: versions
+  ignore_errors: true
+
+#1 Delete eventual old versions
+- name : Delete eventual old versions
+  file: path={{ apr_home }} state=absent
+  when: "'{{ versions.stdout }}' != '{{ apr_apr_util_versions }}'"
+  
+#2 - Unzip APR archive
+- name: Unzip APR archive
+  unarchive: src={{ apr_tarball_name }} dest="{{ usr_local_dir }}/"
+  when: "'{{ versions.stdout }}' != '{{ apr_apr_util_versions }}'"
+ 
+#3 - Install APR
+- name: Install APR
+  shell: cd "{{ usr_local_dir }}/apr-{{ apr_version }}";./configure; make; make install
+  when: "'{{ versions.stdout }}' != '{{ apr_apr_util_versions }}'"
+  
+#4 - Delete unzip directory APR
+- name: Delete unzip directory APR
+  file: path="{{ usr_local_dir }}/apr-{{ apr_version }}" state=absent
+  when: "'{{ versions.stdout }}' != '{{ apr_apr_util_versions }}'"
+
+  
+#5 - Unzip APR-UTIL archive
+- name: Unzip APR-UTIL archive
+  unarchive: src={{ apr_util_tarball_name }} dest="{{ usr_local_dir }}/"
+  when: "'{{ versions.stdout }}' != '{{ apr_apr_util_versions }}'"
+ 
+#6 - Install APR-UTIL
+- name: Install APR-UTIL
+  shell: cd "{{ usr_local_dir }}/apr-util-{{ apr_util_version }}";./configure --with-apr=/usr/local/apr; make; make install
+  when: "'{{ versions.stdout }}' != '{{ apr_apr_util_versions }}'"
+  
+#7 - Delete unzip directory APR-UTIL
+- name: Delete unzip directory APR-UTIL
+  shell: rm -r "{{ usr_local_dir }}/apr-util-{{ apr_util_version }}"
+  when: "'{{ versions.stdout }}' != '{{ apr_apr_util_versions }}'"
+  
+#8 - Write versions of APR & APR-UTIL
+- name: Write version of APR & APR-UTIL
+  shell: echo "{{ apr_apr_util_versions }}" > {{ apr_version_file }}
+  when: "'{{ versions.stdout }}' != '{{ apr_apr_util_versions }}'"

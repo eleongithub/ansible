@@ -1,0 +1,3 @@
+firewall_specific_env_ports:
+ - { port: '5432', protocol: 'tcp', direction: 'INPUT', comment: 'Postgres Input trafic' }
+ - { port: '5432', protocol: 'tcp', direction: 'OUTPUT', comment: 'Postgres Output trafic' }

@@ -1,6 +1,6 @@
 #!/bin/bash
 ssh_id_dsa_key_file=~/.ssh/id_dsa
-passphrase="ansible"
+passphrase="ansible1"
 
 # Find an eventual ssh-agent and kill them
 if [ "$SSH_AGENT_PID" != "" ];then

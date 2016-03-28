@@ -2,14 +2,14 @@
 # This playbook contains jdk-installation plays that will be run on all nodes.
 #1 - Check if jdk version directory exists.
 - name : Check jdk version directory exists
-  shell: ls {{ jdk_version }}
-  register: check_jdk_version_dir_exists
+  shell: ls {{ jdk_versions }}
+  register: check_jdk_versions_dir_exists
   ignore_errors: true
 
 #2 - Create a jdk version directory. If directory exists, do nothing.
 - name: Create jdk version directory
-  file: path={{ jdk_version }} state=directory
-  when: check_jdk_version_dir_exists.rc|int > 0
+  file: path={{ jdk_versions }} state=directory
+  when: check_jdk_versions_dir_exists.rc|int > 0
   
 #3 - Delete java home link 
 - name: Delete java home link 
@@ -22,17 +22,17 @@
    
 #5 - Unzip jdk 32 bits archive
 - name: Unzip the jdk 32 bits archive
-  unarchive: src={{ jdk_tarball_name_32 }} dest="{{ jdk_version }}/"
+  unarchive: src={{ jdk_tarball_name_32 }} dest="{{ jdk_versions }}/"
   when: os_arch.stdout == "{{ os_32 }}"
   
 #6 - Unzip jdk 64 bits archive
 - name: Unzip the jdk 64 bits archive
-  unarchive: src={{ jdk_tarball_name_64 }} dest="{{ jdk_version }}/"
+  unarchive: src={{ jdk_tarball_name_64 }} dest="{{ jdk_versions }}/"
   when: os_arch.stdout == "{{ os_64 }}"
   
 #7 - Create a link to the jdk directory
 - name: Create link to the jdk directory
-  file: src={{ last_jdk }} dest={{ java_home }} state=link
+  file: src={{ jdk_last_version }} dest={{ java_home }} state=link
     
 #8 - Update alternatives
 - name: Update alternatives

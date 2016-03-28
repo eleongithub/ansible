@@ -1,15 +1,14 @@
 ---
 # This playbook deploys the whole application.  
 
-# 1 - Apply common roles to all nodes
-
-# 2 - Apply firewall roles to all nodes
+# 1 - Apply common & firewall roles to all nodes
 - hosts: all
   become: yes
   roles:
+    - common
     - firewall
     
-# 3  - Install java/jdk to all nodes 
+# 2  - Install java/jdk to all nodes 
 - hosts: all
   become: yes
   pre_tasks:
@@ -19,8 +18,8 @@
   roles:
     - { role: jdk, when: " '{{ java_installed_version.stdout }}' != '{{ java_version }}'" }
     
-#4 - Apply Tomcat role to tomcat web server
-- hosts: webserver
+# 3 - Apply Tomcat role to tomcat web server
+- hosts: tomcat-middle
   become: yes
   roles:
     - tomcat

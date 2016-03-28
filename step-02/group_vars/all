@@ -1,15 +1,45 @@
 java_version: 1.8.0_73
-jdk_version: /opt/jdk_version
-last_jdk: "{{ jdk_version }}/jdk{{ java_version }}"
+
+jdk_versions: /opt/jdk_versions
+
+jdk_last_version: "{{ jdk_versions }}/jdk{{ java_version }}"
+
 java_home: /opt/java
+
 os_32: 32
+
 os_64: 64
+
 jdk_tarball_name_32: jdk-8u73-linux-i586.tar.gz
+
 jdk_tarball_name_64: jdk-8u73-linux-x64.tar.gz
 
 firewall_files:
  - { src: 'firewall-start-rules.sh.j2', dest: '/etc/firewall-start-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
  - { src: 'firewall-stop-rules.sh.j2', dest: '/etc/firewall-stop-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
  - { src: 'firewall.j2', dest: '/etc/init.d/firewall', force: yes, owner: 'root', group: 'root', mode: '0755' }
+
+firewall_allowed_ports:
+ - { port: '22', protocol: 'tcp', direction: 'INPUT', comment: 'SSH Input trafic' }
+ - { port: '22', protocol: 'tcp', direction: 'OUTPUT', comment: 'SSH Output trafic' }
+ - { port: '80', protocol: 'tcp', direction: 'INPUT', comment: 'HTTP Input trafic' }
+ - { port: '80', protocol: 'tcp', direction: 'OUTPUT', comment: 'HTTP Output trafic' }
+ - { port: '443', protocol: 'tcp', direction: 'INPUT', comment: 'HTTPS Input trafic' }
+ - { port: '443', protocol: 'tcp', direction: 'OUTPUT', comment: 'HTTPS Output trafic' }
+ - { port: '53', protocol: 'tcp', direction: 'INPUT', comment: 'TCP DNS Input trafic' }
+ - { port: '53', protocol: 'udp', direction: 'INPUT', comment: 'UDP DNS Input trafic' }
+ - { port: '53', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP DNS Output trafic' }
+ - { port: '53', protocol: 'udp', direction: 'OUTPUT', comment: 'UDP DNS Output trafic' }
+ - { port: '123', protocol: 'udp', direction: 'OUTPUT', comment: 'NTP Output trafic' }
+ 
+firewall_allowed_web_provider_specific_ports: []
+
+firewall_specific_env_ports: []
+
+firewall_logs_input_trafic: true
+
+firewall_logs_output_trafic: true
+
+install_openssl: true
 
  
