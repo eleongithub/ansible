@@ -19,7 +19,7 @@
  
 #3 - Install APR
 - name: Install APR
-  shell: cd "{{ usr_local_dir }}/apr-{{ apr_version }}";./configure; make; make install
+  shell: cd "{{ usr_local_dir }}/apr-{{ apr_version }}" && ./configure && make && make install
   when: "'{{ versions.stdout }}' != '{{ apr_apr_util_versions }}'"
   
 #4 - Delete unzip directory APR
@@ -35,7 +35,7 @@
  
 #6 - Install APR-UTIL
 - name: Install APR-UTIL
-  shell: cd "{{ usr_local_dir }}/apr-util-{{ apr_util_version }}";./configure --with-apr=/usr/local/apr; make; make install
+  shell: cd "{{ usr_local_dir }}/apr-util-{{ apr_util_version }}" && ./configure --with-apr=/usr/local/apr && make && make install
   when: "'{{ versions.stdout }}' != '{{ apr_apr_util_versions }}'"
   
 #7 - Delete unzip directory APR-UTIL

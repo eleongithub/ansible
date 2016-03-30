@@ -54,10 +54,10 @@
   unarchive: src={{ tomcat_tarball_name }} dest="{{ tomcat_versions }}/"
   
 #12 : Delete unused files or directories
-- name: Delete unused files or directories
-  file: path={{ tomcat_last_version }}/{{item.path}} state=absent
-  with_items:
-   - "{{ tomcat_remove_files }}"
+#- name: Delete unused files or directories
+  #file: path={{ tomcat_last_version }}/{{item.path}} state=absent
+  #with_items:
+   #- "{{ tomcat_remove_files }}"
    
 #13 : Delete script .bat files. We don't need them on Linux plateform
 - name: Delete script .bat files. We don't need them on Linux plateform
@@ -70,7 +70,7 @@
 
 #15 - Install Tomcat native library
 - name: Install Tomcat native library
-  shell: cd {{ libtcnative_util_home }}; ./configure --with-apr={{ apr_home }} --with-java-home={{ java_home }}; make; make install
+  shell: cd {{ libtcnative_util_home }} && ./configure --with-apr={{ apr_home }} --with-java-home={{ java_home }} && make && make install
   when: install_apr_native_lib
   
 #16 - Deploy conf Tomcat files (server.xml and setenv.sh) 
@@ -78,6 +78,11 @@
   template: src={{item.src}} dest={{item.dest}} force={{item.force}}
   with_items:
    - "{{ tomcat_conf_files }}"
+   
+#17 - Generate  private/public key and keystore if ssl is enabled
+#- name: Generate  private/public key and keystore if ssl is enabled
+  #shell: /opt/java/bin/keytool -genkey -noprompt -trustcacerts -keyalg RSA -alias {{ ssl_cert_alias }} -keystore {{ ssl_keystore_file_path }} -storepass "changeit" -validity 360
+  #when: activate_ssl_engine
   
 #17 - Change the owner of tomcat directory.
 - name: Change the owner of tomcat directory.

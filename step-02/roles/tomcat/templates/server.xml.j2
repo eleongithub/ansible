@@ -56,9 +56,17 @@
          style configuration. When using the APR/native implementation, the
          OpenSSL style configuration is required as described in the APR/native
          documentation -->
-    <Connector port="{{ tomcat_https_port }}" protocol="org.apache.coyote.http11.Http11NioProtocol"
+    <!--<Connector port="{{ tomcat_https_port }}" protocol="org.apache.coyote.http11.Http11AprProtocol"
                maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
-               clientAuth="false" sslProtocol="TLS" />
+    clientAuth="false" sslProtocol="TLS" />-->
+    
+    <Connector port="{{ tomcat_https_port }}" protocol="org.apache.coyote.http11.Http11AprProtocol"
+	       maxThreads="150" SSLEnabled="true"  scheme="https" secure="true" 
+	       keystoreFile="{{ ssl_keystore_file_path }}" 
+	       keystorePass="{{ ssl_keystore_pass }}" 
+	       clientAuth="false" keyAlias="{{ ssl_cert_alias }}" sslProtocol="TLS"/> 
+    
+    <!-- TODO : Http11NioProtocol vs Http11AprProtocol -->
     {% else %}
    
     <!-- A "Connector" represents an endpoint by which requests are received
