@@ -1,0 +1,14 @@
+---
+# This playbook contains postgres_instance tasks
+
+#1 - Create user {{ db_user }}
+- name: Create user {{ db_user }}
+  shell: su - postgres /bin/bash -c  "psql -c \"CREATE USER  {{ db_user }} LOGIN password '{{ db_password }}' CREATEROLE CREATEUSER;\""
+
+# 2 - Create database {{ db_name }}
+- name: Create database {{ db_name }}
+  shell: su - postgres /bin/bash -c  "psql -c \"CREATE DATABASE {{ db_name }} OWNER={{ db_user }};\""
+  
+# 3 - Create schema {{ db_schema }}
+- name: Create schema {{ db_schema }}
+  shell: su - postgres /bin/bash -c  "psql {{ db_name }} -c \"CREATE SCHEMA {{ db_schema }} AUTHORIZATION {{ db_user }};\""

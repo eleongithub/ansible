@@ -17,31 +17,7 @@ tomcat_conf_files:
  - { src: 'setenv.sh.j2', dest: '{{ tomcat_last_version }}/bin/setenv.sh', force: yes }
  - { src: 'web.xml.j2', dest: '{{ tomcat_last_version }}/conf/web.xml', force: yes }
 firewall_specific_env_ports:
- - { port: '8080', protocol: 'tcp', direction: 'INPUT', comment: 'HTTP Tomcat Input trafic' }
- - { port: '8080', protocol: 'tcp', direction: 'OUTPUT', comment: 'HTTP Tomcat Output trafic' }
- - { port: '8443', protocol: 'tcp', direction: 'INPUT', comment: 'HTTPS Tomcat Input trafic' }
- - { port: '8443', protocol: 'tcp', direction: 'OUTPUT', comment: 'HTTPS Tomcat Output trafic' }
+ - { port: '{{ tomcat_http_port }}', protocol: 'tcp', direction: 'INPUT', comment: 'HTTP Tomcat Input trafic' }
 libtcnative_version: 1.2.5
 libtcnative_util_home: "{{ tomcat_last_version }}/bin/tomcat-native-{{ libtcnative_version }}-src/native"
 libtcnative_util_tarball_name: "tomcat-native-{{ libtcnative_version }}-src.tar.gz"
-install_apr_native_lib: true
-activate_ssl_engine: true
-tomcat_http_port: 8080
-tomcat_https_port: 8443
-keytool_command: "{{ java_home }}/bin/keytool"
-ssl_cert_alias: selfsigned
-ssl_dname: localhost
-ssl_key_pass: changeit
-ssl_keystore_pass: changeit
-ssl_keystore_file_path: "{{ tomcat_last_version }}/conf/keystore.jks"
-ssl_cert_validity: 360
-
-#keytool -genkey -noprompt -trustcacerts -keyalg RSA -alias ${cert.alias} 
-#-dname ${dn.name} -keypass ${key.pass} -keystore ${keystore.file} 
-#-storepass ${keystore.pass} -validity 360
-
-
-#keytool -genkey -keyalg RSA -alias "selfsigned" -keystore keystore.jks -storepass "password" -validity 360
-
-#generate_key_command: {{ java_home }}/bin/keytool -genkey -noprompt -trustcacerts -keyalg RSA -alias {{ ssl_cert_alias }} -dname {{ ssl_dname }} -keypass {{ ssl_key_pass }} 
-#-keystore {{ ssl_keystore_file_path }} -storepass {{ ssl_keystore_pass }} -validity {{ ssl_cert_validity }}

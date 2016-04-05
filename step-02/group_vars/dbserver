@@ -1,3 +1,11 @@
+postgres_version: 9.4
+postgres_server_pkg: "postgresql-{{ postgres_version }}"
+postgres_client_pkg: "postgresql-client-{{ postgres_version }}"
+postgres_conf_dir: "/etc/postgresql/{{ postgres_version}}/main"
+postgres_listen_addresses: '*'
 firewall_specific_env_ports:
- - { port: '5432', protocol: 'tcp', direction: 'INPUT', comment: 'Postgres Input trafic' }
- - { port: '5432', protocol: 'tcp', direction: 'OUTPUT', comment: 'Postgres Output trafic' }
+ - { port: '{{ postgres_port }}', protocol: 'tcp', direction: 'INPUT', comment: 'Postgres Input trafic' }
+postgres_conf_files:
+ - { src: 'postgresql.conf.j2', dest: '{{ postgres_conf_dir }}/postgresql.conf', force: yes }
+ - { src: 'pg_hba.conf.j2', dest: '{{ postgres_conf_dir }}/pg_hba.conf', force: yes }
+ 
