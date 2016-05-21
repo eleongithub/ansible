@@ -2,15 +2,15 @@
 # This playbook deploys the whole application.  
 
 # 1 - Apply common & firewall roles to all nodes
-#- hosts: dbserver|tomcat-middle|apache-front : TODO - Reactivate this config
-- hosts: tomcat-middle:apache-front
+#- hosts: dbserver:tomcat:apache
+- hosts: tomcat:apache
   become: yes
   roles:
     - common
     - firewall
     
-# 2  - Install java/jdk to all nodes 
-- hosts: all
+# 2  - Install java/jdk 
+- hosts: tomcat
   become: yes
   pre_tasks:
    - name: Get java version installed on the nodes
@@ -19,16 +19,32 @@
   roles:
     - { role: jdk, when: " '{{ java_installed_version.stdout }}' != '{{ java_version }}'" }
     
-# 3 - Install data base
+# Install data base
+- hosts: dbserver
+  become: yes
+  roles:
+    - postgres 
+    
+# Install data base
 - hosts: dbserver
   become: yes
   roles:
     - postgres_instance
 
-# 4 - Install Tomcat
-- hosts: tomcat-middle
+# Install Tomcat
+- hosts: tomcat
   become: yes
   roles:
     - tomcat
     
-# 5 - Install Apache frontal TODO
+## Install Apache2
+#- hosts: apache
+  #become: yes
+  #roles:
+    #- apache   
+    
+## Install Apache Virtual hosts
+#- hosts: apache-front
+  #become: yes
+  #roles:
+    #- apache_vhosts

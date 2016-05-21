@@ -1,94 +1,105 @@
 ---
 # This playbook contains tomcat-installation plays that will be run on tomcat web server node.
-
-#1 Stop eventual firewall runing
+    
+# Stop eventual tomcat server runing
 - name: Stop eventual tomcat server runing
   service: name=tomcat state=stopped enabled=no
   ignore_errors: true
 
-#2 Remove eventual tomcat from boot service
+# Remove eventual tomcat from boot service
 - name: Remove eventual tomcat from boot service
   shell: insserv -r tomcat
   ignore_errors: true
   
-#3 - Remove eventual tomcat init script from the system
-- name : Remove eventual firewall init script from the system
+# Remove eventual tomcat init script from the system
+- name : Remove eventual tomcat init script from the system
   file: path=/etc/init.d/tomcat state=absent
   ignore_errors: true
   
-#4 - Delete User tomcat if exists
+# Delete User tomcat if exists
 - name: Delete User Tomcat 
   user: name={{ tomcat_user }} state=absent
   ignore_errors: true
 
-#5 - Delete Group tomcat if exists
+# Delete Group tomcat if exists
 - name: Delete Group Tomcat 
   group: name={{ tomcat_group }} state=absent
   ignore_errors: true
   
-#6 - Create Group Tomcat
+# Create Group Tomcat
 - name: Create Group Tomcat 
   group: name={{ tomcat_group }} state=present
 
-#7 - Create User Tomcat
+# Create User Tomcat
 - name: Create User Tomcat 
   user: name={{ tomcat_user }} createhome=no group={{ tomcat_group }} shell=/bin/bash state=present
 
-#8 - Check tomcat version directory exists
+# Check tomcat version directory exists
 - name : Check tomcat version directory exists
   shell: ls {{ tomcat_versions }}
   register: check_tomcat_versions_dir_exists
   ignore_errors: true
 
-#9 - Create tomcat version directory if not exists
+# Create tomcat version directory if not exists
 - name: Create tomcat version directory
   file: path={{ tomcat_versions }} owner={{ tomcat_user }} group={{ tomcat_group }} state=directory recurse=yes
   when: check_tomcat_versions_dir_exists.rc|int > 0
 
-#10 - Delete the current tomcat link if exists 
+# Delete the current tomcat link if exists 
 - name: Delete the current tomcat home link 
   file: dest={{ tomcat_home }} state=absent
   
-#11 - Unzip tomcat archive
+# Delete the current tomcat last version directory
+- name: Delete the current last version directory
+  file: dest={{ tomcat_last_version }} state=absent
+  ignore_errors: true
+  
+# Install required packages/librairies
+- name: Install required librairies
+  apt: pkg={{item.package}} state=present
+  with_items: "{{ required_packages }}"
+
+# Unzip tomcat archive
 - name: Unzip the tomcat archive
   unarchive: src={{ tomcat_tarball_name }} dest="{{ tomcat_versions }}/"
   
-#12 : Delete unused files or directories
-- name: Delete unused files or directories
-  file: path={{ tomcat_last_version }}/{{item.path}} state=absent
-  with_items:
-   - "{{ tomcat_remove_files }}"
-   
-#13 : Delete script .bat files. We don't need them on Linux plateform
-- name: Delete script .bat files. We don't need them on Linux plateform
-  shell: rm {{ tomcat_last_version }}/bin/*.bat
-  
-#14 - Unarchive Tomcat native library
+# Unarchive Tomcat native library
 - name: Unarchive Tomcat native library
   unarchive: src={{ libtcnative_util_tarball_name }} dest="{{ tomcat_last_version }}/bin"
-
-#15 - Install Tomcat native library
+   
+# Install Tomcat native library
 - name: Install Tomcat native library
-  shell: cd {{ libtcnative_util_home }} && ./configure --with-apr={{ apr_home }} --with-java-home={{ java_home }} && make && make install
+  shell: cd {{ libtcnative_util_home }} && ./configure --with-apr={{ apr_config_file }} --with-java-home={{ java_home }} --prefix={{ tomcat_last_version }} && make && make install
+  when: "{{ not enable_ssl }}"
   
-#16 - Deploy conf Tomcat files (server.xml and setenv.sh) 
+# Install Tomcat native library
+- name: Install Tomcat native library with SSL
+  shell: cd {{ libtcnative_util_home }} && ./configure --with-apr={{ apr_config_file }} --with-java-home={{ java_home }} --with-ssl=yes --prefix={{ tomcat_last_version }} && make && make install
+  when: "{{ enable_ssl }}"
+  
+# Deploy conf Tomcat files (server.xml and setenv.sh) 
 - name: Deploy conf Tomcat files (server.xml and setenv.sh)
   template: src={{item.src}} dest={{item.dest}} force={{item.force}}
   with_items:
    - "{{ tomcat_conf_files }}"
-
-#17 - Change the owner of tomcat directory.
-- name: Change the owner of tomcat directory.
-  file: path={{ tomcat_last_version }} owner={{ tomcat_user }} group={{ tomcat_group }} state=directory recurse=yes
+   
+# Install main SSL 
+- name: Install SSL certificats files
+  include: ssl_main.yml
+  when: "{{ enable_ssl }}"
   
-#18 - Create link to the new tomcat directory
+# Install OWASP recommandations : https://www.owasp.org/index.php/Securing_tomcat
+- name: Install SSL certificats files
+  include: owasp_main.yml
+  
+# Create link to the new tomcat directory
 - name: Create link to the new tomcat directory
   file: src={{ tomcat_last_version }} path={{ tomcat_home }} owner={{ tomcat_user }} group={{ tomcat_group }} state=link
 
-#19 Copy Tomcat init script
+# Copy Tomcat init script
 - name: Copy Tomcat init script
   template: src=tomcat.sh dest=/etc/init.d/tomcat force=yes mode=0755
 
-#20 Enable/Start Tomcat
+# Enable/Start Tomcat
 - name: Enable/Start Tomcat
   service: name=tomcat state=started enabled=yes

@@ -1,9 +1,0 @@
-apr_version: 1.5.2
-usr_local_dir: /usr/local
-apr_home: /usr/local/apr
-apr_tarball_name: "apr-{{ apr_version }}.tar.gz"
-apr_util_version: 1.5.4
-apr_util_home: "{{ apr_home }}/lib"
-apr_util_tarball_name: "apr-util-{{ apr_util_version }}.tar.gz"
-apr_apr_util_versions: "apr:{{ apr_version }}:apr-util:{{ apr_util_version }}"
-apr_version_file: "{{ apr_home }}/version.txt"
