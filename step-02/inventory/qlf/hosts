@@ -1,0 +1,12 @@
+#st-db-villeurbanne ansible_connection=ssh ansible_become_pass=ansible1
+localhost ansible_connection=local ansible_become_pass=ansible
+ 
+[dbserver]
+localhost
+
+
+[tomcat]
+localhost
+
+[apache]
+localhost

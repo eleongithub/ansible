@@ -1,0 +1,138 @@
+---
+# This playbook contains apache installation plays that will be run on apache front web server.
+
+# Stop eventual Apache server runing
+- name: Stop eventual Apache server runing
+  service: name=apache state=stopped enabled=no
+  ignore_errors: true
+
+# Remove eventual Apache from boot service
+- name: Remove eventual Apache from boot service
+  shell: insserv -r apache
+  ignore_errors: true
+  
+# Remove eventual Apache init script from the system
+- name : Remove eventual Apache init script from the system
+  file: path=/etc/init.d/apache state=absent
+  ignore_errors: true
+  
+# Install required packages/librairies
+- name: Install required librairies
+  apt: pkg={{item.package}} state=present
+  with_items: "{{ required_packages }}"
+  
+# Delete user Apache
+- name: Delete user Apache
+  user: name={{ apache_user }} state=absent
+  ignore_errors: true
+
+# Delete group Apache
+- name: Delete group Apache
+  group: name={{ apache_group }} state=absent
+  ignore_errors: true
+  
+# 3 - Create Group Apache
+- name: Create Group Apache 
+  group: name={{ apache_group }} state=present
+
+# 4 - Create User Apache
+- name: Create User Apache 
+  user: name={{ apache_user }} createhome=no group={{ apache_group }} shell=/bin/false comment="Web Server" state=present
+  
+# - Check if apache versions directory exists.
+- name : Check apache versions directory exists
+  shell: ls {{ apache_versions }}
+  register: check_apache_versions_dir_exists
+  ignore_errors: true
+
+# - Create a apache versions directory. If directory exists, do nothing.
+- name: Create apache versions directory
+  file: path={{ apache_versions }} state=directory
+  when: check_apache_versions_dir_exists.rc|int > 0
+  
+# - Delete apache home link 
+- name: Delete Apache home link 
+  file: dest={{ apache_home }} state=absent
+  
+# - Delete apache last version directory
+- name: Delete Apache last version directory 
+  file: dest={{ apache_last_version }} state=absent
+  
+# - Unzip Apache archive
+- name: Unzip Apache archive
+  unarchive: src={{ apache_tarball_name }} dest="{{ apache_versions }}/"
+  
+# - Create a link to the jdk directory
+- name: Create link to the Apache directory
+  file: src={{ apache_last_version }} dest={{ apache_home }} state=link
+  
+# 5 - Compile Apache
+- name: Compile Apache 
+  shell: cd {{ apache_home }} &&
+                ./configure 
+                --prefix={{ apache_home }}
+                --with-mpm=worker
+                --enable-so
+                --enable-cache
+                --enable-cache_disk
+                --enable-socache_memcache
+                --enable-mod_dir
+                --enable-imagemap
+                --enable-include
+                --enable-log_config
+                --enable-logio
+                --enable-log_debug
+                --enable-proxy
+                --enable-access
+                --enable-setenvif 
+                --enable-mime
+                --enable-rewrite
+                --enable-alias
+                --enable-deflate
+                --enable-expires
+                --enable-headers
+                --enable-status
+                --disable-actions
+                --disable-env
+                --disable-authz_dbm
+                --disable-cgi
+                --disable-auth_digest
+                --disable-authnz_ldap
+                --disable-autoindex
+                --disable-asis
+                --disable-cgid
+                --disable-negotiation
+                --disable-userdir
+                --disable-charset-lite
+      
+- name: Execute Make command Apache 
+  shell: cd {{ apache_home }} && make && umask 022 && make install
+
+- name: Change the right of Apache directory 
+  shell: chown -R root:sys {{ apache_home }}
+  
+  
+# Install Mod Security Library for Apache
+- name: Install Mod Security Library for Apache
+  include: mod_security_main.yml
+
+
+# Deploy conf Apache files
+- name: Deploy conf Apache files
+  template: src={{item.src}} dest={{item.dest}} force={{item.force}}
+  with_items:
+   - "{{ apache_conf_files }}"
+   
+# Copy Apache init script
+- name: Copy Apache init script
+  template: src=apache.sh.j2 dest=/etc/init.d/apache force=yes mode=0755
+
+# Enable/Start Apache
+- name: Enable Apache init script
+  service: name=apache enabled=yes
+  
+  
+# TODO : MOD SECURITY A STABILISER AVEC TOUS LES RULES ET LE CHROOT
+# TODO : VERIFIER LES DROITS DES REPERTOIRES
+  
+

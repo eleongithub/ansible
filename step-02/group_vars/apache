@@ -1,0 +1,41 @@
+---
+apache_version: 2.4.18
+apache_versions: /opt/apache_versions
+apache_last_version: "{{ apache_versions }}/httpd-{{ apache_version }}"
+apache_home: /opt/apache
+apache_tarball_name: "httpd-{{ apache_version }}.tar.gz"
+apache_group: wwwd
+apache_user: wwwd
+apache_server_name: localhost
+apache_conf_files:
+ - { src: 'httpd.conf.j2', dest: '{{ apache_home }}/conf/httpd.conf', force: yes }
+ - { src: 'modsecurity.conf.j2', dest: '{{ apache_home }}/conf/modsecurity.conf', force: yes }
+required_packages:
+ - { package: 'perl' }
+ - { package: 'libpcre3' }
+ - { package: 'libpcre3-dev' }
+ - { package: 'zlib1g' }
+ - { package: 'zlib1g-dev' }
+ - { package: 'libxml2' }
+ - { package: 'libxml2-dev' } 
+ - { package: 'libaprutil1' } 
+ - { package: 'libaprutil1-dev' } 
+ - { package: 'libssl-dev' }
+ - { package: 'automake' } 
+ 
+mod_security_version: 2.9.1
+mod_security_tarball_name: "modsecurity-{{ mod_security_version }}.tar.gz"
+mod_security_unzip_dir: /opt/mod_security
+mod_security_dir: "{{ mod_security_unzip_dir }}/modsecurity-{{ mod_security_version }}"
+mod_security_logs_dir: "{{ apache_home }}/logs/modsecurity"
+
+# Logs level possibilities : debug, info, notice, warn, error, crit, alert, emerg.
+apache_conf_log_level: warn
+apache_conf_max_clients: 300
+apache_conf_keep_alive: 'On' 
+apache_conf_max_keep_alive_requests: 100 
+apache_conf_keep_alive_timeout: 15
+
+virtual_hosts:
+ - { serverAdmin: 'admin1@example.com', serverName: 'website1.fr', serverAlias: 'www.website1.fr', documentRoot: '', log_dir: 'website1', webapps: 'docs' }
+ - { serverAdmin: 'admin2@example.com', serverName: 'website2.fr', serverAlias: 'www.website2.fr', documentRoot: 'website2Root', log_dir: 'website2', webapps: '' }

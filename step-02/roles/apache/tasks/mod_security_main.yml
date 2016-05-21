@@ -1,0 +1,34 @@
+---
+# This playbook contains mod security installation plays
+
+# Create Module Security directory
+- name: Create Module Security directory
+  file: path={{ mod_security_unzip_dir }} state=directory
+  
+# Unzip Module Security archive
+- name: Unzip Module Security archive
+  unarchive: src={{ mod_security_tarball_name }} dest="{{ mod_security_unzip_dir }}/"
+  
+# Autogen Module Security
+- name: Autogenerate Module Security
+  shell: cd {{ mod_security_dir }} && ./autogen.sh 
+ 
+# Configure Module Security
+- name: Configure Module Security
+  shell: cd {{ mod_security_dir }} && CFLAGS=-I/usr/include/libxml2 && ./configure --with-apxs={{ apache_home }}/bin/apxs 
+  
+# Make & Make install Module Security
+- name: Make & Make install Module Security
+  shell: cd {{ mod_security_dir }} && make && make install 
+  
+# Delete Module Security install directory
+- name: Delete Module Security install directory
+  file: path={{ mod_security_unzip_dir }} state=absent 
+  
+# Create the log directory for Module Security
+- name: Create the log directory for Module Security
+  file: path={{ mod_security_logs_dir }} state=directory
+  
+# Copy Module Security library
+- name: Copy Module Security library
+  shell: cp /usr/local/modsecurity/lib/mod_security2.so {{ apache_home }}/modules/

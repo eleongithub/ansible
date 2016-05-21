@@ -1,0 +1,80 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          apache
+# Required-Start:    $all
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Script to control Apache Server
+# Description:       Script to control Apache Server
+### END INIT INFO
+
+# Path to the apachectl script
+apachectl="{{ apache_home }}/bin/apachectl"
+prog=Apache
+RETVAL=0
+
+start() {
+	echo "-----------------------------------------------"
+        echo "Starting $prog... "
+        echo "-----------------------------------------------"
+        $apachectl -k start
+        RETVAL=$?
+        return $RETVAL
+}
+stop() {
+	echo "-----------------------------------------------"
+        echo "Stopping $prog... "
+        echo "-----------------------------------------------"
+        $apachectl -k stop
+	RETVAL=$?
+        return $RETVAL
+}
+restart() {
+	echo "-----------------------------------------------"
+        echo "Restarting $prog... "
+        echo "-----------------------------------------------"
+        $apachectl -k restart
+        RETVAL=$?
+        return $RETVAL       
+}
+reload() {
+	echo "-----------------------------------------------"
+        echo "Reloading $prog gracefully... "
+        echo "-----------------------------------------------"
+        $apachectl -k graceful
+        RETVAL=$?
+        return $RETVAL       
+}
+status() {
+	echo "-----------------------------------------------"
+        echo "Status of $prog... "
+        echo "-----------------------------------------------"
+        $apachectl status
+        RETVAL=$?
+        return $RETVAL       
+}
+
+# See how we were called.
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart)
+        restart
+        ;;
+  reload)
+        reload
+        ;;
+  status)
+        status
+        ;;
+  
+  *)
+        echo $"Usage: $0 {start|stop|restart|reload|status}"
+        ;;
+esac
+exit $RETVAL

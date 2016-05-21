@@ -1,0 +1,24 @@
+---
+# This playbook contains apache virtual hosts installation.
+
+# Generate virtual hosts configuration files
+- name: Generate virtual hosts configuration files
+  template: src=virtualhosts.conf.j2 dest={{ apache_home }}/conf/virtualhosts.conf force=yes
+ 
+# Create logs directories for virtual hosts
+- name: Create logs directories for virtual hosts
+  file: path={{ apache_home }}/logs/{{ item.log_dir }} state=directory
+  with_items:
+   - "{{ virtual_hosts }}"
+   
+# Create virtual hosts root directories
+- name: Create virtual hosts root directories
+  file: path={{ apache_home }}/site/{{ item.documentRoot }} state=directory
+  with_items:
+   - "{{ virtual_hosts }}"
+  when: "'{{ item.documentRoot }}' != ''"
+   
+
+# TODO : VERIFIER LES DROITS DES REPERTOIRES
+  
+

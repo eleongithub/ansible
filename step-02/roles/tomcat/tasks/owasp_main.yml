@@ -1,0 +1,28 @@
+---
+  
+# Change the owner of tomcat directory.
+- name: Change the owner of tomcat directory.
+  file: path={{ tomcat_last_version }} owner={{ tomcat_user }} group={{ tomcat_group }} state=directory recurse=yes
+
+# Change files in CATALINA_HOME/conf to be readonly (500)
+- name: Change files in CATALINA_HOME/conf to be read/execute (500)
+  file: path={{ tomcat_last_version }}/conf owner={{ tomcat_user }} group={{ tomcat_group }} mode=500 recurse=yes
+  
+  
+# Change files in CATALINA_HOME/logs to 300
+- name: Change files in CATALINA_HOME/logs to be write/execute (300) for tomat user
+  file: path={{ tomcat_last_version }}/logs owner={{ tomcat_user }} group={{ tomcat_group }} mode=300 recurse=yes
+
+# Delete unused files or directories
+- name: Delete unused files or directories
+  file: path={{ tomcat_last_version }}/{{ item.path }} state=absent
+  with_items:
+   - "{{ tomcat_remove_files }}"
+   
+# Delete script .bat files. We don't need them on Linux plateform
+- name: Delete script .bat files. We don't need them on Linux plateform
+  shell: rm {{ tomcat_last_version }}/bin/*.bat
+  
+# Remove version string from HTTP error messages by repacking CATALINA_HOME/server/lib/catalina.jar
+- name: Remove version string from HTTP error messages by repacking CATALINA_HOME/server/lib/catalina.jar
+  shell: cd "{{ tomcat_last_version }}/lib" && jar xf catalina.jar org/apache/catalina/util/ServerInfo.properties && sed -i 's/server.info.*/server.info=Apache Tomcat/' org/apache/catalina/util/ServerInfo.properties && jar uf catalina.jar org/apache/catalina/util/ServerInfo.properties && rm -rf "{{ tomcat_last_version }}/lib/org"
