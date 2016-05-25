@@ -23,6 +23,13 @@
 - name: Delete script .bat files. We don't need them on Linux plateform
   shell: rm {{ tomcat_last_version }}/bin/*.bat
   
+- name: Create tomcat server info directory
+  file: path="{{ tomcat_last_version }}/lib/{{tomcat_server_info_dir}}" owner={{ tomcat_user }} group={{ tomcat_group }} state=directory
+  
+- name: Hide Server info
+  template: src=ServerInfo.properties.j2 dest="{{ tomcat_last_version }}/lib/{{tomcat_server_info_dir}}/ServerInfo.properties" owner={{ tomcat_user }} group={{ tomcat_group }}  
+
+  
 # Remove version string from HTTP error messages by repacking CATALINA_HOME/server/lib/catalina.jar
-- name: Remove version string from HTTP error messages by repacking CATALINA_HOME/server/lib/catalina.jar
-  shell: cd "{{ tomcat_last_version }}/lib" && jar xf catalina.jar org/apache/catalina/util/ServerInfo.properties && sed -i 's/server.info.*/server.info=Apache Tomcat/' org/apache/catalina/util/ServerInfo.properties && jar uf catalina.jar org/apache/catalina/util/ServerInfo.properties && rm -rf "{{ tomcat_last_version }}/lib/org"
+#- name: Remove version string from HTTP error messages by repacking CATALINA_HOME/server/lib/catalina.jar
+  #shell: cd "{{ tomcat_last_version }}/lib" && jar xf catalina.jar org/apache/catalina/util/ServerInfo.properties && sed -i 's/server.info.*/server.info=Apache Tomcat/' org/apache/catalina/util/ServerInfo.properties && jar uf catalina.jar org/apache/catalina/util/ServerInfo.properties && rm -rf "{{ tomcat_last_version }}/lib/org"
