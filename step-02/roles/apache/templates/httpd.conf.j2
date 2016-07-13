@@ -41,6 +41,7 @@ ServerRoot "{{ apache_home }}"
 # Mutex default:logs
 
 Listen {{ http_default_port }}
+Listen {{ https_default_port }}
 
 #LoadModule authz_owner_module modules/mod_authz_owner.so
 #LoadModule authz_dbd_module modules/mod_authz_dbd.so
@@ -48,7 +49,6 @@ Listen {{ http_default_port }}
 #LoadModule allowmethods_module modules/mod_allowmethods.so
 #LoadModule file_cache_module modules/mod_file_cache.so
 #LoadModule cache_socache_module modules/mod_cache_socache.so
-#LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
 #LoadModule socache_dbm_module modules/mod_socache_dbm.so
 #LoadModule macro_module modules/mod_macro.so
 #LoadModule dbd_module modules/mod_dbd.so
@@ -74,8 +74,10 @@ Listen {{ http_default_port }}
 #LoadModule authn_anon_module modules/mod_authn_anon.so
 #LoadModule authn_dbd_module modules/mod_authn_dbd.so
 #LoadModule authn_socache_module modules/mod_authn_socache.so
-
-
+LoadModule lbmethod_heartbeat_module modules/mod_lbmethod_heartbeat.so
+{% if mod_jk_enable %}
+LoadModule jk_module modules/mod_jk.so
+{% endif %} 
 LoadModule security2_module modules/mod_security2.so
 LoadModule authn_file_module modules/mod_authn_file.so
 LoadModule authn_core_module modules/mod_authn_core.so
@@ -102,29 +104,30 @@ LoadModule setenvif_module modules/mod_setenvif.so
 LoadModule version_module modules/mod_version.so
 LoadModule proxy_module modules/mod_proxy.so
 LoadModule proxy_connect_module modules/mod_proxy_connect.so
-LoadModule proxy_ftp_module modules/mod_proxy_ftp.so
 LoadModule proxy_http_module modules/mod_proxy_http.so
-LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so
-LoadModule proxy_scgi_module modules/mod_proxy_scgi.so
-LoadModule proxy_wstunnel_module modules/mod_proxy_wstunnel.so
-LoadModule proxy_ajp_module modules/mod_proxy_ajp.so
-LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
-LoadModule proxy_express_module modules/mod_proxy_express.so
+# LoadModule proxy_ftp_module modules/mod_proxy_ftp.so
+# LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so
+# LoadModule proxy_scgi_module modules/mod_proxy_scgi.so
+# LoadModule proxy_wstunnel_module modules/mod_proxy_wstunnel.so
+# LoadModule proxy_ajp_module modules/mod_proxy_ajp.so
+# LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
+# LoadModule proxy_express_module modules/mod_proxy_express.so
 LoadModule lbmethod_byrequests_module modules/mod_lbmethod_byrequests.so
 LoadModule lbmethod_bytraffic_module modules/mod_lbmethod_bytraffic.so
 LoadModule lbmethod_bybusyness_module modules/mod_lbmethod_bybusyness.so
-LoadModule lbmethod_heartbeat_module modules/mod_lbmethod_heartbeat.so
 LoadModule unixd_module modules/mod_unixd.so
 LoadModule status_module modules/mod_status.so
 LoadModule dir_module modules/mod_dir.so
 LoadModule imagemap_module modules/mod_imagemap.so
 LoadModule alias_module modules/mod_alias.so
 LoadModule slotmem_shm_module modules/mod_slotmem_shm.so
+LoadModule ssl_module modules/mod_ssl.so
+LoadModule socache_shmcb_module modules/mod_socache_shmcb.so
 
 # Add unique_id_module required for Mod Security
 LoadModule unique_id_module modules/mod_unique_id.so
 <IfModule security2_module>
-   Include {{ apache_home }}/conf/modsecurity.conf
+   Include {{ apache_conf_dir }}/modsecurity/*.conf
 </IfModule>
 
 ## Configuration : Hiding Banner
@@ -133,7 +136,8 @@ ServerSignature Off
 ##
 
 ## Configuration : DoS risks
-MaxClients           {{ apache_conf_max_clients }}
+## MaxRequestWorkers remplace l'ancienne directive MaxClients
+MaxRequestWorkers    {{ apache_conf_max_clients }}
 KeepAlive            {{ apache_conf_keep_alive }} 
 MaxKeepAliveRequests {{ apache_conf_max_keep_alive_requests }} 
 KeepAliveTimeout     {{ apache_conf_keep_alive_timeout }}
@@ -143,12 +147,12 @@ KeepAliveTimeout     {{ apache_conf_keep_alive_timeout }}
 HostnameLookups Off
 #LogLevel {{ apache_conf_log_level }}
 #<IfModule log_config_module>
-    #ErrorLog "{{ apache_home }}/logs/error.log"
+    #ErrorLog "{{ apache_logs_dir }}/error.log"
     #LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
     #LogFormat "%h %l %u %t \"%r\" %>s %b" common
     #LogFormat "%{Referer}i -> %U" referer
     #LogFormat "%{User-agent}i" agent
-    #CustomLog "{{ apache_home }}/logs/access.log" common
+    #CustomLog "{{ apache_logs_dir }}/access.log" common
 #</IfModule>
 ##
 
@@ -162,7 +166,7 @@ HostnameLookups Off
 # running httpd, as with most system services.
 #
 User {{ apache_user }}
-Group {{ apache_group }}
+Group {{ apache_user_group }}
 
 </IfModule>
 
@@ -372,13 +376,19 @@ Include conf/extra/proxy-html.conf
 #       but a statically compiled-in mod_ssl.
 #
 <IfModule ssl_module>
-SSLRandomSeed startup builtin
-SSLRandomSeed connect builtin
+  SSLRandomSeed startup builtin
+  SSLRandomSeed connect builtin
 </IfModule>
 
 # Compression des données
 SetOutputFilter DEFLATE
-  
-# Include virtualhost configuration files
-Include {{ apache_home }}/conf/virtualhosts.conf
 
+{% if mod_jk_enable %}
+JkWorkersFile  	{{ apache_conf_dir }}/workers.properties
+JkLogFile	{{ apache_logs_dir }}/mod_jk.log
+JkShmFile 	{{ apache_logs_dir }}/jk-runtime-status
+JkLogLevel	info
+{% endif %} 
+
+# Include virtualhost configuration files
+Include {{ apache_vhosts_conf_dir }}/*.conf

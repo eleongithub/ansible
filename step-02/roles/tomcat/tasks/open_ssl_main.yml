@@ -2,12 +2,14 @@
   
 # Deploy SSL conf file
 - name: Deploy SSL conf file
-  template: src=openssl.conf.j2 dest={{ ssl_cert_config_file }} force=yes
+  template: src=openssl.conf.j2 dest={{ open_ssl_cert_config_file }} force=yes
   
 # Generating private key + certificate ...
 - name: Generating private key + certificate ...
-  shell: openssl req -new -x509 -nodes -days {{ ssl_certificate_days }} -subj "{{ ssl_subj }}" -config {{ ssl_cert_config_file }} -extensions v3_req -out {{ ssl_certificate_file }} -keyout {{ ssl_private_key_file }}
+  shell: openssl req -new -x509 -nodes -days {{ ssl_certificate_days }} -subj "{{ open_ssl_subj }}" -config {{ open_ssl_cert_config_file }} -extensions v3_req -out {{ open_ssl_certificate_file }} -keyout {{ open_ssl_private_key_file }}
 
 # Delete Temporary SSL conf file
 - name: Delete Temporary SSL conf file
-  file: path={{ ssl_cert_config_file }} state=absent
+  file: 
+    path: "{{ open_ssl_cert_config_file }}"
+    state: absent

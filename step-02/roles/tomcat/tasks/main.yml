@@ -13,7 +13,9 @@
   
 # Remove eventual tomcat init script from the system
 - name : Remove eventual tomcat init script from the system
-  file: path=/etc/init.d/tomcat state=absent
+  file: 
+    path: "{{ tomcat_init_script }}"
+    state: absent
   ignore_errors: true
   
 # Delete User tomcat if exists
@@ -23,41 +25,43 @@
 
 # Delete Group tomcat if exists
 - name: Delete Group Tomcat 
-  group: name={{ tomcat_group }} state=absent
+  group: name={{ tomcat_user_group }} state=absent
   ignore_errors: true
   
 # Create Group Tomcat
 - name: Create Group Tomcat 
-  group: name={{ tomcat_group }} state=present
+  group: name={{ tomcat_user_group }} state=present
 
 # Create User Tomcat
 - name: Create User Tomcat 
-  user: name={{ tomcat_user }} createhome=no group={{ tomcat_group }} shell=/bin/bash state=present
-
-# Check tomcat version directory exists
-#- name : Check tomcat version directory exists
-  #shell: ls {{ tomcat_versions }}
-  #register: tomcat_versions_dir_exists
-  #ignore_errors: true
+  user: name={{ tomcat_user }} createhome=no group={{ tomcat_user_group }} shell=/bin/bash state=present
   
 # Check tomcat version directory exists
 - name : Check tomcat version directory exists
   stat: path={{ tomcat_versions }}
   register: tomcat_versions_dir_exists
   
-
 # Create tomcat version directory if not exists
-- name: Create tomcat version directory
-  file: path={{ tomcat_versions }} owner={{ tomcat_user }} group={{ tomcat_group }} state=directory recurse=yes
+- name: Create tomcat versions directory
+  file: 
+    path: "{{ tomcat_versions }}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user_group }}"
+    state: directory 
+    recurse: yes
   when: not tomcat_versions_dir_exists.stat.exists
 
-# Delete the current tomcat link if exists 
-- name: Delete the current tomcat home link 
-  file: dest={{ tomcat_home }} state=absent
+# Delete the tomcat link if exists 
+- name: Delete the tomcat home link 
+  file: 
+    dest: "{{ tomcat_home }}"
+    state: absent
   
-# Delete the current tomcat last version directory
-- name: Delete the current last version directory
-  file: dest={{ tomcat_last_version }} state=absent
+# Delete the tomcat last version directory
+- name: Delete the last version directory
+  file: 
+    dest: "{{ tomcat_last_version }}"
+    state: absent
   ignore_errors: true
   
 # Install required packages/librairies
@@ -89,12 +93,17 @@
   with_items:
    - "{{ tomcat_conf_files }}"
    
-   # Create tomcat version directory if not exists
-- name: Create tomcat version directory
-  file: path={{ https_conf_dir }} owner={{ tomcat_user }} group={{ tomcat_group }} state=directory recurse=yes
+# Create tomcat security directory if not exists
+- name: Create tomcat security directory
+  file: 
+    path: "{{ secure_conf_dir }}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user_group }}"
+    state: directory 
+    recurse: yes
   when: "{{ open_ssl_enable or keystore_ssl_enable }}"
    
-# Install main SSL 
+# Install SSL with Openssl 
 - name: Install SSL certificats files with openssl
   include: open_ssl_main.yml
   when: "{{ open_ssl_enable }}"
@@ -110,13 +119,22 @@
   include: owasp_main.yml
   
 # Create link to the new tomcat directory
-- name: Create link to the new tomcat directory
-  file: src={{ tomcat_last_version }} path={{ tomcat_home }} owner={{ tomcat_user }} group={{ tomcat_group }} state=link
+- name: Create link to the last tomcat directory
+  file: 
+    src: "{{ tomcat_last_version }}"
+    path: "{{ tomcat_home }}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user_group }}"
+    state: link
 
 # Copy Tomcat init script
 - name: Copy Tomcat init script
-  template: src=tomcat.sh dest=/etc/init.d/tomcat force=yes mode=0755
+  template: 
+    src: "tomcat.sh.j2"
+    dest: "{{ tomcat_init_script }}"
+    force: yes 
+    mode: 0755
 
 # Enable/Start Tomcat
 - name: Enable/Start Tomcat
-  service: name=tomcat state=started enabled=yes
+  service: name=tomcat enabled=yes

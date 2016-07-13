@@ -130,21 +130,21 @@ req_extensions = v3_req # The extensions to add to a certificate request
 
 [ req_distinguished_name ]
 countryName			= Country Name (2 letter code)
-countryName_default		= {{ ssl_cert_country }}
+countryName_default		= {{ ssl_country }}
 countryName_min			= 2
 countryName_max			= 2
 
 stateOrProvinceName		= State or Province Name (full name)
-stateOrProvinceName_default	= {{ ssl_cert_state }}
+stateOrProvinceName_default	= {{ ssl_state }}
 
 localityName			= Locality Name (eg, city)
-localityName_default		= {{ ssl_cert_locality }}
+localityName_default		= {{ ssl_locality }}
 
 0.organizationName		= Organization Name (eg, company)
-0.organizationName_default	= {{ ssl_cert_organisation }}
+0.organizationName_default	= {{ ssl_organisation }}
 
 organizationalUnitName		= Organizational Unit Name (eg, section)
-organizationalUnitName_default	= {{ ssl_cert_organisation_unit }}
+organizationalUnitName_default	= {{ ssl_organisation_unit }}
 
 commonName			= Common Name (eg, your name or your server\'s hostname)
 commonName_max			= 64
@@ -218,7 +218,7 @@ authorityKeyIdentifier=keyid,issuer
 
 basicConstraints = CA:FALSE
 keyUsage = nonRepudiation, digitalSignature, keyEncipherment
-subjectAltName="DNS:{{ tomcat_server_dns }}" 
+subjectAltName="DNS:{{ tomcat_dns }}" 
 
 
 [ v3_ca ]

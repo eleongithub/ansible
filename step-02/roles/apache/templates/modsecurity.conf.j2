@@ -14,11 +14,6 @@
 SecRuleEngine DetectionOnly
 # ----------------------------------------------
 
-# -- Directive SecChrootDir -------------------
-#SecChrootDir {{ apache_home }}
-
-# ----------------------------------------------
-
 # -- Request body handling ---------------------
 # Allow ModSecurity to access request bodies. If you don't, ModSecurity
 # won't be able to see any POST parameters, which opens a large security
@@ -41,27 +36,6 @@ SecRequestBodyAccess On
      "id:'200001',phase:1,t:none,t:lowercase,pass,nolog,ctl:requestBodyProcessor=JSON"
 # ---------------------------------------------
 
-# -- URLs Encoding  ---------------------------
-# Check the validity of URLs Encoding
-#SecFilterCheckURLEncoding On
-
-# Check the validity of unicode/UTF-8 encodings
-# Detect 3 types of problems :
-#    - Invalid characters
-#    - Octets manquants
-#    - Too long characters
-#SecFilterCheckUnicodeEncoding On
-
-# Check format of cookies
-#SecFilterCheckCookieFormat On
- 
-# Protection against Buffers Overflow :
-#  on peut restreindre la plage de valeurs dans les octets
-#  Par defaut : O-255 (toute valeur acceptee)
-#  Pour interdire le code NULL (0x00) : 1-255
-#  Pour autoriser uniquement le jeu de caracteres etendus : 32-128
-#SecFilterForceByteRange 1 255
-# ----------------------------------------------
 
 # -- Directive SecAuditEngine ------------------
   #Description: Configures the audit logging engine.
@@ -101,20 +75,4 @@ SecAuditLogRelevantStatus ^(?:5|4(?!04))
 # (and you don't need it anyway)
 #SecRule HTTP_Transfer-Encoding "!^$"
 
-
-
-# ---------------------------------------------
-
-# -- Protection against execution of UNIX Commands --------
-#SecFilterSignatureAction "log,pass,msg:'UNIX Command execution attack'"
-#SecRule ARGS_VALUES "^(uname|id|ls|cat|rm|kill|mail)"
-#SecRule ARGS_VALUES "^(ls|id|pwd|wget)"
-#SecRule ARGS_VALUES ";[[:space:]]*(ls|id|pwd|wget)"
-# ---------------------------------------------
-
-# -- Filtr cookies which contain special characters -----
-# (Prevent SQL injection attack into the cookies)
-#SecRule COOKIES_VALUES "!(^$|^[a-zA-Z0-9]+$)"
-
-# -----------------------------------------
 # End

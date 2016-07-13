@@ -1,24 +1,71 @@
 ---
 # This playbook contains apache virtual hosts installation.
 
-# Generate virtual hosts configuration files
-- name: Generate virtual hosts configuration files
-  template: src=virtualhosts.conf.j2 dest={{ apache_home }}/conf/virtualhosts.conf force=yes
- 
+# Create virtual hosts configuration directories
+- name: Create virtual hosts configuration directories
+  file: 
+    path: "{{ apache_vhosts_conf_dir }}"
+    state: directory
+   
 # Create logs directories for virtual hosts
 - name: Create logs directories for virtual hosts
-  file: path={{ apache_home }}/logs/{{ item.log_dir }} state=directory
-  with_items:
-   - "{{ virtual_hosts }}"
+  file: 
+    path: "{{ apache_logs_dir }}/{{ item.documentRoot }}"
+    state: directory
+  with_items: "{{ apache_vhosts }}"
    
 # Create virtual hosts root directories
 - name: Create virtual hosts root directories
-  file: path={{ apache_home }}/site/{{ item.documentRoot }} state=directory
-  with_items:
-   - "{{ virtual_hosts }}"
-  when: "'{{ item.documentRoot }}' != ''"
+  file: 
+    path: "{{ apache_vhosts_dir }}/{{ item.documentRoot }}"
+    state: directory
+  with_items: "{{ apache_vhosts }}"
    
-
-# TODO : VERIFIER LES DROITS DES REPERTOIRES
+# Mod Proxy configuration HTTP  - Generate virtual hosts configuration files
+- name: Mod Proxy configuration HTTP  - Generate virtual hosts configuration files
+  template: 
+    src: vhosts_mod_proxy.conf.j2 
+    dest: "{{ apache_vhosts_conf_dir }}/{{ item.documentRoot }}_mod_proxy.conf"
+    force: yes
+  with_items: "{{ apache_vhosts }}"
+  when: "{{ mod_proxy_enable }} and not {{ item.enable_ssl }}"
   
-
+# Mod Proxy configuration HTTPS  - Generate virtual hosts configuration files 
+- name: Mod Proxy configuration HTTPS  - Generate virtual hosts configuration files
+  template: 
+    src: vhosts_mod_proxy_https.conf.j2 
+    dest: "{{ apache_vhosts_conf_dir }}/{{ item.documentRoot }}_mod_proxy_https.conf"
+    force: yes
+  with_items: "{{ apache_vhosts }}"
+  when: "{{ mod_proxy_enable }} and {{ item.enable_ssl }}"
+  
+# Copy workers.properties configuration file for Mod_Jk
+- name: Copy workers.properties configuration file for Mod_Jk
+  template: 
+    src: workers_mod_jk.properties.j2 
+    dest: "{{ apache_conf_dir }}/workers.properties"
+    force: yes
+  when: "{{ mod_jk_enable }}"
+  
+# Mod JK configuration HTTP - Generate virtual hosts configuration files
+- name: Mod JK configuration HTTP - Generate virtual hosts configuration files
+  template: 
+    src: vhosts_mod_jk.conf.j2 
+    dest: "{{ apache_vhosts_conf_dir }}/{{ item.documentRoot }}_mod_jk.conf"
+    force: yes
+  with_items: "{{ apache_vhosts }}"
+  when: "{{ mod_jk_enable }} and not {{ item.enable_ssl }}"
+  
+# Mod JK configuration HTTPS - Generate virtual hosts configuration files
+- name: Mod JK configuration HTTPS - Generate virtual hosts configuration files
+  template: 
+    src: vhosts_mod_jk_https.conf.j2 
+    dest: "{{ apache_vhosts_conf_dir }}/{{ item.documentRoot }}_mod_jk_https.conf"
+    force: yes
+  with_items: "{{ apache_vhosts }}"
+  when: "{{ mod_jk_enable }} and {{ item.enable_ssl }}"
+  
+  
+- name: Install SSL certificates for virtual hosts
+  include: ssl_main.yml
+  when: "{{ apache_with_ssl }}"

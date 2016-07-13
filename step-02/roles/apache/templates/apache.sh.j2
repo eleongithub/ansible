@@ -54,6 +54,14 @@ status() {
         RETVAL=$?
         return $RETVAL       
 }
+version() {
+        echo "-----------------------------------------------"
+        echo "Version of $prog... "
+        echo "-----------------------------------------------"
+        $apachectl -V
+        RETVAL=$?
+        return $RETVAL       
+}
 
 # See how we were called.
 case "$1" in
@@ -72,9 +80,12 @@ case "$1" in
   status)
         status
         ;;
+  version)
+        version
+        ;;
   
   *)
-        echo $"Usage: $0 {start|stop|restart|reload|status}"
+        echo $"Usage: $0 {start|stop|restart|reload|status|version}"
         ;;
 esac
 exit $RETVAL

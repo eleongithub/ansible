@@ -19,7 +19,7 @@
   roles:
     - { role: jdk, when: " '{{ java_installed_version.stdout }}' != '{{ java_version }}'" }
     
-# Install data base
+#Install data base
 - hosts: dbserver
   become: yes
   roles:
@@ -37,14 +37,14 @@
   roles:
     - tomcat
     
-## Install Apache2
-#- hosts: apache
-  #become: yes
-  #roles:
-    #- apache   
+# Install Apache2
+- hosts: apache
+  become: yes
+  roles:
+    - apache
     
-## Install Apache Virtual hosts
-#- hosts: apache-front
-  #become: yes
-  #roles:
-    #- apache_vhosts
+#Install Apache Virtual hosts
+- hosts: apache
+  become: yes
+  roles:
+    - apache_vhosts

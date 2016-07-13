@@ -3,11 +3,15 @@
 
 # Create Module Security directory
 - name: Create Module Security directory
-  file: path={{ mod_security_unzip_dir }} state=directory
+  file: 
+    path: "{{ mod_security_unzip_dir }}"
+    state: directory
   
 # Unzip Module Security archive
 - name: Unzip Module Security archive
-  unarchive: src={{ mod_security_tarball_name }} dest="{{ mod_security_unzip_dir }}/"
+  unarchive: 
+    src: "{{ mod_security_tarball_name }}"
+    dest: "{{ mod_security_unzip_dir }}/"
   
 # Autogen Module Security
 - name: Autogenerate Module Security
@@ -23,11 +27,21 @@
   
 # Delete Module Security install directory
 - name: Delete Module Security install directory
-  file: path={{ mod_security_unzip_dir }} state=absent 
+  file: 
+    path: "{{ mod_security_unzip_dir }}"
+    state: absent 
   
 # Create the log directory for Module Security
 - name: Create the log directory for Module Security
-  file: path={{ mod_security_logs_dir }} state=directory
+  file: 
+    path: "{{ mod_security_logs_dir }}"
+    state: directory
+    
+# Create the configuration directory for Module Security
+- name: Create the configuration directory for Module Security
+  file: 
+    path: "{{ mod_security_conf_dir }}"
+    state: directory    
   
 # Copy Module Security library
 - name: Copy Module Security library

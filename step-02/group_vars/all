@@ -2,6 +2,8 @@
 http_default_port: 80
 https_default_port: 443
 tomcat_home: /opt/tomcat
+tomcat_dns: localhost
+tomcat_mod_jk_port: 8009
 firewall_files:
  - { src: 'firewall-start-rules.sh.j2', dest: '/etc/firewall-start-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
  - { src: 'firewall-stop-rules.sh.j2', dest: '/etc/firewall-stop-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
@@ -23,3 +25,11 @@ firewall_allowed_web_provider_specific_ports: []
 firewall_logs_input_trafic: true
 firewall_logs_output_trafic: true
 required_packages: []
+
+ssl_protocol: TLSv1+TLSv1.1+TLSv1.2
+ssl_country: FR
+ssl_state: Rhone
+ssl_locality: Lyon
+ssl_organisation: Syscom
+ssl_organisation_unit: IT
+ssl_certificate_days: 3650
