@@ -9,4 +9,4 @@ ansible --version
 
 echo "---------------------"
 
-ansible-playbook -i hosts main.yml -vvvv
+ansible-playbook -i hosts.yml main.yml -vvvv

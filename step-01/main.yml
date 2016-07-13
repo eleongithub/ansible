@@ -1,9 +1,17 @@
 ---
+# Apply the tasks to serv1 & serv2
 - hosts: serv1:serv2
   tasks:
+  
   - name: First use of group vars
-    shell: echo "Hello World. Current moment is "`date +'%F %H-%M'` > {{ hello_world_file_path }}
+    shell: echo "Hello World. This is the fist use of groups concept in Ansible. Current moment is "`date +'%F %H-%M'` > {{ hello_world_file_path }}
+    
   - name: Create directory
-    file: path={{ file_dir }} state=directory
-  - name: Transfert file
-    copy: src=templates/step-01.txt dest={{ dest_file }}
+    file: 
+      path: "{{ file_dir }}"
+      state: directory
+      
+  - name: Copy file
+    template: 
+      src: step-01.txt.j2 
+      dest: "{{ dest_file }}"
