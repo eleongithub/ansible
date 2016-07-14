@@ -40,12 +40,11 @@ apache_conf_files:
  - { src: 'modsecurity_crs_43_csrf_protection.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_43_csrf_protection.conf', force: yes }
  - { src: 'modsecurity_crs_41_xss_attacks.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_41_xss_attacks.conf', force: yes }
  - { src: 'modsecurity_crs_49_inbound_blocking.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_49_inbound_blocking.conf', force: yes }
-# - { src: 'modsecurity_crs_59_outbound_blocking.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_59_outbound_blocking.conf', force: yes }
  
 # Logs level possibilities : debug, info, notice, warn, error, crit, alert, emerg.
 apache_conf_log_level: warn
 apache_conf_max_clients: 300
-apache_conf_keep_alive: 'On' 
+apache_conf_keep_alive: 'On'
 apache_conf_max_keep_alive_requests: 500 
 apache_conf_keep_alive_timeout: 15
 

@@ -19,13 +19,13 @@
   roles:
     - { role: jdk, when: " '{{ java_installed_version.stdout }}' != '{{ java_version }}'" }
     
-#Install data base
+#Install Postgres SGBD
 - hosts: dbserver
   become: yes
   roles:
     - postgres 
     
-# Install data base
+# Install data base instance
 - hosts: dbserver
   become: yes
   roles:

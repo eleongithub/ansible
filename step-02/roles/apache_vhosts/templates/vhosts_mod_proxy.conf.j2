@@ -1,0 +1,69 @@
+<VirtualHost *:80>
+  
+  # ServerAdmin: Your address, where problems with the server should be
+  # e-mailed.  This address appears on some server-generated pages, such
+  # as error documents.  e.g. admin@your-domain.com
+  #
+  ServerAdmin {{ apache_server_admin }}
+  
+  # ServerName gives the name and port that the server uses to identify itself.
+  # This can often be determined automatically, but we recommend you specify
+  # it explicitly to prevent problems during startup.
+  #
+  # If your host doesn't have a registered DNS name, enter its IP address here.
+  #
+  ServerName {{ item.serverName }}
+  ServerAlias {{ item.serverAlias }}
+
+  ProxyRequests On
+  ProxyPreserveHost On
+  
+  {% if item.documentRoot|string != '' %}
+  DocumentRoot "{{ apache_home }}/website/{{ item.documentRoot }}"
+  <Directory "{{ apache_home }}/website/{{ item.documentRoot }}">
+    Options None
+    AllowOverride None
+    Require all granted
+  </Directory>
+  {% endif %}
+  
+  {% if item.webapps|string != '' %}
+
+  
+  ProxyPass / http://localhost:{{ tomcat_http_port }}/{{ item.webapps }}/
+  # Le proxy (donc Tomcat) ne dessert pas les ressources statiques
+  ProxyPass /{{ item.webapps }}/images !
+	
+  # TODO : rework here with explication
+  ProxyTimeout 7200
+  
+  # Apache dessert les ressources statiques (une regexp permettant d'enlever le jsessionid)
+  AliasMatch /{{ item.webapps }}/images/(.*\.[^;]*)(;jsessionid=.*)?$ {{ tomcat_home }}/webapps/{{ item.webapps }}/images/$1
+  
+   # autorisation total sur les repertoires pour Apache
+  <Directory {{ tomcat_home }}/webapps/{{ item.webapps }}/images>
+    Allow from all
+  </Directory>
+ 
+  {% endif %} 
+  
+
+  # Customizable error responses come in three flavors:
+  # 1) plain text 2) local redirects 3) external redirects
+  #
+  # Some examples:
+  #ErrorDocument 500 "The server made a boo boo."
+  #ErrorDocument 404 /missing.html
+  #ErrorDocument 404 "/cgi-bin/missing_handler.pl"
+  #ErrorDocument 402 http://www.example.com/subscription_info.html
+
+  LogLevel {{ apache_conf_log_level }}
+  <IfModule log_config_module>
+      LogFormat "%h %l %u %t \"%r\" %>s %b" common
+      LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+      LogFormat "%{Referer}i -> %U" referer
+      LogFormat "%{User-agent}i" agent
+      CustomLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.documentRoot }}/access_%Y%m%d.log 86400" combined
+      ErrorLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.documentRoot }}/error_%Y%m%d.log 86400"
+  </IfModule>
+</VirtualHost>

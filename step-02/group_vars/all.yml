@@ -4,7 +4,7 @@ https_default_port: 443
 tomcat_home: /opt/tomcat
 tomcat_dns: localhost
 tomcat_mod_jk_port: 8009
-firewall_files:
+firewall_script_files:
  - { src: 'firewall-start-rules.sh.j2', dest: '/etc/firewall-start-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
  - { src: 'firewall-stop-rules.sh.j2', dest: '/etc/firewall-stop-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
  - { src: 'firewall.j2', dest: '/etc/init.d/firewall', force: yes, owner: 'root', group: 'root', mode: '0755' }

@@ -1,7 +1,7 @@
 ---
-# This playbook contains apache installation plays that will be run on apache front web server.
+# This playbook contains apache installation.
 
-# Stop eventual Apache server runing
+# Stop eventual Apache server running
 - name: Stop eventual Apache server runing
   service: name=apache state=stopped enabled=no
   ignore_errors: true
@@ -52,7 +52,6 @@
   stat: path={{ apache_versions }}
   register: apache_versions_dir_exists
 
-
 # - Create a apache versions directory. If directory exists, do nothing.
 - name: Create apache versions directory
   file: 
@@ -60,7 +59,7 @@
     state: directory
   when: not apache_versions_dir_exists.stat.exists
   
-# - Delete apache home link 
+# - Delete Apache home directory 
 - name: Delete Apache home directory 
   file: 
     path: "{{ apache_home }}"
@@ -72,13 +71,13 @@
     src: "{{ apache_tarball_name }}"
     dest: "{{ apache_versions }}/"
     
-# - Create a apache home directory.
-- name: Create apache home directory
+# - Create a Apache home directory.
+- name: Create Apache home directory
   file: 
     path: "{{ apache_home }}"
     state: directory
   
-# 5 - Compile Apache
+# - Compile Apache
 - name: Compile Apache 
   shell: cd {{ apache_last_version }} &&
                 ./configure 
@@ -120,20 +119,19 @@
                 --disable-userdir
                 --disable-charset-lite
       
-- name: Execute Make command Apache 
+- name: Execute commands to install Apache. 
   shell: cd {{ apache_last_version }} && make && umask 022 && make install && make clean
 
 - name: Change the right of Apache directory 
   shell: chown -R root:sys {{ apache_home }}
-  
   
 # Install SSL configurations files if mod_ssl is enabled
 - name: Install SSL configurations files if mod_ssl is enabled
   include: ssl_main.yml
   when: "{{ apache_with_ssl }}"
   
-# Install Mod Security Library for Apache
-- name: Install Mod Security Library for Apache
+# Install Mod Security for Apache
+- name: Install Mod Security for Apache
   include: mod_security_main.yml
   
 # Install Mod JK if mod_jk is enabled
@@ -161,5 +159,4 @@
 - name: Enable Apache init script
   service: name=apache enabled=yes
   
-
 # TODO : VERIFIER LES DROITS DES REPERTOIRES

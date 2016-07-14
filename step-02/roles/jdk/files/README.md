@@ -1,2 +1,3 @@
+	      Ansible Step-02 : JDK Role
 
-Please, download JDK tarball file on http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+    Download JDK tarball file on http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html

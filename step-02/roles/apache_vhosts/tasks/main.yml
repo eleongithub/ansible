@@ -65,7 +65,6 @@
   with_items: "{{ apache_vhosts }}"
   when: "{{ mod_jk_enable }} and {{ item.enable_ssl }}"
   
-  
 - name: Install SSL certificates for virtual hosts
   include: ssl_main.yml
   when: "{{ apache_with_ssl }}"

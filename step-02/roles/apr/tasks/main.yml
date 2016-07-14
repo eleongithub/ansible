@@ -1,5 +1,5 @@
 ---
-# This playbook contains APR plays that will be run on web server node (Apache and/or Apache Tomcat).
+# This playbook contains APR installation (Apache and/or Apache Tomcat).
 
 - name: Install Apr
   apt: pkg=libapr1 state=present
