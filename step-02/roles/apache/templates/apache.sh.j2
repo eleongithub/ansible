@@ -54,6 +54,14 @@ status() {
         RETVAL=$?
         return $RETVAL       
 }
+v_hosts() {
+	echo "-----------------------------------------------"
+        echo "Check configured virtual hosts of $prog... "
+        echo "-----------------------------------------------"
+        $apachectl -S
+        RETVAL=$?
+        return $RETVAL       
+}
 version() {
         echo "-----------------------------------------------"
         echo "Version of $prog... "
@@ -80,12 +88,15 @@ case "$1" in
   status)
         status
         ;;
+  v_hosts)
+        v_hosts
+        ;;
   version)
         version
         ;;
   
   *)
-        echo $"Usage: $0 {start|stop|restart|reload|status|version}"
+        echo $"Usage: $0 {start|stop|restart|reload|status|v_hosts|version}"
         ;;
 esac
 exit $RETVAL

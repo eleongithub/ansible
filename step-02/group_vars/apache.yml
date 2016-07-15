@@ -7,7 +7,10 @@ apache_vhosts_dir: "{{ apache_home }}/vhosts"
 apache_tarball_name: "httpd-{{ apache_version }}.tar.gz"
 apache_logs_dir: "{{ apache_home }}/logs"
 apache_conf_dir: "{{ apache_home }}/conf"
-required_packages:
+apache_init_script: /etc/init.d/apache
+apache_user: wwwd
+apache_user_group: wwwd
+apache_required_packages:
  - { package: 'perl' }
  - { package: 'libpcre3' }
  - { package: 'libpcre3-dev' }
@@ -25,14 +28,7 @@ mod_security_unzip_dir: /opt/mod_security
 mod_security_dir: "{{ mod_security_unzip_dir }}/modsecurity-{{ mod_security_version }}"
 mod_security_logs_dir: "{{ apache_logs_dir }}/modsecurity"
 mod_security_conf_dir: "{{ apache_conf_dir }}/modsecurity"
-
-apache_init_script: /etc/init.d/apache
-apache_user: wwwd
-apache_user_group: wwwd
-apache_server_dns: localhost
-apache_server_admin: admin@example.com
-apache_conf_files:
- - { src: 'httpd.conf.j2', dest: '{{ apache_conf_dir }}/httpd.conf', force: yes }
+mod_security_conf_files:
  - { src: 'modsecurity.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity.conf', force: yes }
  - { src: 'modsecurity_crs_10_setup.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_10_setup.conf', force: yes }
  - { src: 'modsecurity_crs_16_session_hijacking.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_16_session_hijacking.conf', force: yes }
@@ -40,6 +36,11 @@ apache_conf_files:
  - { src: 'modsecurity_crs_43_csrf_protection.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_43_csrf_protection.conf', force: yes }
  - { src: 'modsecurity_crs_41_xss_attacks.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_41_xss_attacks.conf', force: yes }
  - { src: 'modsecurity_crs_49_inbound_blocking.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_49_inbound_blocking.conf', force: yes }
+
+apache_server_dns: localhost
+apache_server_admin: admin@example.com
+apache_conf_files:
+ - { src: 'httpd.conf.j2', dest: '{{ apache_conf_dir }}/httpd.conf', force: yes }
  
 # Logs level possibilities : debug, info, notice, warn, error, crit, alert, emerg.
 apache_conf_log_level: warn
@@ -74,9 +75,10 @@ mod_jk_tarball_name: "tomcat-connectors-{{ mod_jk_version }}-src.tar.gz"
 
 # Configuration mod_proxy
 mod_proxy_enable: false
+# webapps_absolute_path: '{{ tomcat_home }}/webapps/docs'
 apache_vhosts:
- - { serverName: 'vhosts1.fr', serverAlias: 'www.vhosts1.fr', documentRoot: 'vhosts1', webapps: 'docs', webapps_absolute_path: '{{ tomcat_home }}/webapps/docs', enable_ssl: true }
- - { serverName: 'vhosts2.fr', serverAlias: 'www.vhosts2.fr', documentRoot: 'vhosts2', webapps: '', webapps_absolute_path: '', enable_ssl: false }
+ - { serverName: 'vhosts1.fr', serverAlias: 'www.vhosts1.fr', documentRoot: 'vhosts1', webapps: 'docs', webapps_absolute_path: '{{ tomcat_home }}/webapps/docs', use_https: true }
+ - { serverName: 'vhosts2.fr', serverAlias: 'www.vhosts2.fr', documentRoot: 'vhosts2', webapps: '', webapps_absolute_path: '', use_https: false }
 
 apache_vhosts_conf_dir: "{{ apache_conf_dir }}/vhosts"
 

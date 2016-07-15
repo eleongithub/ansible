@@ -74,6 +74,14 @@ Listen {{ https_default_port }}
 #LoadModule authn_anon_module modules/mod_authn_anon.so
 #LoadModule authn_dbd_module modules/mod_authn_dbd.so
 #LoadModule authn_socache_module modules/mod_authn_socache.so
+# LoadModule proxy_ftp_module modules/mod_proxy_ftp.so
+# LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so
+# LoadModule proxy_scgi_module modules/mod_proxy_scgi.so
+# LoadModule proxy_wstunnel_module modules/mod_proxy_wstunnel.so
+# LoadModule proxy_ajp_module modules/mod_proxy_ajp.so
+# LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
+# LoadModule proxy_express_module modules/mod_proxy_express.so
+
 LoadModule lbmethod_heartbeat_module modules/mod_lbmethod_heartbeat.so
 {% if mod_jk_enable %}
 LoadModule jk_module modules/mod_jk.so
@@ -105,13 +113,6 @@ LoadModule version_module modules/mod_version.so
 LoadModule proxy_module modules/mod_proxy.so
 LoadModule proxy_connect_module modules/mod_proxy_connect.so
 LoadModule proxy_http_module modules/mod_proxy_http.so
-# LoadModule proxy_ftp_module modules/mod_proxy_ftp.so
-# LoadModule proxy_fcgi_module modules/mod_proxy_fcgi.so
-# LoadModule proxy_scgi_module modules/mod_proxy_scgi.so
-# LoadModule proxy_wstunnel_module modules/mod_proxy_wstunnel.so
-# LoadModule proxy_ajp_module modules/mod_proxy_ajp.so
-# LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
-# LoadModule proxy_express_module modules/mod_proxy_express.so
 LoadModule lbmethod_byrequests_module modules/mod_lbmethod_byrequests.so
 LoadModule lbmethod_bytraffic_module modules/mod_lbmethod_bytraffic.so
 LoadModule lbmethod_bybusyness_module modules/mod_lbmethod_bybusyness.so
@@ -145,16 +146,15 @@ KeepAliveTimeout     {{ apache_conf_keep_alive_timeout }}
 
 ## Configuration : Logs
 HostnameLookups Off
-#LogLevel {{ apache_conf_log_level }}
-#<IfModule log_config_module>
-    #ErrorLog "{{ apache_logs_dir }}/error.log"
-    #LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
-    #LogFormat "%h %l %u %t \"%r\" %>s %b" common
-    #LogFormat "%{Referer}i -> %U" referer
-    #LogFormat "%{User-agent}i" agent
-    #CustomLog "{{ apache_logs_dir }}/access.log" common
-#</IfModule>
-##
+LogLevel {{ apache_conf_log_level }}
+<IfModule log_config_module>
+    LogFormat "%h %l %u %t \"%r\" %>s %b" common
+    LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+    LogFormat "%{Referer}i -> %U" referer
+    LogFormat "%{User-agent}i" agent
+    CustomLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/access_%Y%m%d.log 86400" combined
+    ErrorLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/error_%Y%m%d.log 86400"
+</IfModule>
 
 <IfModule unixd_module>
 #

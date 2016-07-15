@@ -1,12 +1,5 @@
 ---
-java_version: 1.8.0_73
-jdk_versions: /opt/jdk_versions
-jdk_last_version: "{{ jdk_versions }}/jdk{{ java_version }}"
 java_home: /opt/java
-jdk_tarball_name_32: jdk-8u73-linux-i586.tar.gz
-jdk_tarball_name_64: jdk-8u73-linux-x64.tar.gz
-os_32: 32
-os_64: 64
 tomcat_versions: "/opt/tomcat_versions"
 tomcat_user: tomcat
 tomcat_user_group: tomcat
@@ -16,8 +9,9 @@ tomcat_tarball_name: apache-tomcat-8.0.32.tar.gz
 apr_config_file: /usr/bin/apr-1-config
 tomcat_http_port: 8080
 tomcat_https_port: 8443
+tomcat_shutdown_command: "SHUTDOWNA1B2Z78UJHGJKLMLM"
 
-required_packages:
+tomcat_required_packages:
  - { package: 'libaprutil1' } 
  - { package: 'libaprutil1-dev' } 
  - { package: 'libssl-dev' }
@@ -37,7 +31,7 @@ tomcat_remove_files:
  - { path: 'webapps/manager/' }
  - { path: 'conf/tomcat-users.xml' }
  - { path: 'conf/tomcat-users.xsd' } 
- - { path: 'webapps/docs/' }
+ #- { path: 'webapps/docs/' }
 
 tomcat_conf_files:
  - { src: 'server.xml.j2', dest: '{{ tomcat_last_version }}/conf/server.xml', force: yes }
@@ -51,9 +45,7 @@ libtcnative_util_home: "{{ tomcat_last_version }}/bin/tomcat-native-{{ libtcnati
 libtcnative_util_tarball_name: "tomcat-native-{{ libtcnative_version }}-src.tar.gz"
 tomcat_server_info_dir: "org/apache/catalina/util"
 
-tomcat_shutdown_command: "SHUTDOWNA1B2Z78UJHGJKLMLM"
 secure_conf_dir: "{{ tomcat_last_version }}/conf/ssl"
-
 # SSL with Java Keystore
 keystore_ssl_enable: false
 keystore_file: "{{ keystore_conf_dir }}/keystore.jks"
@@ -63,7 +55,6 @@ keystore_alias: keyAlias
 keystore_subj: "CN={{ tomcat_dns }}, OU={{ ssl_organisation_unit }}, O={{ ssl_organisation }}, L={{ ssl_locality }}, S={{ ssl_state }}, C={{ ssl_country }}"
 
 
-
 # SSL with Openssl configuration variables
 ssl_cert_password: password
 open_ssl_enable: false
@@ -71,7 +62,7 @@ open_ssl_conf_dir: "{{ secure_conf_dir }}"
 open_ssl_certificate_file: "{{ open_ssl_conf_dir }}/cacert_{{ tomcat_dns }}.crt"
 open_ssl_private_key_file: "{{ open_ssl_conf_dir }}/cacert_{{ tomcat_dns }}.key"
 open_ssl_cert_config_file: "{{ tomcat_last_version }}/conf/openssl.conf"
-open_ssl_cert_subjectAltName: "DNS:{{ tomcat_dns }}" 
+open_ssl_cert_subjectAltName: "DNS:{{ tomcat_dns }}"
 open_ssl_cert_password: secret
 open_ssl_cert_common_name: "{{ tomcat_dns }}"
 open_ssl_subj: "/C=\"{{ ssl_country }}\"/ST=\"{{ ssl_state }}\"/L=\"{{ ssl_locality }}\"/O=\"{{ ssl_organisation }}\"/OU=\"{{ ssl_organisation_unit }}\"/CN={{ open_ssl_cert_common_name }}"

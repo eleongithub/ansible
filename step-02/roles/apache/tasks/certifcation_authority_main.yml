@@ -1,14 +1,14 @@
 ---
-# This playbook contains Mod SSL installation.
+# This playbook installs certification authority files.
 
-# Create Mod SSL Certificats authority directory
-- name: Create Mod SSL Certificats authority directory
+# Create certification authority (CA) main directory
+- name: Create certification authority (CA) main directory
   file: 
     path: "{{ apache_ssl_ca_conf_dir }}"
     state: directory
     
-# Create Module SSL new certificats directory
-- name: Create Mod SSL new certificats directory
+# Create CA new certificats directory
+- name: Create CA new certificats directory
   file: 
     path: "{{ apache_ssl_ca_conf_dir }}/newcerts"
     state: directory
@@ -25,16 +25,16 @@
   shell: echo '01' > "{{ apache_ssl_ca_conf_dir }}/serial"  && touch "{{ apache_ssl_ca_conf_dir }}/index.txt"
   
   
-# Create private Key of Certification Authority
-- name: Create private Key of Certification Authority
+# Create private Key of the CA.
+- name: Create private Key of the CA
   shell: openssl genrsa -out {{ apache_ssl_ca_key }} {{ apache_ssl_ca_bits }} -rand file:/dev/random
 
-# Protect private Key of Certification Authority (Only read access for root who is the owner)
-- name: Protect private Key of Certification Authority (Only read access for root who is the owner)
+# Protect private Key of the CA (Only read access for root who is the owner)
+- name: Protect private Key of the CA (Only read access for root who is the owner)
   file: 
     path: "{{ apache_ssl_ca_key }}"
     mode: 0400 
   
 # Create X509 Certification for authority
-- name: Create X509 Certification for authority
+- name: Create X509 Certification for the CA
   shell: openssl req -new -x509 -key {{ apache_ssl_ca_key }} -out {{ apache_ssl_ca_cert }} -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf" -subj "{{ apache_ssl_ca_subj }}"

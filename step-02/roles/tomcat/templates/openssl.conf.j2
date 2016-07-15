@@ -6,32 +6,6 @@
 HOME			= .
 RANDFILE		= $ENV::HOME/.rnd
 
-
-
-# To use this configuration file with the "-extfile" option of the
-# "openssl x509" utility, name here the section containing the
-# X.509v3 extensions to use:
-# extensions		= 
-# (Alternatively, use a configuration file that has only
-# X.509v3 extensions in its main [= default] section.)
-
-[openssl_init]
-# Extra OBJECT IDENTIFIER info:
-oid_section = new_oids
-alg_section = algs
-
-[ new_oids ]
-
-# We can add new OIDs in here for use by any config aware application
-# Add a simple OID like this:
-# shortname=Long Object Identifier Name, 1.2.3.4
-# Or use config file substitution like this:
-# testoid2=OID2 LONG NAME, ${testoid1}.5.6, OTHER OID
-
-[ algs ]
-# Algorithm configuration options. Currently just fips_mode
-fips_mode = no
-
 ####################################################################
 [ ca ]
 default_ca	= CA_default		# The default ca section
@@ -102,6 +76,31 @@ commonName		= supplied
 emailAddress		= optional
 
 ####################################################################
+
+# To use this configuration file with the "-extfile" option of the
+# "openssl x509" utility, name here the section containing the
+# X.509v3 extensions to use:
+# extensions		= 
+# (Alternatively, use a configuration file that has only
+# X.509v3 extensions in its main [= default] section.)
+
+[openssl_init]
+# Extra OBJECT IDENTIFIER info:
+oid_section = new_oids
+alg_section = algs
+
+[ new_oids ]
+
+# We can add new OIDs in here for use by any config aware application
+# Add a simple OID like this:
+# shortname=Long Object Identifier Name, 1.2.3.4
+# Or use config file substitution like this:
+# testoid2=OID2 LONG NAME, ${testoid1}.5.6, OTHER OID
+
+[ algs ]
+# Algorithm configuration options. Currently just fips_mode
+fips_mode = no
+
 [ req ]
 default_bits		= 1024
 default_md		= sha1

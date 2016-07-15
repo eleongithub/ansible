@@ -1,5 +1,5 @@
 ---
-# This playbook contains mod security installation.
+# This playbook contains Mod Security installation.
 
 # Create Mod Security directory
 - name: Create Mod Security directory
@@ -46,3 +46,11 @@
 # Copy Mod Security library into Apache module directories
 - name: Copy Mod Security library into Apache module directories
   shell: cp /usr/local/modsecurity/lib/mod_security2.so {{ apache_home }}/modules/
+
+# Deploy Mod Security configuration files
+- name: Deploy Mod Security configuration files
+  template: 
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    force: "{{item.force}}"
+  with_items: "{{ mod_security_conf_files }}"

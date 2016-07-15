@@ -1,5 +1,6 @@
 ---
-# This playbook contains jdk-installation play-book.
+# This playbook contains jdk installation.
+
 # Check if jdk versions directory exists.
 - name : Check jdk versions directory exists
   stat: path={{ jdk_versions }}

@@ -1,5 +1,5 @@
 ---
-# This playbook contains tomcat-installation plays that will be run on tomcat web server node.
+# This playbook contains tomcat-installation.
     
 # Stop eventual tomcat server running
 - name: Stop eventual tomcat server running
@@ -67,7 +67,7 @@
 # Install required packages/librairies
 - name: Install required librairies
   apt: pkg={{item.package}} state=present
-  with_items: "{{ required_packages }}"
+  with_items: "{{ tomcat_required_packages }}"
 
 # Unzip tomcat archive
 - name: Unzip the tomcat archive

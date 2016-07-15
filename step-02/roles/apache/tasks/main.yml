@@ -21,7 +21,7 @@
 # Install required packages/librairies
 - name: Install required librairies
   apt: pkg={{ item.package }} state=present
-  with_items: "{{ required_packages }}"
+  with_items: "{{ apache_required_packages }}"
   
 # Delete user Apache
 - name: Delete user Apache
@@ -125,20 +125,6 @@
 - name: Change the right of Apache directory 
   shell: chown -R root:sys {{ apache_home }}
   
-# Install SSL configurations files if mod_ssl is enabled
-- name: Install SSL configurations files if mod_ssl is enabled
-  include: ssl_main.yml
-  when: "{{ apache_with_ssl }}"
-  
-# Install Mod Security for Apache
-- name: Install Mod Security for Apache
-  include: mod_security_main.yml
-  
-# Install Mod JK if mod_jk is enabled
-- name: Install Mod JK if mod_jk is enabled
-  include: mod_jk_main.yml
-  when: "{{ mod_jk_enable }}"
-  
 # Deploy configuration file for Apache
 - name: Deploy configuration file for Apache
   template: 
@@ -158,5 +144,20 @@
 # Enable/Start Apache
 - name: Enable Apache init script
   service: name=apache enabled=yes
+  
+  
+# Install Mod Security for Apache
+- name: Install Mod Security for Apache
+  include: mod_security_main.yml
+  
+# Install certification authority files if mod_ssl is enabled
+- name: Install certification authority files if mod_ssl is enabled
+  include: certifcation_authority_main.yml
+  when: "{{ apache_with_ssl }}"
+  
+# Install Mod JK if mod_jk is enabled
+- name: Install Mod JK if mod_jk is enabled
+  include: mod_jk_main.yml
+  when: "{{ mod_jk_enable }}"
   
 # TODO : VERIFIER LES DROITS DES REPERTOIRES

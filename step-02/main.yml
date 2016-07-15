@@ -1,7 +1,7 @@
 ---
 # This playbook deploys the whole application.  
 
-# 1 - Apply common & firewall roles to all nodes
+#  Apply common & firewall roles to all nodes
 #- hosts: dbserver:tomcat:apache
 - hosts: tomcat:apache
   become: yes
@@ -37,14 +37,9 @@
   roles:
     - tomcat
     
-# Install Apache2
+# Install Apache & Virtual hosts
 - hosts: apache
   become: yes
   roles:
     - apache
-    
-#Install Apache Virtual hosts
-- hosts: apache
-  become: yes
-  roles:
     - apache_vhosts
