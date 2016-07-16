@@ -145,7 +145,6 @@
 - name: Enable Apache init script
   service: name=apache enabled=yes
   
-  
 # Install Mod Security for Apache
 - name: Install Mod Security for Apache
   include: mod_security_main.yml
@@ -159,5 +158,9 @@
 - name: Install Mod JK if mod_jk is enabled
   include: mod_jk_main.yml
   when: "{{ mod_jk_enable }}"
-  
+ 
+- name: Restart Apache
+  command: echo "Restart Apache service..."
+  notify: 
+    - Restart Apache
 # TODO : VERIFIER LES DROITS DES REPERTOIRES

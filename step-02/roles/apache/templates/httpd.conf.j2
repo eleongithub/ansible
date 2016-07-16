@@ -69,7 +69,6 @@ Listen {{ https_default_port }}
 #LoadModule dav_fs_module modules/mod_dav_fs.so
 #LoadModule vhost_alias_module modules/mod_vhost_alias.so
 #LoadModule speling_module modules/mod_speling.so
-#LoadModule rewrite_module modules/mod_rewrite.so
 #LoadModule authn_dbm_module modules/mod_authn_dbm.so
 #LoadModule authn_anon_module modules/mod_authn_anon.so
 #LoadModule authn_dbd_module modules/mod_authn_dbd.so
@@ -82,6 +81,7 @@ Listen {{ https_default_port }}
 # LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
 # LoadModule proxy_express_module modules/mod_proxy_express.so
 
+LoadModule rewrite_module modules/mod_rewrite.so
 LoadModule lbmethod_heartbeat_module modules/mod_lbmethod_heartbeat.so
 {% if mod_jk_enable %}
 LoadModule jk_module modules/mod_jk.so
@@ -388,6 +388,7 @@ JkWorkersFile  	{{ apache_conf_dir }}/workers.properties
 JkLogFile	{{ apache_logs_dir }}/mod_jk.log
 JkShmFile 	{{ apache_logs_dir }}/jk-runtime-status
 JkLogLevel	info
+JkOptions     +ForwardKeySize +ForwardURICompat -ForwardDirectories
 {% endif %} 
 
 # Include virtualhost configuration files

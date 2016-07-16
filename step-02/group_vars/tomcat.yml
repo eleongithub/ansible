@@ -1,14 +1,11 @@
 ---
-java_home: /opt/java
 tomcat_versions: "/opt/tomcat_versions"
+tomcat_home: /opt/tomcat
 tomcat_user: tomcat
 tomcat_user_group: tomcat
 tomcat_last_version: "{{ tomcat_versions }}/apache-tomcat-8.0.32"
 tomcat_init_script: /etc/init.d/tomcat
 tomcat_tarball_name: apache-tomcat-8.0.32.tar.gz
-apr_config_file: /usr/bin/apr-1-config
-tomcat_http_port: 8080
-tomcat_https_port: 8443
 tomcat_shutdown_command: "SHUTDOWNA1B2Z78UJHGJKLMLM"
 
 tomcat_required_packages:
@@ -26,7 +23,7 @@ firewall_specific_env_ports:
  
 tomcat_remove_files:
  - { path: 'webapps/ROOT/' }
- - { path: 'webapps/examples/' }
+ #- { path: 'webapps/examples/' }
  - { path: 'webapps/host-manager/' }
  - { path: 'webapps/manager/' }
  - { path: 'conf/tomcat-users.xml' }

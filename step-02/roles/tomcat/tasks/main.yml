@@ -135,6 +135,11 @@
     force: yes 
     mode: 0755
 
-# Enable/Start Tomcat
-- name: Enable/Start Tomcat
+# Enable Tomcat service
+- name: Enable Tomcat service
   service: name=tomcat enabled=yes
+
+- name: restart tomcat
+  command: echo "Restart Tomcat service..."
+  notify: 
+    - restart tomcat

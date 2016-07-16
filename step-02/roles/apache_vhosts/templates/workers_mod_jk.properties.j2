@@ -1,7 +1,8 @@
-workers.tomcat_home={{ tomcat_home }}
 workers.java_home={{ java_home }}
 worker.list=worker1
-worker.worker1.port={{ tomcat_mod_jk_port }}
-worker.worker1.host=localhost
-worker.worker1.type=ajp13
-worker.worker1.lbfactor=1
+{% for vhost in apache_vhosts_mod_jk %}
+worker.{{ vhost.worker }}.port={{ tomcat_mod_jk_port }}
+worker.{{ vhost.worker }}.host={{ vhost.tomcat_host }}
+worker.{{ vhost.worker }}.type=ajp13
+worker.{{ vhost.worker }}.lbfactor=1
+{% endfor %}

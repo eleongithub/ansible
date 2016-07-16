@@ -1,8 +1,11 @@
 ---
 http_default_port: 80
 https_default_port: 443
-tomcat_home: /opt/tomcat
+tomcat_http_port: 8080
+tomcat_https_port: 8443
 tomcat_mod_jk_port: 8009
+apr_config_file: /usr/bin/apr-1-config
+java_home: /opt/java
 firewall_script_files:
  - { src: 'firewall-start-rules.sh.j2', dest: '/etc/firewall-start-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
  - { src: 'firewall-stop-rules.sh.j2', dest: '/etc/firewall-stop-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
