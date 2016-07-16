@@ -1,19 +1,19 @@
 # Mutex Mecanism. Look at support on https://httpd.apache.org/docs/2.4/fr/mod/core.html#mutex
-Mutex file:{{ apache_vhosts_dir }}/{{ item.documentRoot }}/mutex
-{% if item.use_https %}
+Mutex file:{{ apache_vhosts_dir }}/{{ item.key }}/mutex
+{% if item.value.use_https %}
 <IfModule ssl_module>
   SSLRandomSeed startup file:/dev/urandom 1024
   SSLRandomSeed connect file:/dev/urandom 1024
-  SSLSessionCache shmcb:{{ apache_logs_dir }}/{{ item.documentRoot }}/ssl_scache(512000)
+  SSLSessionCache shmcb:{{ apache_logs_dir }}/{{ item.key }}/ssl_scache(512000)
   SSLSessionCacheTimeout 1200
 </IfModule>
 {% endif %} 
 
 
 <VirtualHost *:{{ http_default_port }}>
-  ServerName {{ item.serverName }}
-  {% if item.use_https %}
-  Redirect permanent / https://{{ item.serverName }}  
+  ServerName {{ item.value.serverName }}
+  {% if item.value.use_https %}
+  Redirect permanent / https://{{ item.value.serverName }}  
   {% else %}
   
   # ServerAdmin: Your address, where problems with the server should be e-mailed.
@@ -24,11 +24,11 @@ Mutex file:{{ apache_vhosts_dir }}/{{ item.documentRoot }}/mutex
   # This can often be determined automatically, but we recommend you specify
   # it explicitly to prevent problems during startup.
   # If your host doesn't have a registered DNS name, enter its IP address here.
-  ServerAlias {{ item.serverAlias }}
+  ServerAlias {{ item.value.serverAlias }}
   
   RewriteEngine on
-  RewriteRule ^/(.*)$ /{{ item.webapps }}/$1 [L,PT]
-  JkMount /{{ item.webapps }}* {{ item.worker }}
+  RewriteRule ^/(.*)$ /{{ item.value.webapps }}/$1 [L,PT]
+  JkMount /{{ item.value.webapps }}* loadbalancer
 
   
   # Customizable error responses come in three flavors:
@@ -47,13 +47,13 @@ Mutex file:{{ apache_vhosts_dir }}/{{ item.documentRoot }}/mutex
     LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
     LogFormat "%{Referer}i -> %U" referer
     LogFormat "%{User-agent}i" agent
-    CustomLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.documentRoot }}/access_%Y%m%d.log 86400" combined
-    ErrorLog  "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.documentRoot }}/error_%Y%m%d.log 86400"
+    CustomLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.key }}/access_%Y%m%d.log 86400" combined
+    ErrorLog  "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.key }}/error_%Y%m%d.log 86400"
   </IfModule>
   {% endif %}
 </VirtualHost>
 
-{% if item.use_https %}
+{% if item.value.use_https %}
 <VirtualHost *:{{ https_default_port }}>
   
   # ServerAdmin: Your address, where problems with the server should be
@@ -66,18 +66,18 @@ Mutex file:{{ apache_vhosts_dir }}/{{ item.documentRoot }}/mutex
   # it explicitly to prevent problems during startup.
   # If your host doesn't have a registered DNS name, enter its IP address here.
  
-  ServerName {{ item.serverName }}
-  ServerAlias {{ item.serverAlias }}
+  ServerName {{ item.value.serverName }}
+  ServerAlias {{ item.value.serverAlias }}
   SSLEngine on
-  SSLCertificateFile		"{{ apache_vhosts_dir }}/{{ item.documentRoot }}/ssl/cert.pem"
-  SSLCertificateKeyFile		"{{ apache_vhosts_dir }}/{{ item.documentRoot }}/ssl/key.pem"
+  SSLCertificateFile		"{{ apache_vhosts_dir }}/{{ item.key }}/ssl/cert.pem"
+  SSLCertificateKeyFile		"{{ apache_vhosts_dir }}/{{ item.key }}/ssl/key.pem"
   
   # CA certificate files location
   # SSLCACertificateFile		{{ apache_ssl_ca_cert }}
    
   RewriteEngine on
-  RewriteRule ^/(.*)$ /{{ item.webapps }}/$1 [L,PT]
-  JkMount /{{ item.webapps }}* {{ item.worker }}
+  RewriteRule ^/(.*)$ /{{ item.value.webapps }}/$1 [L,PT]
+  JkMount /{{ item.value.webapps }}* loadbalancer
   
   # Customizable error responses come in three flavors:
   # 1) plain text 2) local redirects 3) external redirects
@@ -96,11 +96,11 @@ Mutex file:{{ apache_vhosts_dir }}/{{ item.documentRoot }}/mutex
     LogFormat "%{User-agent}i" agent
     # Custom Log format for SSL request
     LogFormat "%t %h %{HTTPS}x %{SSL_PROTOCOL}x %{SSL_CIPHER}x \%{SSL_CIPHER_USEKEYSIZE}x %{SSL_CLIENT_VERIFY}x \"%r\" %b" ssl_log
-    CustomLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.documentRoot }}/access_%Y%m%d.log 86400" combined
-    CustomLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.documentRoot }}/ssl_request_%Y%m%d.log 86400" ssl_log
-    ErrorLog  "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.documentRoot }}/error_%Y%m%d.log 86400"
+    CustomLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.key }}/access_%Y%m%d.log 86400" combined
+    CustomLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.key }}/ssl_request_%Y%m%d.log 86400" ssl_log
+    ErrorLog  "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.key }}/error_%Y%m%d.log 86400"
   </IfModule>
 </VirtualHost>
 # Key protection Passphrase at startup
-SSLPassPhraseDialog		exec:{{ apache_vhosts_dir }}/{{ item.documentRoot }}/ssl/passphrase.sh
+SSLPassPhraseDialog		exec:{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.sh
 {% endif %}

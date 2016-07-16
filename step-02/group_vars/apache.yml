@@ -77,21 +77,30 @@ mod_proxy_enable: true
 
 apache_vhosts_conf_dir: "{{ apache_conf_dir }}/vhosts"
 
-#apache_vhosts_mod_jk:
-  #- name: vhost1
-    #serverName: 'vhosts1.fr'
-    #serverAlias: 'www.vhosts1.fr'
-    #documentRoot: 'vhosts1'
-    #use_https: true
-    #webapps: 'docs'
-    #workers:
-        #- { name: 'worker1', host: 'st-db-villeurbanne' }
-    
 apache_vhosts_mod_jk:
- - { serverName: 'vhosts1.fr', serverAlias: 'www.vhosts1.fr', documentRoot: 'vhosts1', tomcat_host: 'st-db-villeurbanne', worker: 'worker1', webapps: 'docs', use_https: false }
-
+  vhost1:
+    serverName: 'vhosts1.fr'
+    serverAlias: 'www.vhosts1.fr'
+    use_https: true
+    webapps: 'docs'
+    workers:
+        - { name: 'worker1', host: 'st-db-villeurbanne', port: '8009' }
+        - { name: 'worker2', host: 'localhost', port: '8009' }
+    
 apache_vhosts_mod_proxy:
- - { serverName: 'vhosts2.fr', serverAlias: 'www.vhosts2.fr', documentRoot: 'vhosts2', tomcat_host: 'st-db-villeurbanne', webapps: 'examples', use_https: false }
+  vhosts2:
+    serverName: 'vhosts2.fr'
+    serverAlias: 'www.vhosts2.fr'
+    use_https: false
+    webapps: 'examples'
+    host: 'st-db-villeurbanne'
+    port: '8080'
+        
+#apache_vhosts_mod_jk:
+ #- { serverName: 'vhosts1.fr', serverAlias: 'www.vhosts1.fr', documentRoot: 'vhosts1', tomcat_host: 'st-db-villeurbanne', worker: 'worker1', webapps: 'docs', use_https: false }
+
+#apache_vhosts_mod_proxy:
+ #- { serverName: 'vhosts2.fr', serverAlias: 'www.vhosts2.fr', documentRoot: 'vhosts2', tomcat_host: 'st-db-villeurbanne', webapps: 'examples', use_https: false }
 
 
 ssl_common_name: "vhosts1.fr"

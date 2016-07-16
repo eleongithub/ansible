@@ -1,85 +1,135 @@
 ---
 # This playbook installs SSL configuration files for apache virtual hosts.
 
-# Create virtual hosts root directories
-- name: Create virtual hosts ssl directories
+# Create virtual hosts root directories (mod_jk)
+- name: Create virtual hosts ssl directories (mod_jk)
   file: 
-    path: "{{ apache_vhosts_dir }}/{{ item.documentRoot }}/ssl"
+    path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl"
     state: directory
-  with_items: 
-    - "{{ apache_vhosts_mod_jk }}"
-    - "{{ apache_vhosts_mod_proxy }}"
-  when: "{{ item.use_https }}"
+  with_dict: "{{ apache_vhosts_mod_jk }}"
+  when: "{{ item.value.use_https }}"
 
-# Create passhprase
-- name: Create passhprase
-  shell: openssl rand -base64 48 > "{{ apache_vhosts_dir }}/{{ item.documentRoot }}/ssl/passphrase.txt"
-  with_items: 
-    - "{{ apache_vhosts_mod_jk }}"
-    - "{{ apache_vhosts_mod_proxy }}"
-  when: "{{ item.use_https }}"
- 
-# Secure passhprase
-- name: Secure passhprase
+# Create virtual hosts root directories (mod_proxy)
+- name: Create virtual hosts ssl directories (mod_proxy)
   file: 
-    path: "{{ apache_vhosts_dir }}/{{ item.documentRoot }}/ssl/passphrase.txt"
-    mode: 0400
-  with_items: 
-    - "{{ apache_vhosts_mod_jk }}"
-    - "{{ apache_vhosts_mod_proxy }}"
-  when: "{{ item.use_https }}"
+    path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl"
+    state: directory
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+  when: "{{ item.value.use_https }}"
+
+# Create passhprase (mod_jk)
+- name: Create passhprase (mod_jk)
+  shell: openssl rand -base64 48 > "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.txt"
+  with_dict: "{{ apache_vhosts_mod_jk }}"
+  when: "{{ item.value.use_https }}"
   
-# Copy Script shell script which will read passphrase.txt
-- name: Copy Script shell script which will read passphrase.txt
+# Create passhprase (mod_proxy)
+- name: Create passhprase (mod_proxy)
+  shell: openssl rand -base64 48 > "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.txt"
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+  when: "{{ item.value.use_https }}"
+ 
+# Secure passhprase (mod_jk)
+- name: Secure passhprase (mod_jk)
+  file: 
+    path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.txt"
+    mode: 0400
+  with_dict: "{{ apache_vhosts_mod_jk }}"
+  when: "{{ item.value.use_https }}"
+  
+# Secure passhprase (mod_proxy)
+- name: Secure passhprase (mod_proxy)
+  file: 
+    path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.txt"
+    mode: 0400
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+  when: "{{ item.value.use_https }}"
+  
+  
+# Copy Script shell script which will read passphrase.txt (mod_jk)
+- name: Copy Script shell script which will read passphrase.txt (mod_jk)
   template:
     src: passphrase.sh.j2 
-    dest: "{{ apache_vhosts_dir }}/{{ item.documentRoot }}/ssl/passphrase.sh"
+    dest: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.sh"
     force: yes
-  with_items: 
-    - "{{ apache_vhosts_mod_jk }}"
-    - "{{ apache_vhosts_mod_proxy }}"
-  when: "{{ item.use_https }}"
+  with_dict: "{{ apache_vhosts_mod_jk }}"
+  when: "{{ item.value.use_https }}"
   
-# Secure passphrase.sh
-- name: Secure passphrase.sh
+# Copy Script shell script which will read passphrase.txt (mod_proxy)
+- name: Copy Script shell script which will read passphrase.txt (mod_proxy)
+  template:
+    src: passphrase.sh.j2 
+    dest: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.sh"
+    force: yes
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+  when: "{{ item.value.use_https }}"
+  
+# Secure passphrase.sh (mod_jk)
+- name: Secure passphrase.sh (mod_jk)
   file: 
-    path: "{{ apache_vhosts_dir }}/{{ item.documentRoot }}/ssl/passphrase.sh"
+    path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.sh"
     mode: 0500
-  with_items: 
-    - "{{ apache_vhosts_mod_jk }}"
-    - "{{ apache_vhosts_mod_proxy }}"
-  when: "{{ item.use_https }}"
-  
-# Create the private key for the virtual hosts
-- name: Create the private key for the virtual hosts
-  shell: cd "{{ apache_vhosts_dir }}/{{ item.documentRoot }}/ssl" && openssl genrsa -des3 -passout file:passphrase.txt -out key.pem {{ apache_ssl_ca_bits }} -rand file:/dev/random
-  with_items: 
-    - "{{ apache_vhosts_mod_jk }}"
-    - "{{ apache_vhosts_mod_proxy }}"
-  when: "{{ item.use_https }}"
-  
-# Secure private key file
-- name: Secure private key file
+  with_dict: "{{ apache_vhosts_mod_jk }}"
+  when: "{{ item.value.use_https }}"
+
+# Secure passphrase.sh (mod_proxy)
+- name: Secure passphrase.sh (mod_proxy)
   file: 
-    path: "{{ apache_vhosts_dir }}/{{ item.documentRoot }}/ssl/key.pem"
+    path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.sh"
+    mode: 0500
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+  when: "{{ item.value.use_https }}"
+  
+# Create the private key for the virtual hosts (mod_jk)
+- name: Create the private key for the virtual hosts (mod_jk)
+  shell: cd "{{ apache_vhosts_dir }}/{{ item.key }}/ssl" && openssl genrsa -des3 -passout file:passphrase.txt -out key.pem {{ apache_ssl_ca_bits }} -rand file:/dev/random
+  with_dict: "{{ apache_vhosts_mod_jk }}"
+  when: "{{ item.value.use_https }}"
+  
+
+# Create the private key for the virtual hosts (mod_proxy)
+- name: Create the private key for the virtual hosts (mod_proxy)
+  shell: cd "{{ apache_vhosts_dir }}/{{ item.key }}/ssl" && openssl genrsa -des3 -passout file:passphrase.txt -out key.pem {{ apache_ssl_ca_bits }} -rand file:/dev/random
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+  when: "{{ item.value.use_https }}"
+ 
+# Secure private key file (mod_jk)
+- name: Secure private key file (mod_jk)
+  file: 
+    path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/key.pem"
     mode: 0400
-  with_items: 
-    - "{{ apache_vhosts_mod_jk }}"
-    - "{{ apache_vhosts_mod_proxy }}"
-  when: "{{ item.use_https }}"
+  with_dict: "{{ apache_vhosts_mod_jk }}"
+  when: "{{ item.value.use_https }}"
+  
+# Secure private key file (mod_proxy)
+- name: Secure private key file (mod_proxy)
+  file: 
+    path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/key.pem"
+    mode: 0400
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+  when: "{{ item.value.use_https }}"
 
-# Create a certificat signing request for the virtual hosts
-- name: Create a certificat signing request for the virtual hosts
-  shell: cd "{{ apache_vhosts_dir }}/{{ item.documentRoot }}/ssl" && openssl req -new -passin file:passphrase.txt -key key.pem -out req.pem -subj "{{ apache_vhosts_ssl_subj }}" -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
-  with_items: 
-    - "{{ apache_vhosts_mod_jk }}"
-    - "{{ apache_vhosts_mod_proxy }}"
-  when: "{{ item.use_https }}"
+# Create a certificat signing request for the virtual hosts (mod_jk)
+- name: Create a certificat signing request for the virtual hosts (mod_jk)
+  shell: cd "{{ apache_vhosts_dir }}/{{ item.key }}/ssl" && openssl req -new -passin file:passphrase.txt -key key.pem -out req.pem -subj "{{ apache_vhosts_ssl_subj }}" -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
+  with_dict: "{{ apache_vhosts_mod_jk }}"
+  when: "{{ item.value.use_https }}"
+  
+# Create a certificat signing request for the virtual hosts (mod_proxy)
+- name: Create a certificat signing request for the virtual hosts (mod_proxy)
+  shell: cd "{{ apache_vhosts_dir }}/{{ item.key }}/ssl" && openssl req -new -passin file:passphrase.txt -key key.pem -out req.pem -subj "{{ apache_vhosts_ssl_subj }}" -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+  when: "{{ item.value.use_https }}"
 
-# Sign the certificat for the virtual hosts
-- name: Sign the certificat for the virtual hosts
-  shell: cd "{{ apache_vhosts_dir }}/{{ item.documentRoot }}/ssl" && openssl ca -batch -notext -out cert.pem -config {{ apache_ssl_ca_conf_dir }}/openssl_ca.conf -infiles req.pem
-  with_items: 
-    - "{{ apache_vhosts_mod_jk }}"
-    - "{{ apache_vhosts_mod_proxy }}"
-  when: "{{ item.use_https }}"
+# Sign the certificat for the virtual hosts (mod_jk)
+- name: Sign the certificat for the virtual hosts (mod_jk)
+  shell: cd "{{ apache_vhosts_dir }}/{{ item.key }}/ssl" && openssl ca -batch -notext -out cert.pem -config {{ apache_ssl_ca_conf_dir }}/openssl_ca.conf -infiles req.pem
+  with_dict: "{{ apache_vhosts_mod_jk }}"
+  when: "{{ item.value.use_https }}"
+  
+  
+# Sign the certificat for the virtual hosts (mod_proxy)
+- name: Sign the certificat for the virtual hosts (mod_proxy)
+  shell: cd "{{ apache_vhosts_dir }}/{{ item.key }}/ssl" && openssl ca -batch -notext -out cert.pem -config {{ apache_ssl_ca_conf_dir }}/openssl_ca.conf -infiles req.pem
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+  when: "{{ item.value.use_https }}"

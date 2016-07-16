@@ -8,40 +8,59 @@
     state: directory
    
 # Create logs directories for virtual hosts
-- name: Create logs directories for virtual hosts
+- name: Create logs directories for Mod_Jk virtual hosts
   file: 
-    path: "{{ apache_logs_dir }}/{{ item.documentRoot }}"
+    path: "{{ apache_logs_dir }}/{{ item.key }}"
     state: directory
-  with_items: 
-    - "{{ apache_vhosts_mod_jk }}"
-    - "{{ apache_vhosts_mod_proxy }}"
+  with_dict: "{{ apache_vhosts_mod_jk }}"
+
+    
+# Create logs directories for virtual hosts
+- name: Create logs directories for Mod_Proxy virtual hosts
+  file: 
+    path: "{{ apache_logs_dir }}/{{ item.key }}"
+    state: directory
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+    
     
 # Create virtual hosts root directories
 - name: Create virtual hosts root directories
   file: 
-    path: "{{ apache_vhosts_dir }}/{{ item.documentRoot }}"
+    path: "{{ apache_vhosts_dir }}/{{ item.key }}"
     state: directory
-  with_items: 
-    - "{{ apache_vhosts_mod_jk }}"
-    - "{{ apache_vhosts_mod_proxy }}"
+  with_dict: "{{ apache_vhosts_mod_jk }}"
+  
+    
+# Create virtual hosts root directories
+- name: Create virtual hosts root directories
+  file: 
+    path: "{{ apache_vhosts_dir }}/{{ item.key }}"
+    state: directory
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+  
 
 # Create virtual hosts mutex directories
-- name: Create virtual mutex root directories
+- name: Create virtual mutex directories
   file: 
-    path: "{{ apache_vhosts_dir }}/{{ item.documentRoot }}/mutex"
+    path: "{{ apache_vhosts_dir }}/{{ item.key }}/mutex"
     state: directory
-  with_items: 
-    - "{{ apache_vhosts_mod_jk }}"
-    - "{{ apache_vhosts_mod_proxy }}"
+  with_dict: "{{ apache_vhosts_mod_jk }}"
+    
+
+# Create virtual hosts mutex directories
+- name: Create virtual mutex directories
+  file: 
+    path: "{{ apache_vhosts_dir }}/{{ item.key }}/mutex"
+    state: directory
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
    
 # Mod Proxy configuration HTTP  - Generate virtual hosts configuration files
 - name: Mod Proxy configuration HTTP  - Generate virtual hosts configuration files
   template: 
     src: vhosts_mod_proxy.conf.j2 
-    dest: "{{ apache_vhosts_conf_dir }}/{{ item.documentRoot }}_mod_proxy.conf"
+    dest: "{{ apache_vhosts_conf_dir }}/{{ item.key }}_mod_proxy.conf"
     force: yes
-  with_items: 
-    - "{{ apache_vhosts_mod_proxy }}"
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
   when: "{{ mod_proxy_enable }}"
   
   
@@ -57,9 +76,9 @@
 - name: Mod JK configuration - Generate virtual hosts configuration files
   template: 
     src: vhosts_mod_jk.conf.j2 
-    dest: "{{ apache_vhosts_conf_dir }}/{{ item.documentRoot }}_mod_jk.conf"
+    dest: "{{ apache_vhosts_conf_dir }}/{{ item.key }}_mod_jk.conf"
     force: yes
-  with_items: "{{ apache_vhosts_mod_jk }}"
+  with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ mod_jk_enable }}"
   
 - name: Install SSL certificates for virtual hosts
