@@ -111,13 +111,13 @@
 
 # Create a certificat signing request for the virtual hosts (mod_jk)
 - name: Create a certificat signing request for the virtual hosts (mod_jk)
-  shell: cd "{{ apache_vhosts_dir }}/{{ item.key }}/ssl" && openssl req -new -passin file:passphrase.txt -key key.pem -out req.pem -subj "{{ apache_vhosts_ssl_subj }}" -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
+  shell: cd "{{ apache_vhosts_dir }}/{{ item.key }}/ssl" && openssl req -new -passin file:passphrase.txt -key key.pem -out req.pem -subj "{{ item.value.ssl_subj }}" -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
   
 # Create a certificat signing request for the virtual hosts (mod_proxy)
 - name: Create a certificat signing request for the virtual hosts (mod_proxy)
-  shell: cd "{{ apache_vhosts_dir }}/{{ item.key }}/ssl" && openssl req -new -passin file:passphrase.txt -key key.pem -out req.pem -subj "{{ apache_vhosts_ssl_subj }}" -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
+  shell: cd "{{ apache_vhosts_dir }}/{{ item.key }}/ssl" && openssl req -new -passin file:passphrase.txt -key key.pem -out req.pem -subj "{{ item.value.ssl_subj }}" -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
   with_dict: "{{ apache_vhosts_mod_proxy }}"
   when: "{{ item.value.use_https }}"
 

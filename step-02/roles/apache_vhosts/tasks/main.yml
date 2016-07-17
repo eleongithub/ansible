@@ -83,7 +83,7 @@
   
 - name: Install SSL certificates for virtual hosts
   include: ssl_main.yml
-  when: "{{ apache_with_ssl }}"
+  when: "{{ apache_enable_ssl }}"
   
 - name: Restart Apache
   command: echo "Restart Apache service..."

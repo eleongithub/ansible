@@ -152,7 +152,7 @@
 # Install certification authority files if mod_ssl is enabled
 - name: Install certification authority files if mod_ssl is enabled
   include: certifcation_authority_main.yml
-  when: "{{ apache_with_ssl }}"
+  when: "{{ apache_enable_ssl }}"
   
 # Install Mod JK if mod_jk is enabled
 - name: Install Mod JK if mod_jk is enabled
