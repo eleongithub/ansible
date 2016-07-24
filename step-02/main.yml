@@ -9,7 +9,7 @@
     - common
     - firewall
     
-# 2  - Install java/jdk 
+# Install java/jdk 
 - hosts: tomcat
   become: yes
   pre_tasks:
@@ -43,3 +43,13 @@
   roles:
     - apache
     - apache_vhosts
+    
+#Install ProFTP
+- hosts: proftp
+  become: yes
+  pre_tasks:
+   - name: Check if ProFTP is installed on the system
+     shell: proftpd --version || echo "unknown"
+     register: proftpd_version
+  roles:
+    - { role: proftp, when: "'{{ proftpd_version.stdout }}'.find('unknown') != -1" }

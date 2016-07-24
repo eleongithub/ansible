@@ -2,7 +2,10 @@
   
 # Deploy SSL conf file
 - name: Deploy SSL conf file
-  template: src=openssl.conf.j2 dest={{ open_ssl_cert_config_file }} force=yes
+  template: 
+    src: openssl.conf.j2 
+    dest: "{{ open_ssl_cert_config_file }}"
+    force: yes
   
 # Generating private key + certificate ...
 - name: Generating private key + certificate ...

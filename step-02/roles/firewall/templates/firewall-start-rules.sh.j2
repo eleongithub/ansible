@@ -56,7 +56,10 @@ iptables -t filter -A {{ allowed_env_port.direction }} -p {{ allowed_env_port.pr
 iptables -t filter -A {{ allowed_specific_port.direction }} -p {{ allowed_specific_port.protocol }} --dport {{ allowed_specific_port.port }} -j ACCEPT -m comment --comment "{{ allowed_specific_port.comment }}"
 {% endfor %}
 
-  
+{% if (firwall_ftp_min_passive_port is defined) and (firwall_ftp_max_passive_port is defined) %}
+iptables -I INPUT -m state --state NEW -j ACCEPT -p tcp -m multiport --ports {{ firwall_ftp_min_passive_port }}:{{ firwall_ftp_max_passive_port }} comment --comment "Mode Passif - ProFTP"
+{% endif %} 
+
 # Log input trafic.
 {% if firewall_logs_input_trafic %}
 iptables -A INPUT -j LOG

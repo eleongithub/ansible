@@ -4,6 +4,7 @@ https_default_port: 443
 tomcat_http_port: 8080
 tomcat_https_port: 8443
 tomcat_mod_jk_port: 8009
+ftp_default_port: 21
 apr_config_file: /usr/bin/apr-1-config
 java_home: /opt/java
 firewall_script_files:
@@ -11,8 +12,14 @@ firewall_script_files:
  - { src: 'firewall-stop-rules.sh.j2', dest: '/etc/firewall-stop-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
  - { src: 'firewall.j2', dest: '/etc/init.d/firewall', force: yes, owner: 'root', group: 'root', mode: '0755' }
 firewall_allowed_ports:
- - { port: '22', protocol: 'tcp', direction: 'INPUT', comment: 'SSH Input trafic' }
- - { port: '22', protocol: 'tcp', direction: 'OUTPUT', comment: 'SSH Output trafic' }
+ - { port: '{{ ftp_default_port }}', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - FTP Input trafic' }
+ - { port: '{{ ftp_default_port }}', protocol: 'udp', direction: 'INPUT', comment: 'UDP - FTP Input trafic' }
+ - { port: '{{ ftp_default_port }}', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - FTP Output trafic' }
+ - { port: '{{ ftp_default_port }}', protocol: 'udp', direction: 'OUTPUT', comment: 'UDP - FTP Output trafic' }
+ - { port: '22', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - SSH Input trafic' }
+ - { port: '22', protocol: 'udp', direction: 'INPUT', comment: 'UDP - SSH Input trafic' }
+ - { port: '22', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - SSH Output trafic' }
+ - { port: '22', protocol: 'udp', direction: 'OUTPUT', comment: 'UDP - SSH Output trafic' }
  - { port: '53', protocol: 'tcp', direction: 'INPUT', comment: 'TCP DNS Input trafic' }
  - { port: '53', protocol: 'udp', direction: 'INPUT', comment: 'UDP DNS Input trafic' }
  - { port: '53', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP DNS Output trafic' }
@@ -24,6 +31,8 @@ firewall_allowed_ports:
  - { port: '{{ https_default_port }}', protocol: 'tcp', direction: 'OUTPUT', comment: 'HTTPS Output trafic' }
 firewall_specific_env_ports: []
 firewall_allowed_web_provider_specific_ports: []
+firwall_ftp_min_passive_port:
+firwall_ftp_max_passive_port:
 firewall_logs_input_trafic: true
 firewall_logs_output_trafic: true
 ssl_protocol: TLSv1+TLSv1.1+TLSv1.2
