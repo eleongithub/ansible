@@ -104,8 +104,6 @@
   with_items: "{{ proftpd_conf_files }}"
   
   
-
-  
 - name: Restart ProFTP
   command: echo "Restart ProFTP service..."
   notify: 
