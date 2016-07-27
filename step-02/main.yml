@@ -6,43 +6,42 @@
 - hosts: tomcat:apache
   become: yes
   roles:
-    - common
-    - firewall
+    - { role: common, tags: ['always'] }
+    - { role: firewall, tags: ['always'] }
     
-# Install java/jdk 
+# Install JDK
 - hosts: tomcat
   become: yes
   pre_tasks:
-   - name: Get java version installed on the nodes
+   - name: Get JDK/Java version installed on the nodes
      shell: java -version 2>&1 | head -n 1 | cut -d'"' -f2
      register: java_installed_version
   roles:
-    - { role: jdk, when: " '{{ java_installed_version.stdout }}' != '{{ java_version }}'" }
+    - { role: jdk, when: " '{{ java_installed_version.stdout }}' != '{{ java_version }}'", tags: ['jdk'] }
     
-#Install Postgres SGBD
+#Install Postgres SGBD, schema and/or Dbmaintain
 - hosts: dbserver
   become: yes
   roles:
-    - postgres 
+    - { role: postgres, tags: ['postgres'] }
+    - { role: postgres_instance, tags: ['postgres_instance'] }
     
-# Install data base instance
-- hosts: dbserver
-  become: yes
-  roles:
-    - postgres_instance
 
 # Install Tomcat
 - hosts: tomcat
   become: yes
   roles:
-    - tomcat
+    - { role: tomcat, tags:['tomcat'] }
+    - { role: tomcat_apps, tags:['tomcat_apps'] } # TODO Install Tomcat Web application
     
-# Install Apache & Virtual hosts
+    
+# Install Apache Server
 - hosts: apache
   become: yes
   roles:
-    - apache
-    - apache_vhosts
+    - { role: apache, tags:['apache'] }
+    - { role: apache_vhosts, tags:['apache_vhosts'] }
+    
     
 #Install ProFTP
 - hosts: proftp
@@ -52,4 +51,4 @@
      shell: proftpd --version || echo "unknown"
      register: proftpd_version
   roles:
-    - { role: proftp, when: "'{{ proftpd_version.stdout }}'.find('unknown') != -1" }
+    - { role: proftp, when: "'{{ proftpd_version.stdout }}'.find('unknown') != -1", tags:['proftp'] }
