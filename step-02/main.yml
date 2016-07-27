@@ -25,6 +25,7 @@
   roles:
     - { role: postgres, tags: ['postgres'] }
     - { role: postgres_instance, tags: ['postgres_instance'] }
+    #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain
     
 
 # Install Tomcat
@@ -32,7 +33,7 @@
   become: yes
   roles:
     - { role: tomcat, tags:['tomcat'] }
-    - { role: tomcat_apps, tags:['tomcat_apps'] } # TODO Install Tomcat Web application
+    #- { role: tomcat_apps, tags:['tomcat_apps'] } # TODO Install Tomcat Web application
     
     
 # Install Apache Server
