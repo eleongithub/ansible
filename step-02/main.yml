@@ -32,7 +32,7 @@
 - hosts: tomcat
   become: yes
   roles:
-    - { role: tomcat, tags:['tomcat'] }
+    - { role: tomcat, tags: ['tomcat'] }
     #- { role: tomcat_apps, tags:['tomcat_apps'] } # TODO Install Tomcat Web application
     
     
@@ -40,8 +40,8 @@
 - hosts: apache
   become: yes
   roles:
-    - { role: apache, tags:['apache'] }
-    - { role: apache_vhosts, tags:['apache_vhosts'] }
+    - { role: apache, tags: ['apache'] }
+    - { role: apache_vhosts, tags: ['apache_vhosts'] }
     
     
 #Install ProFTP
@@ -52,4 +52,4 @@
      shell: proftpd --version || echo "unknown"
      register: proftpd_version
   roles:
-    - { role: proftp, when: "'{{ proftpd_version.stdout }}'.find('unknown') != -1", tags:['proftp'] }
+    - { role: proftp, when: "'{{ proftpd_version.stdout }}'.find('unknown') != -1", tags: ['proftp'] }
