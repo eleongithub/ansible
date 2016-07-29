@@ -4,7 +4,9 @@
 #  Apply common & firewall roles to all nodes
 #- hosts: dbserver:tomcat:apache
 - hosts: tomcat:apache
+  remote_user: ansible
   become: yes
+  become_user: ansible
   roles:
     - { role: common, tags: ['always'] }
     - { role: firewall, tags: ['always'] }
