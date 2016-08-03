@@ -1,51 +1,43 @@
 ---
 # This playbook contains jdk installation.
 
-# Check if jdk versions directory exists.
 - name : Check jdk versions directory exists
   stat: path={{ jdk_versions }}
   register: jdk_versions_dir_exists
 
-# Create a jdk version directory. If directory exists, do nothing.
 - name: Create jdk version directory
   file: 
     path: "{{ jdk_versions }}"
     state: directory
   when: not jdk_versions_dir_exists.stat.exists
   
-# Delete java home link 
 - name: Delete java home link 
   file: 
     dest: "{{ java_home }}"
     state: absent
 
-# Get the machine architecture (architecture 32 bits or 64 bits)
 - name: Get the machine architecture (32 bits or 64 bits)
   shell: getconf LONG_BIT
   register: os_arch
    
-# Unzip jdk 32 bits archive
 - name: Unzip the jdk 32 bits archive
   unarchive: 
     src: "{{ jdk_tarball_name_32 }}"
     dest: "{{ jdk_versions }}/"
   when: os_arch.stdout == "{{ os_32 }}"
   
-# Unzip jdk 64 bits archive
 - name: Unzip the jdk 64 bits archive
   unarchive: 
     src: "{{ jdk_tarball_name_64 }}"
     dest: "{{ jdk_versions }}/"
   when: os_arch.stdout == "{{ os_64 }}"
   
-# Create a link to the jdk directory
 - name: Create link to the jdk directory
   file: 
     src: "{{ jdk_last_version }}"
     dest: "{{ java_home }}"
     state: link
     
-# Update alternatives
 - name: Update alternatives
   command: "{{ item }}"
   with_items:

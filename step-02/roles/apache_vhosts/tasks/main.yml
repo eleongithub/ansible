@@ -1,60 +1,47 @@
 ---
 # This playbook contains apache virtual hosts installation.
 
-# Create virtual hosts configuration directories
 - name: Create virtual hosts configuration directories
   file: 
     path: "{{ apache_vhosts_conf_dir }}"
     state: directory
    
-# Create logs directories for virtual hosts
 - name: Create logs directories for Mod_Jk virtual hosts
   file: 
     path: "{{ apache_logs_dir }}/{{ item.key }}"
     state: directory
   with_dict: "{{ apache_vhosts_mod_jk }}"
 
-    
-# Create logs directories for virtual hosts
 - name: Create logs directories for Mod_Proxy virtual hosts
   file: 
     path: "{{ apache_logs_dir }}/{{ item.key }}"
     state: directory
   with_dict: "{{ apache_vhosts_mod_proxy }}"
     
-    
-# Create virtual hosts root directories
 - name: Create virtual hosts root directories
   file: 
     path: "{{ apache_vhosts_dir }}/{{ item.key }}"
     state: directory
   with_dict: "{{ apache_vhosts_mod_jk }}"
   
-    
-# Create virtual hosts root directories
 - name: Create virtual hosts root directories
   file: 
     path: "{{ apache_vhosts_dir }}/{{ item.key }}"
     state: directory
   with_dict: "{{ apache_vhosts_mod_proxy }}"
   
-
-# Create virtual hosts mutex directories
 - name: Create virtual mutex directories
   file: 
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/mutex"
     state: directory
   with_dict: "{{ apache_vhosts_mod_jk }}"
     
-
-# Create virtual hosts mutex directories
 - name: Create virtual mutex directories
   file: 
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/mutex"
     state: directory
   with_dict: "{{ apache_vhosts_mod_proxy }}"
    
-# Mod Proxy configuration HTTP  - Generate virtual hosts configuration files
 - name: Mod Proxy configuration HTTP  - Generate virtual hosts configuration files
   template: 
     src: vhosts_mod_proxy.conf.j2 
@@ -63,8 +50,6 @@
   with_dict: "{{ apache_vhosts_mod_proxy }}"
   when: "{{ mod_proxy_enable }}"
   
-  
-# Copy workers.properties configuration file for Mod_Jk
 - name: Copy workers.properties configuration file for Mod_Jk
   template: 
     src: workers_mod_jk.properties.j2 
@@ -72,7 +57,6 @@
     force: yes
   when: "{{ mod_jk_enable }}"
   
-# Mod JK configuration - Generate virtual hosts configuration files
 - name: Mod JK configuration - Generate virtual hosts configuration files
   template: 
     src: vhosts_mod_jk.conf.j2 

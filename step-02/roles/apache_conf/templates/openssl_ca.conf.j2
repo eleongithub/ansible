@@ -42,7 +42,7 @@ default_md		= {{ apache_ssl_ca_md }}
 default_keyfile 	= key.pem
 distinguished_name	= req_distinguished_name
 attributes		= req_attributes
-
+x509_extensions		= v3_ca	# The extentions to add to the self signed cert
 # This sets a mask for permitted string types. There are several options. 
 # default: PrintableString, T61String, BMPString.
 # pkix	 : PrintableString, BMPString.
@@ -53,7 +53,7 @@ attributes		= req_attributes
 # so use this option with caution!
 # we use PrintableString+UTF8String mask so if pure ASCII texts are used
 # the resulting certificates are compatible with Netscape
-string_mask = MASK:0x2002
+#string_mask = MASK:0x2002
 
 req_extensions = v3_req # The extensions to add to a certificate request
 

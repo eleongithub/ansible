@@ -1,0 +1,4 @@
+# roles/apache_conf/handlers/main.yml
+---
+- name: Restart Apache
+  service: name=apache state=restarted

@@ -15,15 +15,16 @@
   pre_tasks:
    - name: Get JDK/Java version installed on the nodes
      shell: java -version 2>&1 | head -n 1 | cut -d'"' -f2
-     register: java_installed_version
+     register: java_version_result
   roles:
-    - { role: jdk, when: " '{{ java_installed_version.stdout }}' != '{{ java_version }}'", tags: ['jdk'] }
+    - { role: jdk, when: " '{{ java_version_result.stdout }}' != '{{ java_version }}'", tags: ['jdk'] }
     
 #Install Postgres SGBD, schema and/or Dbmaintain
 - hosts: dbserver
   become: yes
   roles:
     - { role: postgres, tags: ['postgres'] }
+    - { role: postgres_conf, tags: ['postgres_conf'] }
     - { role: postgres_instance, tags: ['postgres_instance'] }
     #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain
     
@@ -31,16 +32,29 @@
 # Install Tomcat
 - hosts: tomcat
   become: yes
+  pre_tasks:
+   - name: Check if tomcat is installed on the system
+     shell: cat "{{ tomcat_home }}/RELEASE-NOTES"|grep "Apache Tomcat Version" || echo "unknown"
+     register: tomcat_version_result
   roles:
-    - { role: tomcat, tags: ['tomcat'] }
-    #- { role: tomcat_apps, tags:['tomcat_apps'] } # TODO Install Tomcat Web application
-    
+    - { role: tomcat, when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'", tags: ['tomcat'] }
+    - { role: tomcat_conf, tags: ['tomcat_conf'] }
+    - { role: tomcat_owasp, tags: ['tomcat_owasp'] }
+    - { role: tomcat_apps, tags:['tomcat_apps'] }
     
 # Install Apache Server
 - hosts: apache
   become: yes
+  pre_tasks:
+   - name: Get Apache version installed on the nodes
+     shell: bash "{{ apache_home }}/bin/apachectl" -v 2>&1 | head -n 1 || echo "unknown"
+     register: apache_version_result
   roles:
-    - { role: apache, tags: ['apache'] }
+    - { role: apache, when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'", tags: ['apache'] }
+    - { role: apache_conf, tags: ['apache_conf'] }
+    - { role: apache_mod_jk, tags: ['apache_mod_jk'] }
+    - { role: apache_mod_security, tags: ['apache_mod_security'] }
+    - { role: apache_private_ca, tags: ['apache_private_ca'] }
     - { role: apache_vhosts, tags: ['apache_vhosts'] }
     
     
@@ -50,6 +64,6 @@
   pre_tasks:
    - name: Check if ProFTP is installed on the system
      shell: proftpd --version || echo "unknown"
-     register: proftpd_version
+     register: proftpd_version_result
   roles:
-    - { role: proftp, when: "'{{ proftpd_version.stdout }}'.find('unknown') != -1", tags: ['proftp'] }
+    - { role: proftp, when: "'{{ proftpd_version }}' not in '{{ proftpd_version_result.stdout }}'", tags: ['proftp'] }

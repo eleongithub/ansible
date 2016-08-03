@@ -72,6 +72,10 @@ Mutex file:{{ apache_vhosts_dir }}/{{ item.key }}/mutex
   SSLCertificateFile		"{{ apache_vhosts_dir }}/{{ item.key }}/ssl/cert.pem"
   SSLCertificateKeyFile		"{{ apache_vhosts_dir }}/{{ item.key }}/ssl/key.pem"
   
+  # Support only for SSLv3.0 and TLSv1.0
+  # all = "+SSLv3 +TLSv1 +TLSv1.1 +TLSv1.2" à partir de la version 1.0.1 d'OpenSSL 
+  SSLProtocol             all
+
   # CA certificate files location
   # SSLCACertificateFile		{{ apache_ssl_ca_cert }}
    
