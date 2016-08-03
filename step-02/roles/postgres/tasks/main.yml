@@ -1,0 +1,36 @@
+---
+# 1 - Check if PostgreSQL DB exists on server
+- name: Check if PostgreSQL Data Base System exists on server with the same version
+  shell: psql -V |egrep -o '[0-9]{1,}\.[0-9]{1,}'
+  register: check_exists_postgres
+  ignore_errors: true
+
+# 2 - Remove PostgreSQL Server
+- name: Remove PostgreSQL Server
+  apt: pkg="{{ postgres_server_pkg }}" state=absent purge=yes
+  when: "'{{ check_exists_postgres.stdout }}' != '{{ postgres_version }}'"
+
+# 3 - Remove PostgreSQL Client
+- name: Remove PostgreSQL Client
+  apt: pkg="{{ postgres_client_pkg }}" state=absent purge=yes
+  when: "'{{ check_exists_postgres.stdout }}' != '{{ postgres_version }}'"
+  
+# 4 - Install PostgreSQL Server
+- name: Install PostgreSQL Server
+  apt: pkg="{{ postgres_server_pkg }}" state=present
+  when: "'{{ check_exists_postgres.stdout }}' != '{{ postgres_version }}'"
+   
+# 5 - Install PostgreSQL Client
+- name: Install PostgreSQL Client
+  apt: pkg={{ postgres_client_pkg }} state=present
+  when: "'{{ check_exists_postgres.stdout }}' != '{{ postgres_version }}'"
+  
+# 6 - Deploy configurations files
+- name: Deploy configurations files
+  template: src={{item.src}} dest={{item.dest}} force={{item.force}}
+  with_items:
+   - "{{ postgres_conf_files }}"
+
+# 7 - Enable/Start Tomcat
+- name: Enable/Start PostgreSQL Server
+  service: name=postgresql state=started enabled=yes
