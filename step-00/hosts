@@ -1,2 +1,0 @@
-# List of machins
-st-db-villeurbanne ansible_connection=ssh ansible_become_pass=ansible1
