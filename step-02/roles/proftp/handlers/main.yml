@@ -1,4 +1,0 @@
-# roles/proftp/handlers/main.yml
----
-- name: Restart ProFTP
-  service: name=proftpd state=restarted

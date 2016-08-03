@@ -1,6 +1,0 @@
----
-# variables for postgresql_instance
-db_name: apps
-db_schema: apps
-db_user: apps
-db_password: apps
