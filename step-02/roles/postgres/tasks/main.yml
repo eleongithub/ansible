@@ -5,10 +5,12 @@
   register: check_exists_postgres
   ignore_errors: true
 
+
 # 2 - Remove PostgreSQL Server
 - name: Remove PostgreSQL Server
   apt: pkg="{{ postgres_server_pkg }}" state=absent purge=yes
   when: "'{{ check_exists_postgres.stdout }}' != '{{ postgres_version }}'"
+
 
 # 3 - Remove PostgreSQL Client
 - name: Remove PostgreSQL Client
