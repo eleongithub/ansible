@@ -1,0 +1,17 @@
+---
+# tasks file for apache
+
+- name: Get Apache version installed on the nodes
+  shell: bash "{{ apache_home }}/bin/apachectl" -v 2>&1 | head -n 1 || echo "Unknown Apache Server"
+  register: apache_version_result
+
+- name: Stop eventual Apache server runing
+  service:
+    name: apache
+    state: stopped
+    enabled: no
+  ignore_errors: true
+  when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'"
+
+- include: install.yml
+  when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'"

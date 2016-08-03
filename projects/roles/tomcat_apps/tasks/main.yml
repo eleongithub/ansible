@@ -1,0 +1,15 @@
+---
+# tasks file for tomcat_apps
+
+1 - Stopper tomcat
+
+2 - Préparer tous les fichiers de configurations et les fichiers properties dans les bons repertoires
+
+3 - Télécharger le .war et le déposer dans le sous-repertoire webapps de Tomcat.
+
+4 - Renommer le .war et ROOT.war
+
+5 - Lancer Tomcat
+Context.xml doit etre un template
+il va contenir la configuration sécurisée de la bdd
+il sera copié dans catalina_home>/conf/Catalina/localhost/ et son nom sera celui de l''application posée dans l''application

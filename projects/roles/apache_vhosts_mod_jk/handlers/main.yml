@@ -1,0 +1,6 @@
+---
+# handlers file for apache_vhosts_mod_jk
+- name: Restart Apache
+  service:
+    name: apache
+    state: restarted

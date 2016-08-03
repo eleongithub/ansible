@@ -1,0 +1,55 @@
+---
+# tasks file for fail2ban
+
+- name: Installing fail2ban
+  apt:
+    pkg: fail2ban
+    state: present
+
+- name : Check original fail2ban configuration file exists
+  stat:
+    path: "{{ fail2ban_jail_configuration_orig_file }}"
+  register: conf_orig_file_exists
+  when: fail2ban_iptables_enabled
+
+- name: Copy original fail2ban configuration
+  copy:
+    src: "{{ fail2ban_jail_configuration_file }}"
+    dest: "{{ fail2ban_jail_configuration_orig_file }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: conf_orig_file_exists is defined and not conf_orig_file_exists.stat.exists
+
+- name: Copy fail2ban configuration file jail.conf
+  template:
+    src: jail.conf.j2
+    dest: "{{ fail2ban_jail_configuration_file }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Include iptables rule
+  include: iptables.yml
+  when: fail2ban_iptables_enabled
+
+- name: Include SSH rule
+  include: sshd.yml
+  when: fail2ban_ssh_enabled
+
+- name: Include ProFTP rule
+  include: proftpd.yml
+  when: fail2ban_proftp_enabled
+
+
+- name: Restart Fail2ban
+  command: echo "Restart Fail2ban..."
+  notify:
+    - Restart Fail2ban
+
+#https://docs.ansible.com/ansible/meta_module.html
+- meta: flush_handlers
+
+- name: Test with goss
+  include: goss.yml
+when: fail2ban_goss_enabled

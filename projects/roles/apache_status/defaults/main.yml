@@ -1,0 +1,19 @@
+---
+# default file for apache_status
+
+http_default_port: 80
+root_user: root
+root_group: sys
+apache_home: /opt/apache2
+apache_vhosts_dir: "{{ apache_home }}/vhosts"
+apache_conf_dir: "{{ apache_home }}/conf"
+apache_modules_dir: "{{ apache_home }}/modules"
+apache_modules_file: "{{ apache_conf_dir }}/modules.conf"
+apache_httpd_file: "{{ apache_conf_dir }}/httpd.conf"
+mod_status_url: "{{ nexus_public_repository }}/org/apache/mod_status/1.0/mod_status.so"
+mod_status_server_name: 'status.fr'
+mod_status_server_alias: 'www.status.fr'
+mod_status_require_ip: ''
+mod_status_require_host: ''
+mod_status_enable_authentication: True
+apache_server_admin: root@localhost

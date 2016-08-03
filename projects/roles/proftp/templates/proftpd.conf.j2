@@ -1,0 +1,83 @@
+#
+# /etc/proftpd/proftpd.conf -- This is a basic ProFTPD configuration file.
+# To really apply changes, reload proftpd after modifications, if
+# it runs in daemon mode. It is not required in inetd/xinetd mode.
+# 
+
+# Includes DSO modules
+Include /etc/proftpd/modules.conf
+
+# Set off to disable IPv6 support which is annoying on IPv4 only boxes.
+UseIPv6				on
+# If set on you can experience a longer connection delay in many cases.
+IdentLookups			off
+
+ServerName			"{{ proftp_server_name }}"
+ServerType			{{ proftp_type_conf }}
+DeferWelcome			off
+
+DefaultServer			on
+ShowSymlinks			off
+# Hide ProFTP version
+ServerIdent 			off
+
+# Use this to jail all users in their homes 
+DefaultRoot			~
+
+
+# Port 21 is the standard FTP port.
+Port				{{ proftp_default_port }}
+
+# In some cases you have to specify passive ports range to by-pass
+# firewall limitations. Ephemeral ports can be used for that, but
+# feel free to use a more narrow range.
+PassivePorts                  {{ firwall_ftp_min_passive_port }} {{ firwall_ftp_max_passive_port }}
+
+# If your host was NATted, this option is useful in order to
+# allow passive tranfers to work. You have to use your public
+# address and opening the passive ports used on your firewall as well.
+# MasqueradeAddress		1.2.3.4
+
+
+
+# To prevent DoS attacks, set the maximum number of child processes
+# to 30.  If you need to allow more than 30 concurrent connections
+# at once, simply increase this value.  Note that this ONLY works
+# in standalone mode, in inetd mode you should use an inetd server
+# that allows you to limit maximum number of processes per service
+# (such as xinetd)
+MaxInstances			30
+
+# Set the user and group that the server normally runs at.
+User				{{ proftp_user }}
+Group				{{ proftp_user_group }}
+
+# Umask 022 is a good standard umask to prevent new files and dirs
+# (second parm) from being group and world writable.
+Umask                           022
+# Normally, we want files to be overwriteable.
+AllowOverwrite			on
+
+
+# ProFTP Logs
+TransferLog 			{{ proftp_transfert_log_file }}
+SystemLog   			{{ proftp_system_log_file }}
+
+
+<IfModule mod_ctrls_admin.c>
+AdminControlsEngine off
+</IfModule>
+
+#
+# Alternative authentication frameworks
+#
+#Include /etc/proftpd/ldap.conf
+#Include /etc/proftpd/sql.conf
+
+# Useful to keep VirtualHost/VirtualRoot directives separated
+#
+#Include /etc/proftpd/virtuals.conf
+
+
+# Include other custom configuration files
+Include /etc/proftpd/conf.d/

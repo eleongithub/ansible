@@ -1,0 +1,21 @@
+---
+# defaults file for fail2ban
+
+fail2ban_iptables_enabled: False
+fail2ban_mta_agent: postfix
+fail2ban_init_script: "/etc/init.d/fail2ban"
+fail2ban_jail_configuration_file: "/etc/fail2ban/jail.conf"
+fail2ban_jail_configuration_orig_file: "/etc/fail2ban/jail.conf.orig"
+fail2ban_alert_mail: "root@localhost"
+fail2ban_goss_enabled: False
+fail2ban_goss_file: "/etc/fail2ban/goss.yml"
+
+# defaults variables for ssh
+fail2ban_ssh_enabled: False
+fail2ban_sshd_maxretry: 6
+fail2ban_sshd_bantime: 600
+
+# defaults variables for proftp
+fail2ban_proftp_enabled: False
+fail2ban_proftp_maxretry: 6
+fail2ban_proftp_bantime: 600

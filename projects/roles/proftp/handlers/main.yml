@@ -1,0 +1,7 @@
+---
+# handlers file for proftp
+
+- name: Restart ProFTP
+  service:
+    name: proftpd
+    state: restarted

@@ -1,0 +1,7 @@
+---
+# handlers file for tomcat_owasp
+
+- name: Restart Tomcat
+  service:
+    name: tomcat
+    state: restarted

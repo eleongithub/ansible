@@ -1,0 +1,28 @@
+---
+# tasks file for firewall_ufw
+
+- name : Install UFW package...
+  apt:
+    pkg: ufw
+    state: present
+
+- name: Reset firewall policy
+  ufw:
+    state: reset
+
+- name : Enable UFW and close all ports by default
+  ufw:
+    state: enabled
+    policy: deny
+
+- name: Allow access to common ports
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items: "{{ allow_ports }}"
+
+- name: Reload UFW
+  command: echo "Reload UFW..."
+  notify:
+    - Reload UFW

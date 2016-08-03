@@ -1,0 +1,9 @@
+---
+
+- name: Add Iptables Input trafic rule for Tomcat
+  command: >
+   /sbin/iptables -t filter -A INPUT -i {{ tomcat_conf_network_interface }} -p tcp --dport {{ tomcat_conf_http_port }} -j ACCEPT -m comment --comment "TCP - Tomcat Server Input trafic"
+
+- name: Add Iptables Output trafic rule for Tomcat
+  command: >
+   /sbin/iptables -t filter -A OUTPUT -o {{ tomcat_conf_network_interface }} -p tcp --dport {{ tomcat_conf_http_port }} -j ACCEPT -m comment --comment "TCP - Tomcat Server Output trafic"

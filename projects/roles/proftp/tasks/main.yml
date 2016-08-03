@@ -1,0 +1,59 @@
+---
+# tasks file for proftp
+
+- name: Check if ProFTP is installed on the system
+  shell: proftpd --version || echo "Unknown ProFTP Server"
+  register: proftp_version_result
+
+- name : Install proftp packages
+  include: install.yml
+  when: "('{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}')"
+
+- name: Create Group proftp
+  group:
+    name: "{{ proftp_user_group }}"
+    state: present
+
+- name: Create proftp user
+  user:
+    name: "{{ proftp_user }}"
+    createhome: no
+    group: "{{ proftp_user_group }}"
+    shell: /bin/false
+    comment: "ProFTD Server User"
+    state: present
+
+- name: Deploy ProFTP configuration file
+  template:
+    src: proftpd.conf.j2
+    dest: "{{ proftp_conf_path }}"
+
+- name: Define user "proftp" and group "proftp" as the owner of configuration directory
+  file:
+    path: /etc/proftpd
+    owner: "{{ proftp_user }}"
+    group: "{{ proftp_user_group }}"
+    recurse: yes
+
+- name: Define owner, group and right on ProFTP configuration files
+  file:
+    path: "{{ item }}"
+    owner: "{{ proftp_user }}"
+    group: "{{ proftp_user_group }}"
+    mode: "0644"
+  with_items: 
+    - "{{ proftp_modules_conf_path }}"
+    - "{{ proftp_conf_path }}"
+
+- name: Add Iptables rules for ProFTP
+  include: iptables.yml
+  when: iptables_enabled
+  
+- name: Restart ProFTP
+  command: echo "Restart ProFTP service..."
+  notify:
+    - Restart ProFTP
+
+- name: Test with goss
+  include: goss.yml
+  when: proftp_goss_enabled

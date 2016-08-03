@@ -1,0 +1,6 @@
+---
+# tasks file for ssh
+
+- name: Install sudo package
+  include: install.yml
+  when: ansible_os_family == "Debian"

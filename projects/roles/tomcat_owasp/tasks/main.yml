@@ -1,0 +1,61 @@
+---
+# tasks file for tomcat_owasp
+
+- name: Change files in CATALINA_HOME/conf to be read & execute (0500).
+  file:
+    path: "{{ ttomcat_owasp_last_version }}/conf"
+    owner: "{{ tomcat_owasp_user }}"
+    group: "{{ tomcat_owasp_user_group }}"
+    mode: 0500
+    recurse: yes
+
+- name: Change logs directory right.
+  file:
+    path: "{{ tomcat_owasp_last_version }}/logs"
+    mode: 0300
+    state: directory
+    recurse: yes
+
+- name: Delete unused files or directories
+  file:
+    path: "{{ tomcat_owasp_last_version }}/{{ item.path }}"
+    state: absent
+  with_items: "{{ tomcat_owasp_remove_files }}"
+
+- name: Delete script *.bat files. We don't need them on Linux plateform
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_fileglob:
+    - "{{ tomcat_owasp_last_version }}/bin/*.bat"
+  ignore_errors: true
+
+- name: Create tomcat server info directory
+  file:
+    path: "{{ tomcat_owasp_last_version }}/lib/{{ tomcat_owasp_server_info_dir }}"
+    owner: "{{ tomcat_owasp_user }}"
+    group: "{{ tomcat_owasp_user_group }}"
+    state: directory
+
+- name: Remove version string from HTTP error messages
+  template:
+    src: "ServerInfo.properties.j2"
+    dest: "{{ tomcat_owasp_last_version }}/lib/{{ tomcat_owasp_server_info_dir }}/ServerInfo.properties"
+    owner: "{{ tomcat_owasp_user }}"
+    group: "{{ tomcat_owasp_user_group }}"
+
+- name: Restart tomcat
+  command: echo "Restart Tomcat service..."
+  notify:
+    - Restart tomcat
+
+#TODO
+#https://confluence.atlassian.com/jira064/tomcat-security-best-practices-720411783.html
+#http://tomcat.apache.org/tomcat-7.0-doc/security-howto.html
+#https://www.upguard.com/articles/15-ways-to-secure-apache-tomcat-8
+#https://www.mulesoft.com/tcat/tomcat-security
+###################
+
+# Remove version string from HTTP error messages by repacking CATALINA_HOME/server/lib/catalina.jar
+#- name: Remove version string from HTTP error messages by repacking CATALINA_HOME/server/lib/catalina.jar
+  #shell: cd "{{ tomcat_last_version }}/lib" && jar xf catalina.jar org/apache/catalina/util/ServerInfo.properties && sed -i 's/server.info.*/server.info=Apache Tomcat/' org/apache/catalina/util/ServerInfo.properties && jar uf catalina.jar org/apache/catalina/util/ServerInfo.properties && rm -rf "{{ tomcat_last_version }}/lib/org"

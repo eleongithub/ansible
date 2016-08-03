@@ -1,0 +1,21 @@
+---
+# defaults file for tomcat
+
+tomcat_version: 8.0.32
+tomcat_libtcnative_version: 1.1.34
+tomcat_native_url: "{{ nexus_public_repository }}/org/tomcat/apache/tomcat-native/{{ tomcat_libtcnative_version }}/tomcat-native-{{ tomcat_libtcnative_version }}.tar.gz"
+tomcat_libtcnative_util_home: "{{ tomcat_last_version }}/bin/tomcat-native-{{ tomcat_libtcnative_version }}-src/jni/native"
+tomcat_libtcnative_util_tarball_name: "tomcat-native-{{ tomcat_libtcnative_version }}-src.tar.gz"
+tomcat_apr_config_file: "/usr/bin/apr-1-config"
+tomcat_java_home: "/opt/java"
+tomcat_tarball_name: "apache-tomcat-{{ tomcat_version }}.tar.gz"
+tomcat_url: "{{ nexus_public_repository }}/org/tomcat/apache/apache-tomcat/{{ tomcat_version }}/{{ tomcat_tarball_name }}"
+tomcat_versions: "/opt/tomcat_versions"
+tomcat_last_version: "{{ tomcat_versions }}/apache-tomcat-{{ tomcat_version }}"
+tomcat_home: "/opt/tomcat"
+tomcat_required_packages:
+ - 'libapr1'
+ - 'libapr1-dev'
+ - 'libaprutil1'
+ - 'libaprutil1-dev'
+ - 'libssl-dev'

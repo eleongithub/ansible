@@ -1,0 +1,23 @@
+---
+# defaults file for apache_conf
+
+apache_conf_http_default_port: 80
+apache_conf_https_default_port: 443
+apache_conf_home: /opt/apache2
+apache_conf_logs_dir: "{{ apache_home }}/logs"
+apache_conf_dir: "{{ apache_home }}/conf"
+apache_conf_modules_file: "{{ apache_conf_dir }}/modules.conf"
+apache_conf_httpd_file: "{{ apache_conf_dir }}/httpd.conf"
+apache_conf_init_script: /etc/init.d/apache
+apache_conf_root_user: root
+apache_conf_root_group: sys
+apache_conf_user: wwwd
+apache_conf_user_group: wwwd
+apache_conf_log_level: warn
+apache_conf_max_clients: 300
+apache_conf_keep_alive: 'On'
+apache_conf_max_keep_alive_requests: 500
+apache_conf_keep_alive_timeout: 15
+apache_conf_files:
+ - { src: 'httpd.conf.j2', dest: '{{ apache_conf_httpd_file }}' }
+ - { src: 'modules.conf.j2', dest: '{{ apache_conf_modules_file }}' }

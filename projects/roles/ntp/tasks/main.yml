@@ -1,0 +1,18 @@
+---
+# tasks file for ntp
+
+- name: Installing NTP...
+  apt:
+    name: ntp
+    state: present
+    update_cache: yes
+
+- name: Add Iptables rules
+  include: iptables.yml
+  when: iptables_enabled
+
+- name: Start the ntp service
+  service:
+    name: ntp
+    state: started
+    enabled: true

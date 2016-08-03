@@ -1,0 +1,13 @@
+---
+# defaults file for apache_mod_jk
+root_user: root
+root_group: sys
+apache_home: /opt/apache2
+apache_modules_dir: "{{ apache_home }}/modules"
+apache_modules_file: "{{ apache_conf_dir }}/modules.conf"
+apr_config_file: /usr/bin/apr-1-config
+mod_jk_version: 1.2.41
+mod_jk_tarball_name: "tomcat-connectors-{{ mod_jk_version }}-src.tar.gz"
+mod_jk_url: "{{ nexus_public_repository }}/org/tomcat/apache/tomcat-connectors/{{ mod_jk_version }}/tomcat-connectors-{{ mod_jk_version }}.tar.gz"
+mod_jk_unzip_dir: /tmp/mod_jk
+mod_jk_dir: "{{ mod_jk_unzip_dir }}/tomcat-connectors-{{ mod_jk_version }}-src/native"

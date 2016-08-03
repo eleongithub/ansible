@@ -1,0 +1,16 @@
+---
+# This playbook installs proftp packages
+
+- name: Purge ProFTPd Server package if present
+  apt:
+    pkg: "{{ item }}"
+    state: absent
+    purge: yes
+  with_items:
+    - "proftpd"
+    - "proftpd-basic"
+
+- name: Installing ProFTPd Server...
+  apt:
+    pkg: proftpd
+    state: present

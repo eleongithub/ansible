@@ -1,0 +1,70 @@
+---
+# tasks file for ssh
+
+- name : make a backup for file
+  copy:
+    src: "{{ item }}"
+    dest: "{{ item }}.original"
+    owner: root
+    group: root
+    mode: 0644
+ with_items : "{{ ssh_backup_files }}"
+
+- name : Init banner file with little information
+  command: echo "{{ ssh_banner_information }}" > "{{ item.src }}"
+  with_items:  "{{ ssh_backup_files }}"
+
+- name : Init motd file with warning message
+  copy:
+    src: motd
+    dest: "{{ ssh_motd_file }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name : Init timeout for unactive user
+  blockinfile:
+    dest: "{{ ssh_profile_file }}"
+    insertafter: EOF
+    block: |
+        TMOUT={{ ssh_timeout }}
+        HISTSIZE={{ ssh_histsize }}
+        HISTFILESIZE={{ ssh_histfilesize }}
+        export TMOUT HISTSIZE HISTFILESIZE
+    owner: root
+    group: root
+    mode: 0644
+    validate: 'source %s'
+
+- name: Install sudo package
+  apt:
+    pkg: openssh-server
+    state: present
+
+- name: Change the banner
+  copy:
+    src: banner
+    dest: "{{ ssh_banner_file }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Change the config of SSH
+  lineinfile: 
+    dest: /etc/ssh/sshd_config 
+    regexp: "{{ item.regexp }}" 
+    line: "{{ item.value }}"
+    owner: root
+    group: root
+    mode: 0644
+    state: present
+  with_items: "{{ ssh_config }}"
+
+- name: Add Iptables rules for SSH
+  include: iptables.yml
+  when: ssh_iptables_enabled
+
+- name: Restart SSH
+  command: echo "Restart SSH"
+  notify:
+    - Restart SSH

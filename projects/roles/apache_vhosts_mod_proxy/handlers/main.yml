@@ -1,0 +1,7 @@
+---
+# handlers file for apache_vhosts_mod_proxy
+
+- name: Restart Apache
+  service:
+    name: apache
+    state: restarted

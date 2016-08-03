@@ -1,0 +1,77 @@
+---
+
+
+file:
+  {{ apache_conf_home }}:
+    exists: true
+    owner: {{ apache_conf_root_user }}
+    group: {{ apache_conf_root_group }}
+    filetype: directory
+
+group:
+  {{ apache_conf_user_group }}:
+    exists: true
+
+user:
+  {{ apache_conf_user }}:
+    exists: true
+    groups:
+    - {{ apache_conf_user_group }}
+    shell: /bin/false
+    
+    
+- name: Deploy configuration file for Apache
+  template:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    owner: "{{root_user}}"
+    group: "{{root_group}}"
+  with_items: "{{ apache_conf_files }}"
+
+- name: Copy Apache control script
+  template:
+    src: apache.sh.j2
+    dest: "{{ apache_conf_init_script }}"
+    mode: 0755
+
+- name: Enable Apache init script
+  service:
+    name: apache
+    enabled: yes
+
+- name: Restart Apache
+  command: echo "Restart Apache..."
+  notify:
+    - Restart Apache
+
+
+
+file:
+  /etc/firewall-start-rules:
+    exists: true
+    # optional attributes
+    mode: "0744"
+    owner: root
+    group: root
+    filetype: file
+
+file:
+  /etc/firewall-stop-rules:
+    exists: true
+    mode: "0744"
+    owner: root
+    group: root
+    filetype: file
+
+file:
+  /etc/init.d/firewall:
+    exists: true
+    mode: "0755"
+    owner: root
+    group: root
+    filetype: file
+
+service:
+  apache:
+    enabled: true
+    running: true

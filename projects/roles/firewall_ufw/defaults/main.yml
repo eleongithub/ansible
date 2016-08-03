@@ -1,0 +1,22 @@
+---
+# defaults file for firewall_ufw
+
+# Common port:
+#   21 - ftp
+#   22: SSH
+#   23 - telnet
+#   25: SMTP
+#   53: DNS
+#   80: HTTP
+#   110 - pop3
+#   123: NTP
+#   143 - imap
+#   443: HTTPS
+#   1000 - webmin
+#   2222: SSH alternate
+#   4949: Munin
+#   6082: Varnish admin
+#   8080: HTTP alternate (often used with Tomcat)
+#   8983: Tomcat HTTP
+#   8443: Tomcat HTTPS
+#   9000: SonarQube

@@ -1,0 +1,24 @@
+---
+
+package:
+  {{ postgres_server_pkg }}:
+    installed: true
+
+package:
+  {{ postgres_client_pkg }}:
+    installed: true
+
+{% for item in postgres_conf_files %}
+file:
+{{ item.dest }}:
+exists: true
+{% endfor %} 
+
+service:
+  postgresl:
+    enabled: true
+    running: true
+
+port:
+  tcp:{{ postgres_port }}:
+    listening: true

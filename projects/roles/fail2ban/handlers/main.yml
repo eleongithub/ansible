@@ -1,0 +1,7 @@
+---
+# handlers file for fail2ban
+
+- name: Restart Fail2ban
+  service:
+    name: fail2ban
+    state: restarted
