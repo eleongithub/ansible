@@ -1,0 +1,15 @@
+---
+mod_security_version: 2.9.1
+mod_security_tarball_name: "modsecurity-{{ mod_security_version }}.tar.gz"
+mod_security_unzip_dir: /opt/mod_security
+mod_security_dir: "{{ mod_security_unzip_dir }}/modsecurity-{{ mod_security_version }}"
+mod_security_logs_dir: "/opt/apache2/logs/modsecurity"
+mod_security_conf_dir: "/opt/apache2/logs/modsecurity"
+mod_security_conf_files:
+ - { src: 'modsecurity.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity.conf', force: yes }
+ - { src: 'modsecurity_crs_10_setup.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_10_setup.conf', force: yes }
+ - { src: 'modsecurity_crs_16_session_hijacking.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_16_session_hijacking.conf', force: yes }
+ - { src: 'modsecurity_crs_41_sql_injection_attacks.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_41_sql_injection_attacks.conf', force: yes }
+ - { src: 'modsecurity_crs_43_csrf_protection.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_43_csrf_protection.conf', force: yes }
+ - { src: 'modsecurity_crs_41_xss_attacks.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_41_xss_attacks.conf', force: yes }
+ - { src: 'modsecurity_crs_49_inbound_blocking.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_49_inbound_blocking.conf', force: yes }

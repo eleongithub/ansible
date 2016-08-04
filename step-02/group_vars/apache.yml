@@ -23,21 +23,6 @@ apache_required_packages:
  - { package: 'libaprutil1-dev' } 
  - { package: 'libssl-dev' }
  - { package: 'automake' } 
-mod_security_version: 2.9.1
-mod_security_tarball_name: "modsecurity-{{ mod_security_version }}.tar.gz"
-mod_security_unzip_dir: /opt/mod_security
-mod_security_dir: "{{ mod_security_unzip_dir }}/modsecurity-{{ mod_security_version }}"
-mod_security_logs_dir: "{{ apache_logs_dir }}/modsecurity"
-mod_security_conf_dir: "{{ apache_conf_dir }}/modsecurity"
-mod_security_conf_files:
- - { src: 'modsecurity.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity.conf', force: yes }
- - { src: 'modsecurity_crs_10_setup.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_10_setup.conf', force: yes }
- - { src: 'modsecurity_crs_16_session_hijacking.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_16_session_hijacking.conf', force: yes }
- - { src: 'modsecurity_crs_41_sql_injection_attacks.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_41_sql_injection_attacks.conf', force: yes }
- - { src: 'modsecurity_crs_43_csrf_protection.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_43_csrf_protection.conf', force: yes }
- - { src: 'modsecurity_crs_41_xss_attacks.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_41_xss_attacks.conf', force: yes }
- - { src: 'modsecurity_crs_49_inbound_blocking.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_49_inbound_blocking.conf', force: yes }
-
 apache_server_dns: localhost
 apache_server_admin: admin@example.com
 apache_conf_files:
@@ -50,28 +35,11 @@ apache_conf_keep_alive: 'On'
 apache_conf_max_keep_alive_requests: 500 
 apache_conf_keep_alive_timeout: 15
 
-# SSL Certificate Authority 
+# SSL Certificate Authority TODO : à enlever
 apache_enable_ssl: true
-apache_ssl_ca_bits: 2048
-apache_ssl_ca_md: sha256
-apache_ssl_ca_conf_dir: "{{ apache_conf_dir }}/ssl/ca"
-apache_ssl_ca_key: "{{ apache_ssl_ca_conf_dir }}/ca_key.pem"
-apache_ssl_ca_cert: "{{ apache_ssl_ca_conf_dir }}/ca_cert.pem"
-apache_ssl_ca_default_days: "{{ ssl_certificate_days }}"
-apache_ssl_ca_country: FR
-apache_ssl_ca_state: Rhone
-apache_ssl_ca_locality: Lyon
-apache_ssl_ca_organisation: Syscom
-apache_ssl_ca_organisation_unit: IT
-apache_ssl_ca_name: Authority Company Inc,
-apache_ssl_ca_subj: "/C=\"{{ apache_ssl_ca_country }}\"/ST=\"{{ apache_ssl_ca_state }}\"/L=\"{{ apache_ssl_ca_locality }}\"/O=\"{{ apache_ssl_ca_organisation }}\"/OU=\"{{ apache_ssl_ca_organisation_unit }}\"/CN={{ apache_ssl_ca_name }}"
 
-# Configuration mod_jk
+# Activation mod_jk TODO : à enlever
 mod_jk_enable: true
-mod_jk_version: 1.2.41
-mod_jk_unzip_dir: /opt/mod_jk
-mod_jk_dir: "{{ mod_jk_unzip_dir }}/tomcat-connectors-{{ mod_jk_version }}-src/native"
-mod_jk_tarball_name: "tomcat-connectors-{{ mod_jk_version }}-src.tar.gz"
 
 # Configuration mod_proxy
 mod_proxy_enable: true

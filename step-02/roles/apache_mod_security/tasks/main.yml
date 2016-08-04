@@ -1,6 +1,10 @@
 ---
 # This playbook contains Mod Security installation/configuration for Apache.
 
+- name: Install required librairies
+  apt: pkg={{ item.package }} state=present
+  with_items: "{{ mod_security_required_packages }}"
+  
 - name: Create Mod Security temp directory
   file: 
     path: "{{ mod_security_unzip_dir }}"
@@ -44,3 +48,8 @@
     dest: "{{item.dest}}"
     force: "{{item.force}}"
   with_items: "{{ mod_security_conf_files }}"
+  
+- name: Restart Apache
+  command: echo "Restart Apache service..."
+  notify: 
+    - Restart Apache

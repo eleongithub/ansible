@@ -23,16 +23,16 @@
   file: 
     path: "{{ apache_home }}"
     state: absent
-  
-- name: Unzip Apache archive
-  unarchive: 
-    src: "{{ apache_tarball_name }}"
-    dest: "{{ apache_versions }}/"
-    
+
 - name: Create Apache home directory
   file: 
     path: "{{ apache_home }}"
     state: directory
+    
+- name: Unzip Apache archive
+  unarchive: 
+    src: "{{ apache_tarball_name }}"
+    dest: "{{ apache_versions }}/"
   
 - name: Compile Apache 
   shell: cd {{ apache_last_version }} &&
@@ -77,6 +77,3 @@
       
 - name: Execute commands to install Apache. 
   shell: cd {{ apache_last_version }} && make && umask 022 && make install && make clean
-
-- name: Change the right of Apache directory 
-  shell: chown -R root:sys {{ apache_home }}

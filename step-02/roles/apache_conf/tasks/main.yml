@@ -14,6 +14,9 @@
     path: "{{ apache_init_script }}"
     state: absent
   ignore_errors: true
+
+- name: Change the right of Apache directory 
+  shell: chown -R root:sys {{ apache_home }}
   
 - name: Delete user Apache
   user: name={{ apache_user }} state=absent
@@ -51,18 +54,8 @@
 
 - name: Enable Apache init script
   service: name=apache enabled=yes
-  
-- name: Install Mod Security for Apache
-  include: mod_security_main.yml
-  
-- name: Install certification authority files if mod_ssl is enabled
-  include: certifcation_authority_main.yml
-  when: "{{ apache_enable_ssl }}"
-  
-- name: Install Mod JK if mod_jk is enabled
-  include: mod_jk_main.yml
-  when: "{{ mod_jk_enable }}"
- 
+
+
 - name: Restart Apache
   command: echo "Restart Apache service..."
   notify: 

@@ -38,3 +38,8 @@
 # Create X509 Certification for authority
 - name: Create X509 Certification for the CA
   shell: openssl req -new -x509 -key {{ apache_ssl_ca_key }} -out {{ apache_ssl_ca_cert }} -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf" -extensions v3_ca -subj "{{ apache_ssl_ca_subj }}"
+  
+- name: Restart Apache
+  command: echo "Restart Apache service..."
+  notify: 
+    - Restart Apache

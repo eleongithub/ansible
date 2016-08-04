@@ -9,10 +9,12 @@ tomcat_tarball_name: apache-tomcat-8.0.32.tar.gz
 tomcat_shutdown_command: "SHUTDOWNA1B2Z78UJHGJKLMLM"
 
 tomcat_required_packages:
+ - { package: 'libapr1' } 
+ - { package: 'libapr1-dev' } 
  - { package: 'libaprutil1' } 
  - { package: 'libaprutil1-dev' } 
  - { package: 'libssl-dev' }
- 
+
 firewall_specific_env_ports:
  - { port: '{{ tomcat_http_port }}', protocol: 'tcp', direction: 'INPUT', comment: 'HTTP Tomcat Input trafic' }
  - { port: '{{ tomcat_http_port }}', protocol: 'tcp', direction: 'OUTPUT', comment: 'HTTP Tomcat Output trafic' }

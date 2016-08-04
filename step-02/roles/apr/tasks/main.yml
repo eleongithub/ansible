@@ -1,8 +1,0 @@
----
-# This playbook contains APR installation (Apache and/or Apache Tomcat).
-
-- name: Install Apr
-  apt: pkg=libapr1 state=present
-  
-- name: Install Apr-dev
-  apt: pkg=libapr1-dev state=present
