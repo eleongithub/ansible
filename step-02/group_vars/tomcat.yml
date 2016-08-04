@@ -1,12 +1,11 @@
 ---
+tomcat_version: 8.0.32
 tomcat_versions: "/opt/tomcat_versions"
 tomcat_home: /opt/tomcat
 tomcat_user: tomcat
 tomcat_user_group: tomcat
-tomcat_last_version: "{{ tomcat_versions }}/apache-tomcat-8.0.32"
-tomcat_init_script: /etc/init.d/tomcat
-tomcat_tarball_name: apache-tomcat-8.0.32.tar.gz
-tomcat_shutdown_command: "SHUTDOWNA1B2Z78UJHGJKLMLM"
+tomcat_last_version: "{{ tomcat_versions }}/apache-tomcat-{{ tomcat_version }}"
+tomcat_tarball_name: "apache-tomcat-{{ tomcat_version }}.tar.gz"
 
 tomcat_required_packages:
  - { package: 'libapr1' } 
@@ -23,27 +22,10 @@ firewall_specific_env_ports:
  - { port: '{{ tomcat_mod_jk_port }}', protocol: 'tcp', direction: 'INPUT', comment: 'Tomcat Mod JK Input trafic' }
  - { port: '{{ tomcat_mod_jk_port }}', protocol: 'tcp', direction: 'OUTPUT', comment: 'Tomcat Mod JK Output trafic' }
  
-tomcat_remove_files:
- - { path: 'webapps/ROOT/' }
- #- { path: 'webapps/examples/' }
- - { path: 'webapps/host-manager/' }
- - { path: 'webapps/manager/' }
- - { path: 'conf/tomcat-users.xml' }
- - { path: 'conf/tomcat-users.xsd' } 
- #- { path: 'webapps/docs/' }
-
-tomcat_conf_files:
- - { src: 'server.xml.j2', dest: '{{ tomcat_last_version }}/conf/server.xml', force: yes }
- - { src: 'setenv.sh.j2', dest: '{{ tomcat_last_version }}/bin/setenv.sh', force: yes }
- - { src: 'web.xml.j2', dest: '{{ tomcat_last_version }}/conf/web.xml', force: yes }
- - { src: 'logging.properties.j2', dest: '{{ tomcat_last_version }}/conf/logging.properties', force: yes }
-
-
 libtcnative_version: 1.1.34
 libtcnative_util_home: "{{ tomcat_last_version }}/bin/tomcat-native-{{ libtcnative_version }}-src/jni/native"
 libtcnative_util_tarball_name: "tomcat-native-{{ libtcnative_version }}-src.tar.gz"
-tomcat_server_info_dir: "org/apache/catalina/util"
-
+ 
 secure_conf_dir: "{{ tomcat_last_version }}/conf/ssl"
 # SSL with Java Keystore
 keystore_ssl_enable: false

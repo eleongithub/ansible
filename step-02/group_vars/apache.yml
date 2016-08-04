@@ -23,6 +23,10 @@ apache_required_packages:
  - { package: 'libaprutil1-dev' } 
  - { package: 'libssl-dev' }
  - { package: 'automake' } 
+ - { package: 'libapr1' } 
+ - { package: 'libapr1-dev' } 
+ 
+
 apache_server_dns: localhost
 apache_server_admin: admin@example.com
 apache_conf_files:

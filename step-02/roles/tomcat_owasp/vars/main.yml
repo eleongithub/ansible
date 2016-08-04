@@ -1,0 +1,10 @@
+---
+tomcat_remove_files:
+ - { path: 'webapps/ROOT/' }
+ #- { path: 'webapps/examples/' }
+ - { path: 'webapps/host-manager/' }
+ - { path: 'webapps/manager/' }
+ - { path: 'conf/tomcat-users.xml' }
+ - { path: 'conf/tomcat-users.xsd' } 
+ #- { path: 'webapps/docs/' }
+tomcat_server_info_dir: "org/apache/catalina/util"

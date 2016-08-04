@@ -1,10 +1,24 @@
 ---
+
 mod_security_version: 2.9.1
 mod_security_tarball_name: "modsecurity-{{ mod_security_version }}.tar.gz"
-mod_security_unzip_dir: /opt/mod_security
+mod_security_required_packages:
+ - { package: 'libapr1' } 
+ - { package: 'libapr1-dev' } 
+ - { package: 'libpcre3' }
+ - { package: 'libpcre3-dev' }
+ - { package: 'libxml2 ' }
+ - { package: 'libxml2-dev' }
+ - { package: 'libaprutil1' }
+ - { package: 'libaprutil1-dev' } 
+ - { package: 'libcurl3' }
+ - { package: 'liblua5.1-0' } 
+ - { package: 'liblua5.1-0-dev' }
+
+mod_security_unzip_dir: /tmp/mod_security
 mod_security_dir: "{{ mod_security_unzip_dir }}/modsecurity-{{ mod_security_version }}"
 mod_security_logs_dir: "/opt/apache2/logs/modsecurity"
-mod_security_conf_dir: "/opt/apache2/logs/modsecurity"
+mod_security_conf_dir: "/opt/apache2/conf/modsecurity"
 mod_security_conf_files:
  - { src: 'modsecurity.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity.conf', force: yes }
  - { src: 'modsecurity_crs_10_setup.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_10_setup.conf', force: yes }

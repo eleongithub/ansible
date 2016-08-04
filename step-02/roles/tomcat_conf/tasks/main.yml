@@ -40,52 +40,21 @@
     shell: /bin/bash 
     state: present
   
-- name : Check tomcat version directory exists
-  stat: path={{ tomcat_versions }}
-  register: tomcat_versions_dir_exists
-  
-- name: Create tomcat versions directory
+
+- name: Change the owner of tomcat versions directory
   file: 
     path: "{{ tomcat_versions }}"
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user_group }}"
-    state: directory 
     recurse: yes
-  when: not tomcat_versions_dir_exists.stat.exists
-
-- name: Delete the tomcat home link 
+    
+- name: Change the owner of link to the last tomcat directory
   file: 
-    dest: "{{ tomcat_home }}"
-    state: absent
-  
-- name: Delete the last version directory
-  file: 
-    dest: "{{ tomcat_last_version }}"
-    state: absent
-  ignore_errors: true
-  
-- name: Install required librairies
-  apt: pkg={{item.package}} state=present
-  with_items: "{{ tomcat_required_packages }}"
-
-- name: Unzip the tomcat archive
-  unarchive: 
-    src: "{{ tomcat_tarball_name }}"
-    dest: "{{ tomcat_versions }}/"
-  
-- name: Unarchive Tomcat native library
-  unarchive: 
-    src: "{{ libtcnative_util_tarball_name }}"
-    dest: "{{ tomcat_last_version }}/bin"
-   
-- name: Install Tomcat native library
-  shell: cd {{ libtcnative_util_home }} && ./configure --with-apr={{ apr_config_file }} --with-java-home={{ java_home }} --prefix={{ tomcat_last_version }} && make && make install
-  when: "{{ not open_ssl_enable }}"
-  
-- name: Install Tomcat native library with SSL
-  shell: cd {{ libtcnative_util_home }} && ./configure --with-apr={{ apr_config_file }} --with-java-home={{ java_home }} --with-ssl=yes --prefix={{ tomcat_last_version }} && make && make install
-  when: "{{ open_ssl_enable }}"
-  
+    src: "{{ tomcat_last_version }}"
+    path: "{{ tomcat_home }}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user_group }}"
+    
 - name: Deploy conf Tomcat files (server.xml and setenv.sh)
   template: 
     src: "{{item.src}}"
@@ -94,34 +63,6 @@
   with_items:
    - "{{ tomcat_conf_files }}"
    
-- name: Create tomcat security directory
-  file: 
-    path: "{{ secure_conf_dir }}"
-    owner: "{{ tomcat_user }}"
-    group: "{{ tomcat_user_group }}"
-    state: directory 
-    recurse: yes
-  when: "{{ open_ssl_enable or keystore_ssl_enable }}"
-    
-- name: Install SSL certificats files with openssl
-  include: open_ssl_main.yml
-  when: "{{ open_ssl_enable }}"
-  
-- name: Install SSL files with Java Keytool
-  include: keystore_ssl_main.yml
-  when: "{{ keystore_ssl_enable }}"
-  
-- name: Install OWASP recommandations
-  include: owasp_main.yml
-  
-- name: Create link to the last tomcat directory
-  file: 
-    src: "{{ tomcat_last_version }}"
-    path: "{{ tomcat_home }}"
-    owner: "{{ tomcat_user }}"
-    group: "{{ tomcat_user_group }}"
-    state: link
-
 - name: Copy Tomcat init script
   template: 
     src: "tomcat.sh.j2"
@@ -132,7 +73,7 @@
 - name: Enable Tomcat service
   service: name=tomcat enabled=yes
 
-- name: restart tomcat
+- name: Restart tomcat
   command: echo "Restart Tomcat service..."
   notify: 
-    - restart tomcat
+    - Restart tomcat

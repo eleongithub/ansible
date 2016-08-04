@@ -1,0 +1,4 @@
+# roles/tomcat_owasp/handlers/main.yml
+---
+- name: Restart Tomcat
+  service: name=tomcat state=restarted

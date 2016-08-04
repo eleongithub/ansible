@@ -5,41 +5,7 @@
   service: name=tomcat state=stopped enabled=no
   ignore_errors: true
 
-- name: Remove eventual tomcat from boot service
-  shell: insserv -r tomcat
-  ignore_errors: true
-  
-- name : Remove eventual tomcat init script from the system
-  file: 
-    path: "{{ tomcat_init_script }}"
-    state: absent
-  ignore_errors: true
-  
-- name: Delete User Tomcat 
-  user: 
-    name: "{{ tomcat_user }}"
-    state: absent
-  ignore_errors: true
 
-- name: Delete Group Tomcat 
-  group: 
-    name: "{{ tomcat_user_group }}"
-    state: absent
-  ignore_errors: true
-  
-- name: Create Group Tomcat 
-  group: 
-    name: "{{ tomcat_user_group }}"
-    state: present
-
-- name: Create User Tomcat 
-  user: 
-    name: "{{ tomcat_user }}"
-    createhome: no 
-    group: "{{ tomcat_user_group }}"
-    shell: /bin/bash 
-    state: present
-  
 - name : Check tomcat version directory exists
   stat: path={{ tomcat_versions }}
   register: tomcat_versions_dir_exists
@@ -47,8 +13,6 @@
 - name: Create tomcat versions directory
   file: 
     path: "{{ tomcat_versions }}"
-    owner: "{{ tomcat_user }}"
-    group: "{{ tomcat_user_group }}"
     state: directory 
     recurse: yes
   when: not tomcat_versions_dir_exists.stat.exists
@@ -86,14 +50,7 @@
   shell: cd {{ libtcnative_util_home }} && ./configure --with-apr={{ apr_config_file }} --with-java-home={{ java_home }} --with-ssl=yes --prefix={{ tomcat_last_version }} && make && make install
   when: "{{ open_ssl_enable }}"
   
-- name: Deploy conf Tomcat files (server.xml and setenv.sh)
-  template: 
-    src: "{{item.src}}"
-    dest: "{{item.dest}}"
-    force: "{{item.force}}"
-  with_items:
-   - "{{ tomcat_conf_files }}"
-   
+
 - name: Create tomcat security directory
   file: 
     path: "{{ secure_conf_dir }}"
@@ -111,28 +68,9 @@
   include: keystore_ssl_main.yml
   when: "{{ keystore_ssl_enable }}"
   
-- name: Install OWASP recommandations
-  include: owasp_main.yml
   
 - name: Create link to the last tomcat directory
   file: 
     src: "{{ tomcat_last_version }}"
     path: "{{ tomcat_home }}"
-    owner: "{{ tomcat_user }}"
-    group: "{{ tomcat_user_group }}"
     state: link
-
-- name: Copy Tomcat init script
-  template: 
-    src: "tomcat.sh.j2"
-    dest: "{{ tomcat_init_script }}"
-    force: yes 
-    mode: 0755
-
-- name: Enable Tomcat service
-  service: name=tomcat enabled=yes
-
-- name: restart tomcat
-  command: echo "Restart Tomcat service..."
-  notify: 
-    - restart tomcat
