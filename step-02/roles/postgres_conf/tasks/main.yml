@@ -1,0 +1,16 @@
+---  
+- name: Deploy configurations files
+  template: 
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    force: "{{item.force}}"
+  with_items:
+   - "{{ postgres_conf_files }}"
+
+- name: Enable/Start PostgreSQL Server
+  service: name=postgresql enabled=yes
+  
+- name: Restart PostgreSQL
+  command: echo "Restart PostgreSQL Database..."
+  notify: 
+    - Restart PostgreSQL

@@ -7,7 +7,7 @@
   become: yes
   roles:
     - { role: common, tags: ['always'] }
-    - { role: firewall, tags: ['always'] }
+    #- { role: firewall, tags: ['always'] }
     
 # Install JDK
 - hosts: tomcat
@@ -40,7 +40,7 @@
     - { role: tomcat, when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'", tags: ['tomcat'] }
     - { role: tomcat_conf, tags: ['tomcat_conf'] }
     - { role: tomcat_owasp, tags: ['tomcat_owasp'] }
-    - { role: tomcat_apps, tags:['tomcat_apps'] }
+    - { role: tomcat_apps, tags: ['tomcat_apps'] }
     
 # Install Apache Server
 - hosts: apache

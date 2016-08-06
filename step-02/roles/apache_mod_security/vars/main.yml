@@ -7,7 +7,7 @@ mod_security_required_packages:
  - { package: 'libapr1-dev' } 
  - { package: 'libpcre3' }
  - { package: 'libpcre3-dev' }
- - { package: 'libxml2 ' }
+ - { package: 'libxml2' }
  - { package: 'libxml2-dev' }
  - { package: 'libaprutil1' }
  - { package: 'libaprutil1-dev' } 

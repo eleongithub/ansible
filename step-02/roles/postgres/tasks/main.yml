@@ -20,14 +20,3 @@
 - name: Install PostgreSQL Client
   apt: pkg={{ postgres_client_pkg }} state=present
   when: "'{{ check_exists_postgres.stdout }}' != '{{ postgres_version }}'"
-  
-- name: Deploy configurations files
-  template: 
-    src: "{{item.src}}"
-    dest: "{{item.dest}}"
-    force: "{{item.force}}"
-  with_items:
-   - "{{ postgres_conf_files }}"
-
-- name: Enable/Start PostgreSQL Server
-  service: name=postgresql state=started enabled=yes
