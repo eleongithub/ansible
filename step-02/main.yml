@@ -22,8 +22,12 @@
 #Install Postgres SGBD, schema and/or Dbmaintain
 - hosts: dbserver
   become: yes
+  pre_tasks:
+   - name: Check if postgresql is installed on the system
+     shell: aptitude search {{ postgres_server_pkg }} || echo "Unknown PostgreSQL Server"
+     register: postgresql_exists
   roles:
-    - { role: postgres, tags: ['postgres'] }
+    - { role: postgres, when: "'{{ postgres_server_pkg }}' not in '{{ postgresql_exists.stdout }}'", tags: ['postgres'] }
     - { role: postgres_conf, tags: ['postgres_conf'] }
     - { role: postgres_instance, tags: ['postgres_instance'] }
     #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain
@@ -34,7 +38,7 @@
   become: yes
   pre_tasks:
    - name: Check if tomcat is installed on the system
-     shell: cat "{{ tomcat_home }}/RELEASE-NOTES"|grep "Apache Tomcat Version" || echo "unknown"
+     shell: cat "{{ tomcat_home }}/RELEASE-NOTES"|grep "Apache Tomcat Version" || echo "Unknown Tomcat Server"
      register: tomcat_version_result
   roles:
     - { role: tomcat, when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'", tags: ['tomcat'] }
@@ -47,7 +51,7 @@
   become: yes
   pre_tasks:
    - name: Get Apache version installed on the nodes
-     shell: bash "{{ apache_home }}/bin/apachectl" -v 2>&1 | head -n 1 || echo "unknown"
+     shell: bash "{{ apache_home }}/bin/apachectl" -v 2>&1 | head -n 1 || echo "Unknown Apache Server"
      register: apache_version_result
   roles:
     - { role: apache, when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'", tags: ['apache'] }
@@ -63,7 +67,9 @@
   become: yes
   pre_tasks:
    - name: Check if ProFTP is installed on the system
-     shell: proftpd --version || echo "unknown"
-     register: proftpd_version_result
+     shell: proftpd --version || echo "Unknown ProFTP Server"
+     register: proftp_version_result
   roles:
-    - { role: proftp, when: "'{{ proftpd_version }}' not in '{{ proftpd_version_result.stdout }}'", tags: ['proftp'] }
+    - { role: proftp, when: "'{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}'", tags: ['proftp'] }
+    - { role: proftp_conf, tags: ['proftp_conf'] }
+    - { role: proftp_ssl, tags: ['proftp_ssl'] }

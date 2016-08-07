@@ -9,12 +9,25 @@
   file: 
     path: "{{ mod_security_unzip_dir }}"
     state: directory
-  
-- name: Unzip Mod Security archive
+
+# TODO : Penser à ecrire un module pour interagir avec Nexus (https://github.com/mihxil/ansible-nexus/blob/master/nexus)
+- name: Download Mod Security Archive
+  get_url: 
+    url: "{{ mod_security_url }}"
+    url_username: "{{ nexus_user }}"
+    url_password: "{{ nexus_user_password }}"
+    dest: "/tmp/{{ mod_security_tarball_name }}"
+    
+- name: Decompress Mod Security Archive
   unarchive: 
-    src: "{{ mod_security_tarball_name }}"
+    src: "/tmp/{{ mod_security_tarball_name }}"
     dest: "{{ mod_security_unzip_dir }}/"
-  
+
+- name: Delete Mod Security Archive
+  file: 
+    path: "/tmp/{{ mod_security_tarball_name }}"
+    state: absent
+
 - name: Autogenerate Mod Security
   shell: cd {{ mod_security_dir }} && ./autogen.sh 
  
@@ -33,20 +46,30 @@
   file: 
     path: "{{ mod_security_logs_dir }}"
     state: directory
+    owner: "{{ apache_user }}"
+    group: "{{ apache_user_group }}"
     
 - name: Create the configuration directory for Mod Security
   file: 
     path: "{{ mod_security_conf_dir }}"
-    state: directory    
+    state: directory
+    owner: "{{ apache_user }}"
+    group: "{{ apache_user_group }}"
   
 - name: Copy Mod Security library into Apache module directories
-  shell: cp /usr/local/modsecurity/lib/mod_security2.so {{ apache_home }}/modules/
-
+  copy: 
+    src : "/usr/local/modsecurity/lib/mod_security2.so"
+    dest: "{{ apache_home }}/modules/"
+    owner: "{{ apache_user }}"
+    group: "{{ apache_user_group }}"
+    
 - name: Deploy Mod Security configuration files
   template: 
     src: "{{item.src}}"
     dest: "{{item.dest}}"
     force: "{{item.force}}"
+    owner: "{{ apache_user }}"
+    group: "{{ apache_user_group }}"
   with_items: "{{ mod_security_conf_files }}"
   
 - name: Restart Apache

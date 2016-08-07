@@ -1,6 +1,7 @@
 ---
 #apache_version: 2.4.18
 apache_version: 2.4.23
+apache_url: "{{ nexus_repository }}/service/local/repositories/thirdparty/content/org/apache/httpd/{{ apache_version }}/httpd-{{ apache_version }}.tar.gz"
 apache_versions: /opt/apache_versions
 apache_last_version: "{{ apache_versions }}/httpd-{{ apache_version }}"
 apache_home: /opt/apache2
@@ -40,13 +41,13 @@ apache_conf_max_keep_alive_requests: 500
 apache_conf_keep_alive_timeout: 15
 
 # SSL Certificate Authority TODO : à enlever
-apache_enable_ssl: true
+apache_enable_ssl: True
 
 # Activation mod_jk TODO : à enlever
-mod_jk_enable: true
+mod_jk_enable: True
 
 # Configuration mod_proxy
-mod_proxy_enable: true
+mod_proxy_enable: True
 
 apache_vhosts_conf_dir: "{{ apache_conf_dir }}/vhosts"
 

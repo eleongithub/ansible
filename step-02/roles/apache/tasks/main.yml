@@ -28,12 +28,25 @@
   file: 
     path: "{{ apache_home }}"
     state: directory
-    
-- name: Unzip Apache archive
-  unarchive: 
-    src: "{{ apache_tarball_name }}"
-    dest: "{{ apache_versions }}/"
   
+# TODO : Penser à ecrire un module pour interagir avec Nexus (https://github.com/mihxil/ansible-nexus/blob/master/nexus)
+- name: Download Apache Archive
+  get_url: 
+    url: "{{ apache_url }}"
+    url_username: "{{ nexus_user }}"
+    url_password: "{{ nexus_user_password }}"
+    dest: "/tmp/{{ apache_tarball_name }}"
+    
+- name: Decompress Apache archive
+  unarchive: 
+    src: "/tmp/{{ apache_tarball_name }}"
+    dest: "{{ apache_versions }}/"
+
+- name: Delete Apache archive
+  file: 
+    path: "/tmp/{{ apache_tarball_name }}"
+    state: absent
+    
 - name: Compile Apache 
   shell: cd {{ apache_last_version }} &&
                 ./configure 

@@ -12,8 +12,8 @@ UseIPv6				on
 # If set on you can experience a longer connection delay in many cases.
 IdentLookups			off
 
-ServerName			"{{ proftpd_server_name }}"
-ServerType			{{ proftpd_type_conf }}
+ServerName			"{{ proftp_server_name }}"
+ServerType			{{ proftp_type_conf }}
 DeferWelcome			off
 
 DefaultServer			on
@@ -49,8 +49,8 @@ PassivePorts                  {{ firwall_ftp_min_passive_port }} {{ firwall_ftp_
 MaxInstances			30
 
 # Set the user and group that the server normally runs at.
-User				{{ proftpd_user }}
-Group				{{ proftpd_user_group }}
+User				{{ proftp_user }}
+Group				{{ proftp_user_group }}
 
 # Umask 022 is a good standard umask to prevent new files and dirs
 # (second parm) from being group and world writable.
@@ -60,8 +60,8 @@ AllowOverwrite			on
 
 
 # ProFTP Logs
-TransferLog 			{{ proftpd_transfert_log_file }}
-SystemLog   			{{ proftpd_system_log_file }}
+TransferLog 			{{ proftp_transfert_log_file }}
+SystemLog   			{{ proftp_system_log_file }}
 
 
 <IfModule mod_ctrls_admin.c>
@@ -74,11 +74,6 @@ AdminControlsEngine off
 #Include /etc/proftpd/ldap.conf
 #Include /etc/proftpd/sql.conf
 
-{% if proftpd_enable_tls %}
-# This is used for FTPS connections
-Include /etc/proftpd/tls.conf
-{% endif %}
-#
 # Useful to keep VirtualHost/VirtualRoot directives separated
 #
 #Include /etc/proftpd/virtuals.conf

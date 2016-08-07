@@ -5,7 +5,6 @@
   service: name=tomcat state=stopped enabled=no
   ignore_errors: true
 
-
 - name : Check tomcat version directory exists
   stat: path={{ tomcat_versions }}
   register: tomcat_versions_dir_exists
@@ -32,15 +31,41 @@
   apt: pkg={{item.package}} state=present
   with_items: "{{ tomcat_required_packages }}"
 
-- name: Unzip the tomcat archive
+# TODO : Penser à ecrire un module pour interagir avec Nexus (https://github.com/mihxil/ansible-nexus/blob/master/nexus)
+- name: Download tomcat Archive
+  get_url: 
+    url: "{{ tomcat_url }}"
+    url_username: "{{ nexus_user }}"
+    url_password: "{{ nexus_user_password }}"
+    dest: "/tmp/{{ tomcat_tarball_name }}"
+    
+- name: Decompress tomcat archive
   unarchive: 
-    src: "{{ tomcat_tarball_name }}"
+    src: "/tmp/{{ tomcat_tarball_name }}"
     dest: "{{ tomcat_versions }}/"
-  
-- name: Unarchive Tomcat native library
+    
+- name: Delete tomcat archive
+  file: 
+    path: "/tmp/{{ tomcat_tarball_name }}"
+    state: absent
+
+# TODO : Penser à ecrire un module pour interagir avec Nexus (https://github.com/mihxil/ansible-nexus/blob/master/nexus)
+- name: Download native library
+  get_url: 
+    url: "{{ tomcat_native_url }}"
+    url_username: "{{ nexus_user }}"
+    url_password: "{{ nexus_user_password }}"
+    dest: "/tmp/{{ libtcnative_util_tarball_name }}"
+    
+- name: Decompress Tomcat native library
   unarchive: 
-    src: "{{ libtcnative_util_tarball_name }}"
+    src: "/tmp/{{ libtcnative_util_tarball_name }}"
     dest: "{{ tomcat_last_version }}/bin"
+    
+- name: Delete tomcat native library
+  file: 
+    path: "/tmp/{{ libtcnative_util_tarball_name }}"
+    state: absent
    
 - name: Install Tomcat native library
   shell: cd {{ libtcnative_util_home }} && ./configure --with-apr={{ apr_config_file }} --with-java-home={{ java_home }} --prefix={{ tomcat_last_version }} && make && make install
@@ -49,8 +74,13 @@
 - name: Install Tomcat native library with SSL
   shell: cd {{ libtcnative_util_home }} && ./configure --with-apr={{ apr_config_file }} --with-java-home={{ java_home }} --with-ssl=yes --prefix={{ tomcat_last_version }} && make && make install
   when: "{{ open_ssl_enable }}"
-  
 
+- name: Create link to the last tomcat directory
+  file: 
+    src: "{{ tomcat_last_version }}"
+    path: "{{ tomcat_home }}"
+    state: link
+    
 - name: Create tomcat security directory
   file: 
     path: "{{ secure_conf_dir }}"
@@ -69,8 +99,4 @@
   when: "{{ keystore_ssl_enable }}"
   
   
-- name: Create link to the last tomcat directory
-  file: 
-    src: "{{ tomcat_last_version }}"
-    path: "{{ tomcat_home }}"
-    state: link
+

@@ -40,7 +40,6 @@
     shell: /bin/bash 
     state: present
   
-
 - name: Change the owner of tomcat versions directory
   file: 
     path: "{{ tomcat_versions }}"
@@ -60,6 +59,8 @@
     src: "{{item.src}}"
     dest: "{{item.dest}}"
     force: "{{item.force}}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user_group }}"
   with_items:
    - "{{ tomcat_conf_files }}"
    

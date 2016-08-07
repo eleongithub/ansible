@@ -42,3 +42,6 @@ ssl_locality: Lyon
 ssl_organisation: Syscom
 ssl_organisation_unit: IT
 ssl_certificate_days: 3650
+nexus_repository: http://192.168.0.16:9081/nexus
+nexus_user: admin
+nexus_user_password: admin123

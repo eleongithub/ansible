@@ -1,22 +1,7 @@
 ---
 
-- name: Check if PostgreSQL Data Base System exists on server with the same version
-  shell: psql -V |egrep -o '[0-9]{1,}\.[0-9]{1,}'
-  register: check_exists_postgres
-  ignore_errors: true
-
-- name: Remove PostgreSQL Server
-  apt: pkg="{{ postgres_server_pkg }}" state=absent purge=yes
-  when: "'{{ check_exists_postgres.stdout }}' != '{{ postgres_version }}'"
-
-- name: Remove PostgreSQL Client
-  apt: pkg="{{ postgres_client_pkg }}" state=absent purge=yes
-  when: "'{{ check_exists_postgres.stdout }}' != '{{ postgres_version }}'"
-
 - name: Install PostgreSQL Server
   apt: pkg="{{ postgres_server_pkg }}" state=present
-  when: "'{{ check_exists_postgres.stdout }}' != '{{ postgres_version }}'"
    
 - name: Install PostgreSQL Client
   apt: pkg={{ postgres_client_pkg }} state=present
-  when: "'{{ check_exists_postgres.stdout }}' != '{{ postgres_version }}'"
