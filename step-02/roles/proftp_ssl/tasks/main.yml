@@ -14,7 +14,16 @@
     force: yes
 
 - name: Generate SSL files( Key & certificat).
-  shell: openssl req -new -x509 -nodes -days 3650 -subj "{{ proftp_ssl_subj }}" -config {{ proftp_ssl_config_file }} -extensions v3_req -out {{ proftp_ssl_cert_file }} -keyout {{ proftp_ssl_key_file }}
+  command: >
+    openssl req -new 
+      -x509 
+      -nodes 
+      -days 3650 
+      -subj "{{ proftp_ssl_subj }}" 
+      -config {{ proftp_ssl_config_file }} 
+      -extensions v3_req 
+      -out {{ proftp_ssl_cert_file }} 
+      -keyout {{ proftp_ssl_key_file }}
 
 - name: Secure private key file
   file: 
@@ -32,7 +41,7 @@
     dest: "{{ proftp_conf_path }}"
     regexp: ''
     insertafter: EOF
-    line: 'Include {{ proftp_tls_conf_path }}"'
+    line: 'Include "{{ proftp_tls_conf_path }}"'
     
 - name: Define owner, group and right on ProFTP configuration files
   file: 
