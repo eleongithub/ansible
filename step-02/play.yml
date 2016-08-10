@@ -1,0 +1,12 @@
+
+---
+- hosts: localhost
+  tasks:
+    - name: Test that my module  postgres_user works
+      postgres_user:
+        user: "apps"
+        password: "apps"
+      register: result
+      
+    - debug: var=result 
+    
