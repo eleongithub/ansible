@@ -1,6 +1,10 @@
 ---
 # This playbook contains ProFTP installation.
-  
+
+- name: Check if ProFTP is installed on the system
+  shell: proftpd --version || echo "Unknown ProFTP Server"
+  register: proftp_version_result
+    
 - name: Purge ProFTPd Server package if present
   apt: 
     pkg: "{{ item }}"
@@ -9,11 +13,13 @@
   with_items:
     - "proftpd"
     - "proftpd-basic"
+  when: "'{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}'"
     
 - name: Install ProFTPd Server package
   apt: 
     pkg: proftpd 
     state: present
+  when: "'{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}'"
   
 - name: Restart ProFTP
   command: echo "Restart ProFTP service..."

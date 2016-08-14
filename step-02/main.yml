@@ -50,23 +50,15 @@
     - { role: apache_private_ca, tags: ['apache_private_ca'] }
     - { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
     - { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
+
     
-  #pre_tasks:
-   #- name: Get Apache version installed on the nodes
-     #shell: bash "{{ apache_home }}/bin/apachectl" -v 2>&1 | head -n 1 || echo "Unknown Apache Server"
-     #register: apache_version_result
-  #roles:
-    #- { role: apache, when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'", tags: ['apache'] }
-    #- { role: apache_conf, tags: ['apache_conf'] }
-    #- { role: apache_mod_jk, tags: ['apache_mod_jk'] }
-    #- { role: apache_mod_security, tags: ['apache_mod_security'] }
-    #- { role: apache_private_ca, tags: ['apache_private_ca'] }
-    #- { role: apache_vhosts, tags: ['apache_vhosts'] }
-    
-    
-##Install ProFTP
-#- hosts: proftp
-  #become: yes
+#Install ProFTP
+- hosts: proftp
+  become: yes
+  roles:
+    - { role: proftp, tags: ['proftp'] }
+    - { role: proftp_conf, tags: ['proftp_conf'] }
+    - { role: proftp_ssl, tags: ['proftp_ssl'] }
   #pre_tasks:
    #- name: Check if ProFTP is installed on the system
      #shell: proftpd --version || echo "Unknown ProFTP Server"
