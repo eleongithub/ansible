@@ -5,20 +5,18 @@
   stat: path={{ apache_vhosts_conf_dir }}
   register: apache_vhosts_conf_dir_exists
   
-  
 - name: Create virtual hosts configuration directories
   file: 
     path: "{{ apache_vhosts_conf_dir }}"
     state: directory
   when: not apache_vhosts_conf_dir_exists.stat.exists
-  
    
 - name: Create logs directories for Mod_Jk virtual hosts
   file: 
     path: "{{ apache_logs_dir }}/{{ item.key }}"
     state: directory
   with_dict: "{{ apache_vhosts_mod_jk }}"
-  
+
     
 - name: Create virtual hosts root directories
   file: 
@@ -32,7 +30,7 @@
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/mutex"
     state: directory
   with_dict: "{{ apache_vhosts_mod_jk }}"
-
+  
   
 - name: Mod JK configuration - Generate virtual hosts configuration files
   template: 
@@ -40,26 +38,47 @@
     dest: "{{ apache_vhosts_conf_dir }}/{{ item.key }}_mod_jk.conf"
     force: yes
   with_dict: "{{ apache_vhosts_mod_jk }}"
-  when: "{{ mod_jk_enable }}"
+  
   
 - name: Install SSL certificates for virtual hosts
   include: ssl_main.yml
-
   
+
 - name: Count generate virtual hosts
-  find: 
-    paths: "{{ apache_vhosts_conf_dir }}"
-    patterns: "*.conf"
-    use_regex: True
-  register: count_generate_vhosts
+  shell: ls -l {{ apache_vhosts_conf_dir }}|grep "mod_jk.conf"|wc -l 
+  register: count_generate_vhosts_mod_jk
   
   
 - name: Add Virtual hosts file to HTTPD
   lineinfile:
     dest: "{{ apache_httpd_file }}"
     insertafter: EOF
-    line: 'Include {{ apache_vhosts_conf_dir }}/*.conf'
-  when: count_generate_vhosts.matched|int > 0
+    line: 'Include {{ apache_vhosts_conf_dir }}/*_mod_jk.conf'
+  when: count_generate_vhosts_mod_jk.stdout|int > 0
+ 
+ 
+- name: Copy workers.properties configuration file for Mod_Jk
+  template: 
+    src: workers_mod_jk.properties.j2 
+    dest: "{{ apache_conf_dir }}/workers.properties"
+    force: yes
+  when: count_generate_vhosts_mod_jk.stdout|int > 0  
+
+  
+- name: Copy mod_jk.conf file to Apache configuration directory
+  template: 
+    src: mod_jk.conf.j2 
+    dest: "{{ apache_conf_dir }}/mod_jk.conf"
+    force: yes
+  when: count_generate_vhosts_mod_jk.stdout|int > 0  
+  
+
+- name: Add mod_jk.conf to HTTPD
+  lineinfile:
+    dest: "{{ apache_httpd_file }}"
+    insertafter: EOF
+    line: 'Include {{ apache_conf_dir }}/mod_jk.conf'
+  when: count_generate_vhosts_mod_jk.stdout|int > 0
   
   
 - name: Restart Apache

@@ -1,13 +1,13 @@
 ---
 # This playbook contains Apache configuration.
 
-- name: Stop eventual Apache server runing
+- name: Stop Apache server script and disable it.
   service: name=apache state=stopped enabled=no
   ignore_errors: true
 
-- name: Remove eventual Apache from boot service
-  shell: insserv -r apache
-  ignore_errors: true
+#- name: Remove eventual Apache from boot service
+  #shell: insserv -r apache
+  #ignore_errors: true
   
 - name : Remove eventual Apache init script from the system
   file: 

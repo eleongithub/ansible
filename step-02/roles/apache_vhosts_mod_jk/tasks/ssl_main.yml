@@ -14,7 +14,7 @@
   shell: openssl rand -base64 48 > "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.txt"
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
-
+  
 
 - name: Secure passhprase (mod_jk)
   file: 
@@ -24,6 +24,7 @@
   when: "{{ item.value.use_https }}"
   
   
+
 - name: Copy Script shell script which will read passphrase.txt (mod_jk)
   template:
     src: passphrase.sh.j2 
@@ -32,7 +33,7 @@
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
   
-  
+
 - name: Secure passphrase.sh (mod_jk)
   file: 
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.sh"
@@ -71,7 +72,7 @@
       -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
-  
+
 
 - name: Sign the certificat for the virtual hosts (mod_jk)
   command: >
@@ -83,4 +84,3 @@
       -infiles "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/req.pem"
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
-  

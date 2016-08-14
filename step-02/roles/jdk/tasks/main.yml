@@ -1,25 +1,38 @@
 ---
 # This playbook contains jdk installation.
 
+- name: Get JDK/Java version installed on the nodes
+  shell: java -version 2>&1
+  register: java_version_result
+ 
+
 - name : Check jdk versions directory exists
   stat: path={{ jdk_versions }}
   register: jdk_versions_dir_exists
-
+  when: "'{{ java_version }}' not in '{{ java_version_result.stdout }}'"
+  
+  
 - name: Create jdk version directory
   file: 
     path: "{{ jdk_versions }}"
     state: directory
-  when: not jdk_versions_dir_exists.stat.exists
+  when: "('{{ java_version }}' not in '{{ java_version_result.stdout }}') and 
+         (jdk_versions_dir_exists is defined and not jdk_versions_dir_exists.stat.exists)"
+  
   
 - name: Delete java home link 
   file: 
     dest: "{{ java_home }}"
     state: absent
-
+  when: "'{{ java_version }}' not in '{{ java_version_result.stdout }}'"
+  
+  
 - name: Get the machine architecture (32 bits or 64 bits)
   shell: getconf LONG_BIT
-  register: os_arch
-
+  register: os_architecture
+  when: "'{{ java_version }}' not in '{{ java_version_result.stdout }}'"
+   
+   
 # TODO : Penser à ecrire un module pour interagir avec Nexus (https://github.com/mihxil/ansible-nexus/blob/master/nexus)
 - name: Download jdk 32 bits Archive
   get_url: 
@@ -27,20 +40,24 @@
     url_username: "{{ nexus_user }}"
     url_password: "{{ nexus_user_password }}"
     dest: "/tmp/{{ jdk_tarball_name_32 }}"
-  when: os_arch.stdout == "{{ os_32 }}"
+  when: "('{{ java_version }}' not in '{{ java_version_result.stdout }}') and 
+         (os_architecture is defined and os_architecture.stdout == '{{ os_32 }}')"
+  
   
 - name: Decompress jdk 32 bits Archive
   unarchive: 
     src: "/tmp/{{ jdk_tarball_name_32 }}"
     dest: "{{ jdk_versions }}/"
-  when: os_arch.stdout == "{{ os_32 }}"
+  when: "('{{ java_version }}' not in '{{ java_version_result.stdout }}') and 
+         (os_architecture is defined and os_architecture.stdout == '{{ os_32 }}')"
   
 - name: Delete jdk 32 bits Archive
   file: 
     path: "/tmp/{{ jdk_tarball_name_32 }}"
     state: absent
-  when: os_arch.stdout == "{{ os_32 }}"  
-
+  when: "('{{ java_version }}' not in '{{ java_version_result.stdout }}') and 
+         (os_architecture is defined and os_architecture.stdout == '{{ os_32 }}')"
+  
   
 - name: Download jdk 64 bits Archive
   get_url: 
@@ -48,27 +65,33 @@
     url_username: "{{ nexus_user }}"
     url_password: "{{ nexus_user_password }}"
     dest: "/tmp/{{ jdk_tarball_name_64 }}"
-  when: os_arch.stdout == "{{ os_64 }}"
+  when: "('{{ java_version }}' not in '{{ java_version_result.stdout }}') and 
+         (os_architecture is defined and os_architecture.stdout == '{{ os_64 }}')"
+  
   
 - name: Decompress jdk 64 bits Archive
   unarchive: 
     src: "/tmp/{{ jdk_tarball_name_64 }}"
     dest: "{{ jdk_versions }}/"
-  when: os_arch.stdout == "{{ os_64 }}"
+  when: "('{{ java_version }}' not in '{{ java_version_result.stdout }}') and 
+         (os_architecture is defined and os_architecture.stdout == '{{ os_64 }}')"
+  
   
 - name: Delete jdk 64 bits Archive
   file: 
     path: "/tmp/{{ jdk_tarball_name_64 }}"
     state: absent
-  when: os_arch.stdout == "{{ os_64 }}" 
-  
+  when: "('{{ java_version }}' not in '{{ java_version_result.stdout }}') and 
+         (os_architecture is defined and os_architecture.stdout == '{{ os_64 }}')"
   
 - name: Create link to the jdk directory
   file: 
     src: "{{ jdk_last_version }}"
     dest: "{{ java_home }}"
     state: link
-    
+  when: "'{{ java_version }}' not in '{{ java_version_result.stdout }}'"
+   
+   
 - name: Update alternatives
   command: "{{ item }}"
   with_items:
@@ -78,3 +101,4 @@
     - update-alternatives --set java {{ java_home }}/bin/java
     - update-alternatives --set javac {{ java_home }}/bin/javac
     - update-alternatives --set jar {{ java_home }}/bin/jar
+  when: "'{{ java_version }}' not in '{{ java_version_result.stdout }}'"

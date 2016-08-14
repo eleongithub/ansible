@@ -33,9 +33,17 @@
 - name: Copy Mod JK library
   copy: 
     src: "{{ mod_jk_dir }}/apache-2.0/mod_jk.so"
-    dest: "{{ apache_home }}/modules/"
+    dest: "{{ apache_modules_dir }}/"
     owner: "{{ apache_user }}"
     group: "{{ apache_user_group }}"
+    
+
+- name: Add Mod JK to the list of Apache's modules
+  lineinfile:
+    dest: "{{ apache_modules_file }}"
+    insertafter: EOF
+    line: 'LoadModule jk_module {{ apache_modules_dir }}/mod_jk.so'
+
   
 - name: Delete Mod JK install directory
   file: 

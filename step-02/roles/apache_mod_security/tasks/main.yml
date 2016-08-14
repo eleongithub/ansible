@@ -5,6 +5,7 @@
   apt: pkg={{ item.package }} state=present
   with_items: "{{ mod_security_required_packages }}"
   
+  
 - name: Create Mod Security temp directory
   file: 
     path: "{{ mod_security_unzip_dir }}"
@@ -18,51 +19,61 @@
     url_password: "{{ nexus_user_password }}"
     dest: "/tmp/{{ mod_security_tarball_name }}"
     
+    
 - name: Decompress Mod Security Archive
   unarchive: 
     src: "/tmp/{{ mod_security_tarball_name }}"
     dest: "{{ mod_security_unzip_dir }}/"
 
+    
 - name: Delete Mod Security Archive
   file: 
     path: "/tmp/{{ mod_security_tarball_name }}"
     state: absent
 
+    
 - name: Autogenerate Mod Security
   shell: cd {{ mod_security_dir }} && ./autogen.sh 
  
+ 
 - name: Configure Mod Security
   shell: cd {{ mod_security_dir }} && CFLAGS=-I/usr/include/libxml2 && ./configure --with-apxs={{ apache_home }}/bin/apxs 
-  
+ 
+ 
 - name: Make & Make install Mod Security
   shell: cd {{ mod_security_dir }} && make && make install 
-  
+ 
+ 
 - name: Delete Mod Security temp directory
   file: 
     path: "{{ mod_security_unzip_dir }}"
     state: absent 
-  
+ 
+ 
 - name: Create the log directory for Mod Security
   file: 
     path: "{{ mod_security_logs_dir }}"
     state: directory
     owner: "{{ apache_user }}"
     group: "{{ apache_user_group }}"
-    
+ 
+ 
 - name: Create the configuration directory for Mod Security
   file: 
     path: "{{ mod_security_conf_dir }}"
     state: directory
     owner: "{{ apache_user }}"
     group: "{{ apache_user_group }}"
-  
+ 
+ 
 - name: Copy Mod Security library into Apache module directories
   copy: 
     src : "/usr/local/modsecurity/lib/mod_security2.so"
-    dest: "{{ apache_home }}/modules/"
+    dest: "{{ apache_modules_dir }}/"
     owner: "{{ apache_user }}"
     group: "{{ apache_user_group }}"
-    
+ 
+ 
 - name: Deploy Mod Security configuration files
   template: 
     src: "{{item.src}}"
@@ -71,6 +82,35 @@
     owner: "{{ apache_user }}"
     group: "{{ apache_user_group }}"
   with_items: "{{ mod_security_conf_files }}"
+  
+
+- name: Copy modsecurity_module.conf.j2 into Apache conf directory
+  template: 
+    src : "modsecurity_module.conf.j2"
+    dest: "{{ apache_conf_dir }}/modsecurity_module.conf"
+    owner: "{{ apache_user }}"
+    group: "{{ apache_user_group }}"
+    force: yes
+
+- name: if unique_id_module was absent, add it because unique_id_module is required for Mod Security
+  lineinfile:
+    dest: "{{ apache_modules_file }}"
+    line: 'LoadModule unique_id_module {{ apache_modules_dir }}/mod_unique_id.so'
+    state: present
+
+- name: Add Mod Security module to the list of Apache's modules
+  lineinfile:
+    dest: "{{ apache_modules_file }}"
+    insertafter: EOF
+    line: 'LoadModule security2_module {{ apache_modules_dir }}/mod_security2.so'
+    
+
+- name: Add Mod Security configuration file
+  lineinfile:
+    dest: "{{ apache_httpd_file }}"
+    insertafter: EOF
+    line: 'Include {{ apache_conf_dir }}/modsecurity_module.conf'
+  
   
 - name: Restart Apache
   command: echo "Restart Apache service..."

@@ -13,14 +13,13 @@
   ServerAlias {{ item.serverAlias }}
 
 
-  {% if item.webapps_absolute_path|string != '' %}
   DocumentRoot "{{ item.webapps_absolute_path }}"
   <Directory "{{ item.webapps_absolute_path }}">
     Options Indexes FollowSymLinks
     AllowOverride none
     Require all granted
   </Directory>
-  {% endif %}
+ 
   
 
   # Customizable error responses come in three flavors:

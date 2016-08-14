@@ -1,0 +1,7 @@
+JkWorkersFile  	{{ apache_conf_dir }}/workers.properties
+JkLogFile	{{ apache_logs_dir }}/mod_jk.log
+JkShmFile 	{{ apache_logs_dir }}/jk-runtime-status
+JkLogLevel	info
+# JkOptions indicates to send SSK KEY SIZE
+JkOptions +ForwardKeySize +ForwardURICompat -ForwardDirectories
+

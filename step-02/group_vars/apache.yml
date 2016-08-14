@@ -9,6 +9,11 @@ apache_vhosts_dir: "{{ apache_home }}/vhosts"
 apache_tarball_name: "httpd-{{ apache_version }}.tar.gz"
 apache_logs_dir: "{{ apache_home }}/logs"
 apache_conf_dir: "{{ apache_home }}/conf"
+apache_modules_dir: "{{ apache_home }}/modules"
+apache_modules_file: "{{ apache_conf_dir }}/modules.conf"
+apache_httpd_file: "{{ apache_conf_dir }}/httpd.conf"
+apache_server_dns: localhost
+apache_server_admin: admin@example.com
 apache_init_script: /etc/init.d/apache
 apache_user: wwwd
 apache_user_group: wwwd
@@ -26,48 +31,13 @@ apache_required_packages:
  - { package: 'automake' } 
  - { package: 'libapr1' } 
  - { package: 'libapr1-dev' } 
- 
-
-apache_server_dns: localhost
-apache_server_admin: admin@example.com
 apache_conf_files:
- - { src: 'httpd.conf.j2', dest: '{{ apache_conf_dir }}/httpd.conf', force: yes }
- 
+ - { src: 'httpd.conf.j2', dest: '{{ apache_httpd_file }}', force: yes }
+ - { src: 'modules.conf.j2', dest: '{{ apache_modules_file }}', force: yes }
 # Logs level possibilities : debug, info, notice, warn, error, crit, alert, emerg.
 apache_conf_log_level: warn
 apache_conf_max_clients: 300
 apache_conf_keep_alive: 'On'
 apache_conf_max_keep_alive_requests: 500 
 apache_conf_keep_alive_timeout: 15
-
-# SSL Certificate Authority TODO : à enlever
-apache_enable_ssl: True
-
-# Activation mod_jk TODO : à enlever
-mod_jk_enable: True
-
-# Configuration mod_proxy
-mod_proxy_enable: True
-
 apache_vhosts_conf_dir: "{{ apache_conf_dir }}/vhosts"
-
-apache_vhosts_mod_jk:
-  vhost1:
-    serverName: 'vhosts1.fr'
-    serverAlias: 'www.vhosts1.fr'
-    use_https: true
-    ssl_subj: "/C=\"{{ ssl_country }}\"/ST=\"{{ ssl_state }}\"/L=\"{{ ssl_locality }}\"/O=\"{{ ssl_organisation }}\"/OU=\"{{ ssl_organisation_unit }}\"/CN=vhosts1.fr"
-    webapps: 'docs'
-    workers:
-        - { name: 'worker1', host: 'st-db-villeurbanne', port: '8009' }
-        - { name: 'worker2', host: 'localhost', port: '8009' }
-    
-apache_vhosts_mod_proxy:
-  vhosts2:
-    serverName: 'vhosts2.fr'
-    serverAlias: 'www.vhosts2.fr'
-    use_https: false
-    ssl_subj: ""
-    webapps: 'examples'
-    host: 'st-db-villeurbanne'
-    port: '8080'
