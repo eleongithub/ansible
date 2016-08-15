@@ -33,12 +33,9 @@
   when: "'{{ java_version }}' not in '{{ java_version_result.stdout }}'"
    
    
-# TODO : Penser à ecrire un module pour interagir avec Nexus (https://github.com/mihxil/ansible-nexus/blob/master/nexus)
 - name: Download jdk 32 bits Archive
   get_url: 
     url: "{{ jdk_32_url }}"
-    url_username: "{{ nexus_user }}"
-    url_password: "{{ nexus_user_password }}"
     dest: "/tmp/{{ jdk_tarball_name_32 }}"
   when: "('{{ java_version }}' not in '{{ java_version_result.stdout }}') and 
          (os_architecture is defined and os_architecture.stdout == '{{ os_32 }}')"
@@ -50,7 +47,8 @@
     dest: "{{ jdk_versions }}/"
   when: "('{{ java_version }}' not in '{{ java_version_result.stdout }}') and 
          (os_architecture is defined and os_architecture.stdout == '{{ os_32 }}')"
-  
+         
+         
 - name: Delete jdk 32 bits Archive
   file: 
     path: "/tmp/{{ jdk_tarball_name_32 }}"
@@ -62,8 +60,6 @@
 - name: Download jdk 64 bits Archive
   get_url: 
     url: "{{ jdk_64_url }}"
-    url_username: "{{ nexus_user }}"
-    url_password: "{{ nexus_user_password }}"
     dest: "/tmp/{{ jdk_tarball_name_64 }}"
   when: "('{{ java_version }}' not in '{{ java_version_result.stdout }}') and 
          (os_architecture is defined and os_architecture.stdout == '{{ os_64 }}')"

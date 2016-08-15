@@ -1,5 +1,11 @@
 ---
 
+- name: Install openssl
+  apt: 
+    pkg: openssl
+    state: present
+    
+    
 - name: Create ProFTP SSL configuration directory.
   file: 
     path: "{{ proftp_ssl_conf_dir }}"
@@ -7,12 +13,14 @@
     owner: "{{ proftp_user }}"
     group: "{{ proftp_user_group }}"
     
+    
 - name: Deploy SSL Certification Authority (CA) configuration file
   template: 
     src: openssl.conf.j2 
     dest: "{{ proftp_ssl_config_file }}"
     force: yes
 
+    
 - name: Generate SSL files( Key & certificat).
   command: >
     openssl req -new 
@@ -25,16 +33,19 @@
       -out {{ proftp_ssl_cert_file }} 
       -keyout {{ proftp_ssl_key_file }}
 
+      
 - name: Secure private key file
   file: 
     path: "{{ proftp_ssl_key_file }}"
     mode: 0400
 
+    
 - name: Deploy TLS configuration file
   template: 
     src: tls.conf.j2 
     dest: "{{ proftp_tls_conf_path }}"
     force: yes
+  
   
 - name: Include tls.conf in the proftp configuration
   lineinfile:
@@ -42,6 +53,7 @@
     regexp: ''
     insertafter: EOF
     line: 'Include "{{ proftp_tls_conf_path }}"'
+    
     
 - name: Define owner, group and right on ProFTP configuration files
   file: 
@@ -51,6 +63,7 @@
     group: "{{ item.group }}"
     mode: "{{ item.mode }}"
   with_items: "{{ proftp_ssl_files }}"
+  
   
 - name: Restart ProFTP
   command: echo "Restart ProFTP service..."

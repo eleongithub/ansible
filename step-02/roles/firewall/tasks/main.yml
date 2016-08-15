@@ -1,18 +1,22 @@
 ---
 # This playbook contains firewall plays that will be run on all nodes.
 
-- name: Install iptables if this package was absent
-  apt: pkg=openssl state=present
-  ignore_errors: true
-
+- name: Install iptables package
+  apt: 
+    pkg: iptables 
+    state: present
+  
+  
 - name: Stop eventual firewall service runing
   service: name=firewall state=stopped enabled=no
   ignore_errors: true
 
+  
 - name: Remove eventual firewall from boot service
   shell: insserv -r firewall
   ignore_errors: true
 
+  
 - name: Copy firewall files into directories
   template: 
     src: "{{item.src}}"
@@ -24,5 +28,6 @@
   with_items:
    - "{{ firewall_script_files }}"
 
+   
 - name: Enable/Start firewall
   service: name=firewall state=started enabled=yes

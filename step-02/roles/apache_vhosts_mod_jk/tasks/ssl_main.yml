@@ -24,7 +24,6 @@
   when: "{{ item.value.use_https }}"
   
   
-
 - name: Copy Script shell script which will read passphrase.txt (mod_jk)
   template:
     src: passphrase.sh.j2 
@@ -65,7 +64,7 @@
   command: >
     openssl req 
       -new 
-      -passin file:"{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.txt" 
+      -passin file:"{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.txt"
       -key "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/key.pem" 
       -out "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/req.pem"
       -subj "{{ item.value.ssl_subj }}" 

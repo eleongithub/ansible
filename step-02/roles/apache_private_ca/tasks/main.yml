@@ -1,7 +1,12 @@
 ---
 # This playbook installs certification authority files.
 
-# Create certification authority (CA) main directory
+- name: Install openssl package
+  apt: 
+    pkg: openssl
+    state: present
+  
+  
 - name: Create certification authority (CA) main directory
   file: 
     path: "{{ apache_ssl_ca_conf_dir }}"
@@ -9,7 +14,7 @@
     owner: root
     group: root
     
-# Create CA new certificats directory
+
 - name: Create CA new certificats directory
   file: 
     path: "{{ apache_ssl_ca_conf_dir }}/newcerts"
@@ -17,7 +22,7 @@
     owner: root
     group: root
     
-# Copy configuration file into CA directory
+
 - name: Copy configuration file into CA directory
   template: 
     src: openssl_ca.conf.j2

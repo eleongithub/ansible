@@ -6,12 +6,10 @@
     path: "{{ mod_jk_unzip_dir }}"
     state: directory
 
-# TODO : Penser à ecrire un module pour interagir avec Nexus (https://github.com/mihxil/ansible-nexus/blob/master/nexus)
+    
 - name: Download Apache Mod_JK Archive
   get_url: 
     url: "{{ mod_jk_url }}"
-    url_username: "{{ nexus_user }}"
-    url_password: "{{ nexus_user_password }}"
     dest: "/tmp/{{ mod_jk_tarball_name }}"
     
 - name: Decompress Apache Mod_JK Archive
@@ -19,17 +17,21 @@
     src: "/tmp/{{ mod_jk_tarball_name }}"
     dest: "{{ mod_jk_unzip_dir }}/"
 
+    
 - name: Delete Apache Mod_JK Archive
   file: 
     path: "/tmp/{{ apache_tarball_name }}"
     state: absent
 
+    
 - name: Configure Mod JK
   shell: cd {{ mod_jk_dir }} && ./configure --with-apr={{ apr_config_file }} --with-apxs={{ apache_home }}/bin/apxs 
+  
   
 - name: Make & Make install Mod JK
   shell: cd {{ mod_jk_dir }} && make && make install 
 
+  
 - name: Copy Mod JK library
   copy: 
     src: "{{ mod_jk_dir }}/apache-2.0/mod_jk.so"
@@ -49,6 +51,7 @@
   file: 
     path: "{{ mod_jk_unzip_dir }}"
     state: absent
+    
     
 - name: Restart Apache
   command: echo "Restart Apache service..."

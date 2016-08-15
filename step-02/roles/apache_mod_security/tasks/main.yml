@@ -11,12 +11,10 @@
     path: "{{ mod_security_unzip_dir }}"
     state: directory
 
-# TODO : Penser à ecrire un module pour interagir avec Nexus (https://github.com/mihxil/ansible-nexus/blob/master/nexus)
+    
 - name: Download Mod Security Archive
   get_url: 
     url: "{{ mod_security_url }}"
-    url_username: "{{ nexus_user }}"
-    url_password: "{{ nexus_user_password }}"
     dest: "/tmp/{{ mod_security_tarball_name }}"
     
     
