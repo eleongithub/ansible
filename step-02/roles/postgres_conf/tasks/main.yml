@@ -11,6 +11,6 @@
   service: name=postgresql enabled=yes
   
 - name: Restart PostgreSQL
-  command: echo "Restart PostgreSQL Database..."
+  command: echo "Restart PostgreSQL..."
   notify: 
     - Restart PostgreSQL

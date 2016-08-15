@@ -76,6 +76,6 @@
       -subj "{{ apache_ssl_ca_subj }}"
   
 - name: Restart Apache
-  command: echo "Restart Apache service..."
+  command: echo "Restart Apache..."
   notify: 
     - Restart Apache
