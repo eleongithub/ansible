@@ -1,105 +1,104 @@
 ---
-# This playbook contains tomcat installation.
+
+- name: Check if tomcat is installed on the system
+  shell: cat "{{ tomcat_home }}/RELEASE-NOTES"|grep "Apache Tomcat Version" || echo "Unknown Tomcat Server"
+  register: tomcat_version_result
+    
     
 - name: Stop eventual tomcat server running
   service: name=tomcat state=stopped enabled=no
+  when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
   ignore_errors: true
+  
 
 - name : Check tomcat version directory exists
   stat: path={{ tomcat_versions }}
   register: tomcat_versions_dir_exists
+  when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
+  
   
 - name: Create tomcat versions directory
   file: 
     path: "{{ tomcat_versions }}"
     state: directory 
     recurse: yes
-  when: not tomcat_versions_dir_exists.stat.exists
+  when: "('{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}') and (tomcat_versions_dir_exists is defined and not tomcat_versions_dir_exists.stat.exists)"
 
 - name: Delete the tomcat home link 
   file: 
     dest: "{{ tomcat_home }}"
     state: absent
+  when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
+  
   
 - name: Delete the last version directory
   file: 
     dest: "{{ tomcat_last_version }}"
     state: absent
+  when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
   ignore_errors: true
+  
   
 - name: Install required librairies
   apt: pkg={{item.package}} state=present
   with_items: "{{ tomcat_required_packages }}"
-
+  when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
+  
   
 - name: Download tomcat Archive
   get_url: 
     url: "{{ tomcat_url }}"
     dest: "/tmp/{{ tomcat_tarball_name }}"
-    
+  when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
+  
     
 - name: Decompress tomcat archive
   unarchive: 
     src: "/tmp/{{ tomcat_tarball_name }}"
     dest: "{{ tomcat_versions }}/"
-    
+  when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
+  
     
 - name: Delete tomcat archive
   file: 
     path: "/tmp/{{ tomcat_tarball_name }}"
     state: absent
-
+  when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
+  
 
 - name: Download native library
   get_url: 
     url: "{{ tomcat_native_url }}"
     dest: "/tmp/{{ libtcnative_util_tarball_name }}"
-    
+  when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
+  
     
 - name: Decompress Tomcat native library
   unarchive: 
     src: "/tmp/{{ libtcnative_util_tarball_name }}"
     dest: "{{ tomcat_last_version }}/bin"
-    
+  when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
+  
     
 - name: Delete tomcat native library
   file: 
     path: "/tmp/{{ libtcnative_util_tarball_name }}"
     state: absent
+  when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'" 
    
-   
-- name: Install Tomcat native library
-  shell: cd {{ libtcnative_util_home }} && ./configure --with-apr={{ apr_config_file }} --with-java-home={{ java_home }} --prefix={{ tomcat_last_version }} && make && make install
-  when: "{{ not open_ssl_enable }}"
+#- name: Install Tomcat native library
+  #shell: cd {{ libtcnative_util_home }} && ./configure --with-apr={{ apr_config_file }} --with-java-home={{ java_home }} --prefix={{ tomcat_last_version }} && make && make install
+  #when: "{{ not open_ssl_enable }}"
   
   
 - name: Install Tomcat native library with SSL
   shell: cd {{ libtcnative_util_home }} && ./configure --with-apr={{ apr_config_file }} --with-java-home={{ java_home }} --with-ssl=yes --prefix={{ tomcat_last_version }} && make && make install
-  when: "{{ open_ssl_enable }}"
-
+  when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
+  #when: "{{ open_ssl_enable }}"
   
-- name: Create link to the last tomcat directory
-  file: 
-    src: "{{ tomcat_last_version }}"
-    path: "{{ tomcat_home }}"
-    state: link
+#- name: Create link to the last tomcat directory
+  #file: 
+    #src: "{{ tomcat_last_version }}"
+    #path: "{{ tomcat_home }}"
+    #state: link
     
-    
-- name: Create tomcat security directory
-  file: 
-    path: "{{ secure_conf_dir }}"
-    owner: "{{ tomcat_user }}"
-    group: "{{ tomcat_user_group }}"
-    state: directory 
-    recurse: yes
-  when: "{{ open_ssl_enable or keystore_ssl_enable }}"
-    
-    
-- name: Install SSL certificats files with openssl
-  include: open_ssl_main.yml
-  when: "{{ open_ssl_enable }}"
-  
-  
-- name: Install SSL files with Java Keytool
-  include: keystore_ssl_main.yml
-  when: "{{ keystore_ssl_enable }}"

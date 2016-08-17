@@ -4689,7 +4689,6 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     
-    {% if open_ssl_enable or keystore_ssl_enable %}
     <security-constraint>
     <web-resource-collection>
         <web-resource-name>securedapp</web-resource-name>
@@ -4699,5 +4698,5 @@
         <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
     </security-constraint>
-    {% endif %} 
+ 
 </web-app>

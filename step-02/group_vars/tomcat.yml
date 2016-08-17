@@ -27,25 +27,8 @@ libtcnative_version: 1.1.34
 tomcat_native_url: "{{ nexus_public_repository }}/org/tomcat/apache/tomcat-native/{{ libtcnative_version }}/tomcat-native-{{ libtcnative_version }}.tar.gz"
 libtcnative_util_home: "{{ tomcat_last_version }}/bin/tomcat-native-{{ libtcnative_version }}-src/jni/native"
 libtcnative_util_tarball_name: "tomcat-native-{{ libtcnative_version }}-src.tar.gz"
- 
-secure_conf_dir: "{{ tomcat_last_version }}/conf/ssl"
-# SSL with Java Keystore
-keystore_ssl_enable: false
-keystore_file: "{{ keystore_conf_dir }}/keystore.jks"
-keystore_conf_dir: "{{ secure_conf_dir }}"
-keystore_password: secret
-keystore_alias: keyAlias
-keystore_subj: "CN={{ tomcat_dns }}, OU={{ ssl_organisation_unit }}, O={{ ssl_organisation }}, L={{ ssl_locality }}, S={{ ssl_state }}, C={{ ssl_country }}"
 
+tomcat_shutdown_port: "8005"
+tomcat_shutdown_command: "SHUTDOWNA1B2Z78UJHGJKLMLM"
 
-# SSL with Openssl configuration variables
-ssl_cert_password: password
-open_ssl_enable: false
-open_ssl_conf_dir: "{{ secure_conf_dir }}"
-open_ssl_certificate_file: "{{ open_ssl_conf_dir }}/cacert_{{ tomcat_dns }}.crt"
-open_ssl_private_key_file: "{{ open_ssl_conf_dir }}/cacert_{{ tomcat_dns }}.key"
-open_ssl_cert_config_file: "{{ tomcat_last_version }}/conf/openssl.conf"
-open_ssl_cert_subjectAltName: "DNS:{{ tomcat_dns }}"
-open_ssl_cert_password: secret
-open_ssl_cert_common_name: "{{ tomcat_dns }}"
-open_ssl_subj: "/C=\"{{ ssl_country }}\"/ST=\"{{ ssl_state }}\"/L=\"{{ ssl_locality }}\"/O=\"{{ ssl_organisation }}\"/OU=\"{{ ssl_organisation_unit }}\"/CN={{ open_ssl_cert_common_name }}"
+ssl_protocol: TLSv1+TLSv1.1+TLSv1.2

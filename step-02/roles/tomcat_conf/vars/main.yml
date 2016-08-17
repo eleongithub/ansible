@@ -1,6 +1,5 @@
 ---
 tomcat_init_script: /etc/init.d/tomcat
-tomcat_shutdown_command: "SHUTDOWNA1B2Z78UJHGJKLMLM"
 tomcat_conf_files:
  - { src: 'server.xml.j2', dest: '{{ tomcat_last_version }}/conf/server.xml', force: yes }
  - { src: 'setenv.sh.j2', dest: '{{ tomcat_last_version }}/bin/setenv.sh', force: yes }

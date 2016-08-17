@@ -1,0 +1,61 @@
+---
+
+- name : Check tomcat keystore directory exists
+  stat: 
+    path: "{{ keystore_dir }}"
+  register: tomcat_keystore_directory_exists
+  
+  
+- name: Create tomcat keystore directory
+  file: 
+    path: "{{ keystore_dir }}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user_group }}"
+    state: directory 
+    recurse: yes
+  when: not tomcat_keystore_directory_exists.stat.exists
+  
+  
+- name: Generating keystore and certifcate...
+  command: >
+    keytool 
+      -genkey 
+      -noprompt 
+      -trustcacerts 
+      -keyalg RSA 
+      -alias {{ keystore_alias }} 
+      -dname "{{ keystore_subj }}" 
+      -keypass {{ keystore_password }} 
+      -keystore {{ keystore_file }} 
+      -storepass {{ keystore_password }} 
+      -validity {{ ssl_certificate_days }}
+
+- name: Deploy configuration files for Tomcat with openssl
+  template: 
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    force: "{{item.force}}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user_group }}"
+  with_items:
+   - "{{ keystore_conf_files }}"
+   
+   
+- name: Restart tomcat
+  command: echo "Restart Tomcat service..."
+  notify: 
+    - Restart tomcat
+
+
+#subjectAltName="DNS:localhost" 
+
+
+#subj="CN=localhost, OU=IT, O=Syscom, L=Lyon, S=Rhône, C=FR"
+
+
+#keytool -genkey -alias keyAlias -keyalg RSA -keypass changeit -storepass changeit -keystore keystore.jks -noprompt -dname "${subj}"
+
+# Make a request for certificat
+#keytool -certreq -keyalg RSA -alias keyAlias -file certificate.csr -keystore keystore.jks
+
+#  Creating a Self-Signed Certificate in a JKS Keystore by Using an RSA Key Algorithm

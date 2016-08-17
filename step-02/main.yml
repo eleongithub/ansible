@@ -29,15 +29,13 @@
 # Install Tomcat
 - hosts: tomcat
   become: yes
-  pre_tasks:
-   - name: Check if tomcat is installed on the system
-     shell: cat "{{ tomcat_home }}/RELEASE-NOTES"|grep "Apache Tomcat Version" || echo "Unknown Tomcat Server"
-     register: tomcat_version_result
   roles:
-    - { role: tomcat, when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'", tags: ['tomcat'] }
+    - { role: tomcat, tags: ['tomcat'] }
     - { role: tomcat_conf, tags: ['tomcat_conf'] }
     - { role: tomcat_owasp, tags: ['tomcat_owasp'] }
     - { role: tomcat_apps, tags: ['tomcat_apps'] }
+    #- { role: tomcat_openssl, tags: ['tomcat_openssl'] }
+    #- { role: tomcat_keytool, tags: ['tomcat_keytool'] }
     
 # Install Apache Server
 - hosts: apache

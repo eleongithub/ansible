@@ -1,0 +1,16 @@
+---
+
+tomcat_openssl_dir: "{{ tomcat_last_version }}/conf/ssl"
+tomcat_openssl_conf_files:
+ - { src: 'server.xml.j2', dest: '{{ tomcat_last_version }}/conf/server.xml', force: yes }
+ - { src: 'web.xml.j2', dest: '{{ tomcat_last_version }}/conf/web.xml', force: yes }
+ 
+# SSL with Openssl configuration variables
+ssl_cert_password: password
+open_ssl_certificate_file: "{{ tomcat_openssl_dir }}/cacert_{{ tomcat_dns }}.crt"
+open_ssl_private_key_file: "{{ tomcat_openssl_dir }}/cacert_{{ tomcat_dns }}.key"
+open_ssl_cert_config_file: "{{ tomcat_last_version }}/conf/openssl.conf"
+open_ssl_cert_subjectAltName: "DNS:{{ tomcat_dns }}"
+open_ssl_cert_password: secret
+open_ssl_cert_common_name: "{{ tomcat_dns }}"
+open_ssl_subj: "/C=\"{{ ssl_country }}\"/ST=\"{{ ssl_state }}\"/L=\"{{ ssl_locality }}\"/O=\"{{ ssl_organisation }}\"/OU=\"{{ ssl_organisation_unit }}\"/CN={{ open_ssl_cert_common_name }}"

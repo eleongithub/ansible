@@ -35,7 +35,6 @@ firwall_ftp_min_passive_port:
 firwall_ftp_max_passive_port:
 firewall_logs_input_trafic: true
 firewall_logs_output_trafic: true
-ssl_protocol: TLSv1+TLSv1.1+TLSv1.2
 ssl_country: FR
 ssl_state: Rhone
 ssl_locality: Lyon

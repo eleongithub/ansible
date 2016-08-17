@@ -19,18 +19,15 @@
      define subcomponents such as "Valves" at this level.
      Documentation at /docs/config/server.html
  -->
-<Server port="8005" shutdown="{{ tomcat_shutdown_command }}">
+<Server port="{{ tomcat_shutdown_port }}" shutdown="{{ tomcat_shutdown_command }}">
   <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
   <!-- Security listener. Documentation at /docs/config/listeners.html
   <Listener className="org.apache.catalina.security.SecurityListener" />
   -->
   
   <!--APR library loader. Documentation at /docs/apr.html -->
-  {% if open_ssl_enable or keystore_ssl_enable %}
   <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" SSLRandomSeed="builtin" />
-  {% else %}
-  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="off" />
-  {% endif %} 
+
   
   <!-- Prevent memory leaks due to use of particular java/javax APIs-->
   <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
@@ -79,7 +76,6 @@
                clientAuth="false" sslProtocol="TLS" />
     -->
     
-    {% if keystore_ssl_enable %}
      <Connector
            protocol="org.apache.coyote.http11.Http11NioProtocol"
            port="{{ tomcat_https_port }}" maxThreads="200"
@@ -88,18 +84,6 @@
            keystorePass="{{ keystore_password }}"
            keyAlias="{{ keystore_alias }}" 
            SSLProtocol="{{ ssl_protocol }}"/>
-    {% endif %}
-   
-    {% if open_ssl_enable %}
-    <Connector
-           protocol="org.apache.coyote.http11.Http11AprProtocol"
-           port="{{ tomcat_https_port }}" maxThreads="200"
-           scheme="https" secure="true" SSLEnabled="true"
-           SSLCertificateFile="{{ open_ssl_certificate_file }}"
-           SSLCertificateKeyFile="{{ open_ssl_private_key_file }}"
-           SSLVerifyClient="optional" SSLProtocol="{{ ssl_protocol }}"
-	   SSLPassword="tomcat"/>
-    {% endif %}
     
     <!-- Define an AJP 1.3 Connector on port 8009 -->
     <Connector port="{{ tomcat_mod_jk_port }}" protocol="AJP/1.3" redirectPort="{{ tomcat_https_port }}" />

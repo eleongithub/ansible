@@ -1,14 +1,9 @@
 ---
-# This playbook contains tomcat installation.
     
 - name: Stop eventual tomcat server running
   service: name=tomcat state=stopped enabled=no
   ignore_errors: true
 
-- name: Remove eventual tomcat from boot service
-  shell: insserv -r tomcat
-  ignore_errors: true
-  
 - name : Remove eventual tomcat init script from the system
   file: 
     path: "{{ tomcat_init_script }}"
