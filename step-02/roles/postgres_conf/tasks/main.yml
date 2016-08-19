@@ -6,6 +6,9 @@
     force: "{{item.force}}"
   with_items:
    - "{{ postgres_conf_files }}"
+   
+#- name: Alter user postgres password
+  #shell: su - postgres /bin/bash -c  "psql -c \"ALTER USER postgres WITH PASSWORD '{{ postgres_user_password }}';\""
 
 - name: Enable/Start PostgreSQL Server
   service: name=postgresql enabled=yes

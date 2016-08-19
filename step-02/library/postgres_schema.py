@@ -2,16 +2,16 @@
 
 DOCUMENTATION = '''
 ---
-module: postgres_user
-short_description: Add/update User
+module: postgres_schema
+short_description: Add Schema to database
 '''
 
 EXAMPLES = '''
-- name: Add a new user
-  postgres_user:
+- name: Create a schema to database
+  postgres_schema:
+    database: "db_test"
+    schema: "db_test_schema"
     user: "db_test"
-    password: "db_test"
-    roles: "CREATEROLE CREATEUSER"
 '''
 
 from ansible.module_utils.basic import *
@@ -19,7 +19,7 @@ from ansible.module_utils.basic import *
 import psycopg2
 
 
-def postgres_user(data):  
+def postgres_schema(data):  
     
     has_changed = False
     
@@ -31,14 +31,14 @@ def postgres_user(data):
     
     login_password = data['login_password']
     
+    db_name = data['database']
+    
+    schema = data['schema']
+    
     user = data['user']
-    
-    password = data['password']
-    
-    roles = data['roles']
-    
+     
     state = data['state']
-    
+     
     connect_request = "dbname=postgres user={}".format(login_user)
     
     if hostname != "localhost":
@@ -55,57 +55,44 @@ def postgres_user(data):
     
     # Open a cursor to perform database operations
     cursor = connection.cursor()
-        
-    cursor.execute("SELECT count(*) FROM pg_user WHERE usename='{}'".format(user))
+    
+    cursor.execute("SELECT count(*) FROM pg_catalog.pg_namespace WHERE nspname='{}'".format(schema))
     
     result = cursor.fetchone()
     
     if result[0]==0:
       
-        if state == "present":
-	  
-	  cursor.execute("CREATE USER {} LOGIN password '{}' {};".format(user,password, roles))
+	if state == "present":
+        
+	  cursor.execute("CREATE SCHEMA {} AUTHORIZATION {}".format(schema, user))
         
 	  connection.commit()
-        	                
-	  return True, {"status": "SUCCESS. User have been created"}
-      
+            
+	  return True, {"status": "SUCCESS"}
+	
 	else:
-	  
-	  return False, {"status": "WARNING. User hasn't been deleted because it didn't exist."}
+	
+	  return False, {"status": "WARNING. schema hasn't been deleted because it didn't exist."}
         
     else:
       
 	if state == "present":
-	  
-	  cursor.execute("ALTER ROLE {}  {};".format(user, roles))
         
-	  cursor.execute("ALTER ROLE  {} WITH PASSWORD  '{}';".format(user, password))
+	  cursor.execute("ALTER SCHEMA {} OWNER TO {}".format(schema, user))
         
 	  connection.commit()
-        	                
-	  return True, {"status": "SUCCESS. User has been updated"}
- 
+            
+	  return True, {"status": "SUCCESS"}
+	
 	else:
-	  	  
-	  cursor.execute("SELECT d.datname FROM pg_database d JOIN pg_user u ON (d.datdba = u.usesysid) WHERE u.usename='{}'".format(user))
-	  
-	  rows = cursor.fetchall()
-	  
-	  connection.set_isolation_level(0)
-	  
-	  for row in rows:
-	      	  
-	      cursor.execute("DROP DATABASE {};".format(row[0]))
-	  
-	      connection.commit()
-	  	   
-	  cursor.execute("DROP USER {}".format(user))
+	
+	  cursor.execute("DROP SCHEMA {} CASCADE".format(schema))
 	  
 	  connection.commit()
 	  
-	  return True, {"status": "SUCCESS. User has been dropped and its database have been dropped also."}   
-	  
+	  return True, {"status": "SUCCESS. schema has been deleted."}
+	 
+    
     cursor.close()
 	
     connection.close()
@@ -117,14 +104,14 @@ def main():
         "port": {"required": False, "default": "5432", "type": "str"},
         "login_user": {"required": False, "default": "postgres", "type": "str"},
         "login_password": {"required": False, "default": "", "type": "str"},
-	"user": {"required": True, "type": "str"},
-        "password": {"required": True, "type": "str"},
-        "roles": {"required": False, "default": "", "type": "str"},
+        "database": {"required": True, "type": "str"},
+        "schema": {"required": True, "type": "str"},
+        "user": {"required": True, "type": "str"},
         "state": {"required": True, "type": "str"}
     }
     
     module = AnsibleModule(argument_spec=fields)
-    has_changed, result = postgres_user(module.params)
+    has_changed, result = postgres_schema(module.params)
     module.exit_json(changed=has_changed, meta=result)
 
 
