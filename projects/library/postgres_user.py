@@ -64,15 +64,21 @@ def postgres_user(data):
       
         if state == "present":
 	  
-	  cursor.execute("CREATE USER {} LOGIN password '{}' {};".format(user,password, roles))
-        
+	  if password != "":
+	    
+	    cursor.execute("CREATE USER {} LOGIN password '{}' {};".format(user,password, roles))
+	  
+	  else:
+	    
+	    cursor.execute("CREATE USER {} {};".format(user, roles))
+	  
 	  connection.commit()
         	                
 	  return True, {"status": "SUCCESS. User have been created"}
       
 	else:
 	  
-	  return False, {"status": "WARNING. User hasn't been deleted because it didn't exist."}
+	  return False, {"status": "WARNING. User hasn't been deleted because he didn't exist."}
         
     else:
       
@@ -80,14 +86,29 @@ def postgres_user(data):
 	  
 	  cursor.execute("ALTER ROLE {}  {};".format(user, roles))
         
-	  cursor.execute("ALTER ROLE  {} WITH PASSWORD  '{}';".format(user, password))
+	  if password != "":
+	  
+	    cursor.execute("ALTER ROLE  {} WITH PASSWORD  '{}';".format(user, password))
         
 	  connection.commit()
         	                
 	  return True, {"status": "SUCCESS. User has been updated"}
  
 	else:
-	  	  
+	  
+	  # Drop all schemas belong to user
+	  cursor.execute("SELECT schema_name FROM information_schema.schemata where schema_owner='{}'".format(user))
+	  
+	  rows = cursor.fetchall()
+	  
+	  for row in rows:
+   
+	     cursor.execute("DROP SCHEMA {} CASCADE".format(row[0]))
+	   
+	     connection.commit()
+	  
+	  
+	  # Drop all database belong to user
 	  cursor.execute("SELECT d.datname FROM pg_database d JOIN pg_user u ON (d.datdba = u.usesysid) WHERE u.usename='{}'".format(user))
 	  
 	  rows = cursor.fetchall()
@@ -95,7 +116,7 @@ def postgres_user(data):
 	  connection.set_isolation_level(0)
 	  
 	  for row in rows:
-	      	  
+	    
 	      cursor.execute("DROP DATABASE {};".format(row[0]))
 	  
 	      connection.commit()
@@ -118,7 +139,7 @@ def main():
         "login_user": {"required": False, "default": "postgres", "type": "str"},
         "login_password": {"required": False, "default": "", "type": "str"},
 	"user": {"required": True, "type": "str"},
-        "password": {"required": True, "type": "str"},
+        "password": {"required": False, "default": "", "type": "str"},
         "roles": {"required": False, "default": "", "type": "str"},
         "state": {"required": True, "type": "str"}
     }
