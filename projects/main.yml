@@ -27,33 +27,33 @@
     
 
 # Install Tomcat
-#- hosts: tomcat
-  #become: yes
-  #roles:
-    #- { role: tomcat, tags: ['tomcat'] }
-    #- { role: tomcat_conf, tags: ['tomcat_conf'] }
-    #- { role: tomcat_owasp, tags: ['tomcat_owasp'] }
-    #- { role: tomcat_apps, tags: ['tomcat_apps'] }
-    ##- { role: tomcat_openssl, tags: ['tomcat_openssl'] }
-    ##- { role: tomcat_keytool, tags: ['tomcat_keytool'] }
+- hosts: tomcat
+  become: yes
+  roles:
+    - { role: tomcat, tags: ['tomcat'] }
+    - { role: tomcat_conf, tags: ['tomcat_conf'] }
+    - { role: tomcat_owasp, tags: ['tomcat_owasp'] }
+    - { role: tomcat_apps, tags: ['tomcat_apps'] }
+    #- { role: tomcat_openssl, tags: ['tomcat_openssl'] }
+    #- { role: tomcat_keytool, tags: ['tomcat_keytool'] }
     
-##Install Apache Server
-#- hosts: apache
-  #become: yes
-  #roles:
-    #- { role: apache, tags: ['apache'] }
-    #- { role: apache_conf, tags: ['apache_conf'] }
-    #- { role: apache_mod_jk, tags: ['apache_mod_jk'] }
-    #- { role: apache_mod_security, tags: ['apache_mod_security'] }
-    #- { role: apache_private_ca, tags: ['apache_private_ca'] }
-    #- { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
-    #- { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
+#Install Apache Server
+- hosts: apache
+  become: yes
+  roles:
+    - { role: apache, tags: ['apache'] }
+    - { role: apache_conf, tags: ['apache_conf'] }
+    - { role: apache_mod_jk, tags: ['apache_mod_jk'] }
+    - { role: apache_mod_security, tags: ['apache_mod_security'] }
+    - { role: apache_private_ca, tags: ['apache_private_ca'] }
+    - { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
+    - { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
 
     
-##Install ProFTP
-#- hosts: proftp
-  #become: yes
-  #roles:
-    #- { role: proftp, tags: ['proftp'] }
-    #- { role: proftp_conf, tags: ['proftp_conf'] }
-    #- { role: proftp_ssl, tags: ['proftp_ssl'] }
+#Install ProFTP
+- hosts: proftp
+  become: yes
+  roles:
+    - { role: proftp, tags: ['proftp'] }
+    - { role: proftp_conf, tags: ['proftp_conf'] }
+    - { role: proftp_ssl, tags: ['proftp_ssl'] }

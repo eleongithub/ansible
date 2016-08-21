@@ -7,7 +7,8 @@
  
 
 - name : Check jdk versions directory exists
-  stat: path={{ jdk_versions }}
+  stat: 
+    path: "{{ jdk_versions }}"
   register: jdk_versions_dir_exists
   when: "'{{ java_version }}' not in '{{ java_version_result.stdout }}'"
   

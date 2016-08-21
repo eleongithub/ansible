@@ -19,7 +19,8 @@
   
   
 - name : Check apache versions directory exists
-  stat: path={{ apache_versions }}
+  stat: 
+    path: "{{ apache_versions }}"
   register: apache_versions_dir_exists
   when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'"
   

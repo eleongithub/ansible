@@ -8,24 +8,65 @@
 
 - name: Create user
   postgres_user:
-    user: "{{ db_user }}"
-    password: "{{ db_password }}"
-    roles: "CREATEROLE CREATEUSER"
+    user: "{{ item.db_user }}"
+    password: "{{ item.db_password }}"
+    roles: "{{ item.db_user_roles }}"
     state: present
- 
+  with_items: "{{ dbs }}"
+  
+  
 - name: Create database
   postgres_db:
-    name: "{{ db_name }}"
-    owner: "{{ db_user }}"
+    name: "{{ item.db_name }}"
+    owner: "{{ item.db_user }}"
     state: present
+  with_items: "{{ dbs }}"
+ 
  
 - name: Create schema
   postgres_schema:
-    database: "{{ db_name }}"
-    schema: "{{ db_schema }}"
-    user: "{{ db_user }}"
+    database: "{{ item.db_name }}"
+    schema: "{{ item.db_schema }}"
+    user: "{{ item.db_user }}"
     state: present
+  with_items: "{{ dbs }}"
 
+- name : Check backups directory exists
+  stat: 
+    path: "{{ backup_dir }}"
+  register: backup_dir_exists
+
+  
+- name: Create backups directory if not exists
+  file: 
+    path: "{{ backup_dir }}"
+    owner: "root"
+    group: "root"
+    mode: "0744"
+    recurse: yes
+    state: directory
+  when: not backup_dir_exists.stat.exists
+  
+  
+- name: Deploy backup files
+  template: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    force: "{{ item.force }}"
+    owner: "postgres"
+    group: "postgres"
+  with_items: "{{ postgres_backup_files }}"
+  
+- name: Define crontab for postgres backup
+  cron: 
+    name: "Backup Database PostgreSQL"
+    job: "bash {{ postgres_conf_dir }}/pg_backup_rotated.sh"
+    minute: "0"
+    hour: "0"
+    day: "*"
+    month: "*"
+    state: present
+    
 - name: Restart PostgreSQL
   command: echo "Restart PostgreSQL..."
   notify: 

@@ -12,7 +12,8 @@
   
 
 - name : Check tomcat version directory exists
-  stat: path={{ tomcat_versions }}
+  stat: 
+    path: "{{ tomcat_versions }}"
   register: tomcat_versions_dir_exists
   when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
   

@@ -2,7 +2,8 @@
 # This playbook contains apache virtual hosts installation.
 
 - name : Check virtual hosts configuration directory exists
-  stat: path={{ apache_vhosts_conf_dir }}
+  stat: 
+    path: "{{ apache_vhosts_conf_dir }}"
   register: apache_vhosts_conf_dir_exists
   
 - name: Create virtual hosts configuration directories
