@@ -6,7 +6,7 @@
 - hosts: tomcat:apache
   become: yes
   roles:
-    - { role: common, tags: ['always'] }
+    - { role: build-essential, tags: ['always'] }
     #- { role: firewall, tags: ['always'] }
     
 # Install JDK

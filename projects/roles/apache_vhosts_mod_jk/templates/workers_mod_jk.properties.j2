@@ -1,7 +1,6 @@
 workers.java_home={{ java_home }}
 worker.list=loadbalancer
 
-# TODO : Rework : get the list of the workers by loop instruction
 {% for key, value in apache_vhosts_mod_jk.iteritems() %}
 {% for worker in value.workers %}
 worker.{{ worker.name }}.port={{ worker.port }}

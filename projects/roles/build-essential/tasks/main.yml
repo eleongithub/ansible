@@ -1,0 +1,6 @@
+---
+
+- name: Installed build-essential(dpkg-dev, g++, gcc, libc6-dev, libc-dev, make)
+  apt: 
+    pkg: build-essential 
+    state: present

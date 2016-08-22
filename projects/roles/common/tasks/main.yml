@@ -1,6 +1,0 @@
----
-# This playbook contains common play-book.
-
-# Install openssl if this package was absent
-- name: Installed build-essential(dpkg-dev, g++, gcc, libc6-dev, libc-dev, make)
-  apt: pkg=build-essential state=present

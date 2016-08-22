@@ -1,12 +1,6 @@
 ---
 # variables for postgresql_instance
 
-backup_dir: "/home/backups/database/postgresql/"
-
-postgres_backup_files:
- - { src: 'pg_backup.config.j2', dest: '{{ postgres_conf_dir }}/pg_backup.config', force: yes }
- - { src: 'pg_backup_rotated.sh.j2', dest: '{{ postgres_conf_dir }}/pg_backup_rotated.sh', force: yes }
- 
 dbs:
   - { db_user: 'apps', db_password: 'apps', db_user_roles: 'CREATEROLE CREATEUSER',  db_name: 'apps', db_schema: 'apps' }
   - { db_user: 'apps1', db_password: 'apps1', db_user_roles: 'CREATEROLE CREATEUSER',  db_name: 'apps1', db_schema: 'apps1' }
