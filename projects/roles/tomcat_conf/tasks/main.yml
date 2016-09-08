@@ -46,9 +46,11 @@
   file: 
     src: "{{ tomcat_last_version }}"
     path: "{{ tomcat_home }}"
+    state: link
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user_group }}"
     
+
 - name: Deploy conf Tomcat files (server.xml and setenv.sh)
   template: 
     src: "{{item.src}}"

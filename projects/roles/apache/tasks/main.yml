@@ -9,7 +9,7 @@
 - name: Stop eventual Apache server runing
   service: name=apache state=stopped enabled=no
   ignore_errors: true
-  when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'"
+  when: "(apache_version_result is not defined) or ('{{ apache_version }}' not in '{{ apache_version_result.stdout }}')"
 
   
 - name: Install required librairies

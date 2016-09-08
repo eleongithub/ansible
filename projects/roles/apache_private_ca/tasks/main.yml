@@ -10,24 +10,24 @@
   file: 
     path: "{{ apache_ssl_ca_conf_dir }}"
     state: directory
-    owner: root
-    group: root
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
     
 
 - name: Create CA new certificats directory
   file: 
     path: "{{ apache_ssl_ca_conf_dir }}/newcerts"
     state: directory
-    owner: root
-    group: root
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
     
 
 - name: Copy configuration file into CA directory
   template: 
     src: openssl_ca.conf.j2
     dest: "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
-    owner: root
-    group: root
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
     force: yes
     
   
@@ -37,15 +37,15 @@
     create: yes
     regexp: ''
     line: '01'
-    owner: root
-    group: root
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
     
 - name: Initialize index.txt file
   file: 
     path: "{{ apache_ssl_ca_conf_dir }}/index.txt"
     state: touch
-    owner: root
-    group: root
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
   
 # Create private Key of the CA.
 - name: Create private Key of the CA
@@ -60,8 +60,8 @@
   file: 
     path: "{{ apache_ssl_ca_key }}"
     mode: 0400 
-    owner: root
-    group: root
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
     
 # Create X509 Certification for authority
 - name: Create X509 Certification for the CA

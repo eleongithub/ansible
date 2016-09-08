@@ -36,10 +36,10 @@ iptables -A INPUT -i lo -j ACCEPT
 iptables -A OUTPUT -o lo -j ACCEPT
 
 # Accept inupt ICMP - PING request 
-iptables -t filter -A INPUT -p icmp -i eth0 -j ACCEPT
+iptables -t filter -A INPUT -p icmp -j ACCEPT
 
 # Authorize output ICMP - PING request
-iptables -t filter -A OUTPUT -p icmp -m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT
+iptables -t filter -A OUTPUT -p icmp -j ACCEPT
 
 # Add a rule for each allow port
 {% for allowed_port in firewall_allowed_ports %}
@@ -57,7 +57,7 @@ iptables -t filter -A {{ allowed_specific_port.direction }} -p {{ allowed_specif
 {% endfor %}
 
 {% if (firwall_ftp_min_passive_port is defined) and (firwall_ftp_max_passive_port is defined) %}
-iptables -I INPUT -m state --state NEW -j ACCEPT -p tcp -m multiport --ports {{ firwall_ftp_min_passive_port }}:{{ firwall_ftp_max_passive_port }} comment --comment "Mode Passif - ProFTP"
+iptables -I INPUT -m state --state NEW -j ACCEPT -p tcp -m multiport --ports {{ firwall_ftp_min_passive_port }}:{{ firwall_ftp_max_passive_port }} -m comment --comment "Mode Passif - ProFTP"
 {% endif %} 
 
 # Log input trafic.
@@ -69,5 +69,11 @@ iptables -A INPUT -j LOG
 {% if firewall_logs_output_trafic %}
 iptables -A FORWARD -j LOG 
 {% endif %}
+
+
+#{% if nexus_port is defined %}
+#iptables -t filter -A INPUT -p tcp --dport {{ nexus_port }} -j ACCEPT -m comment --comment "TCP - Nexus Input trafic"
+#iptables -t filter -A OUTPUT -p tcp --dport {{ nexus_port }} -j ACCEPT -m comment --comment "TCP - Nexus Output trafic"
+#{% endif %}
 
 exit 0

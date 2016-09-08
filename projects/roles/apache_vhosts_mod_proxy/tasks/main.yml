@@ -10,12 +10,18 @@
   file: 
     path: "{{ apache_vhosts_conf_dir }}"
     state: directory
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
+    recurse: yes
   when: not apache_vhosts_conf_dir_exists.stat.exists
     
 - name: Create logs directories for Mod_Proxy virtual hosts
   file: 
     path: "{{ apache_logs_dir }}/{{ item.key }}"
     state: directory
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
+    recurse: yes
   with_dict: "{{ apache_vhosts_mod_proxy }}"
 
   
@@ -23,6 +29,9 @@
   file: 
     path: "{{ apache_vhosts_dir }}/{{ item.key }}"
     state: directory
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
+    recurse: yes
   with_dict: "{{ apache_vhosts_mod_proxy }}"
   
     
@@ -30,6 +39,9 @@
   file: 
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/mutex"
     state: directory
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
+    recurse: yes
   with_dict: "{{ apache_vhosts_mod_proxy }}"
    
    
@@ -37,6 +49,8 @@
   template: 
     src: vhosts_mod_proxy.conf.j2 
     dest: "{{ apache_vhosts_conf_dir }}/{{ item.key }}_mod_proxy.conf"
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
     force: yes
   with_dict: "{{ apache_vhosts_mod_proxy }}"
 

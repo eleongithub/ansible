@@ -23,7 +23,7 @@
     - { role: postgres, tags: ['postgres'] }
     - { role: postgres_conf, tags: ['postgres_conf'] }
     - { role: postgres_instance, tags: ['postgres_instance'] }
-   #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain
+    #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain
     
 
 # Install Tomcat
@@ -33,7 +33,7 @@
     - { role: tomcat, tags: ['tomcat'] }
     - { role: tomcat_conf, tags: ['tomcat_conf'] }
     - { role: tomcat_owasp, tags: ['tomcat_owasp'] }
-    - { role: tomcat_apps, tags: ['tomcat_apps'] }
+    #- { role: tomcat_apps, tags: ['tomcat_apps'] }
     #- { role: tomcat_openssl, tags: ['tomcat_openssl'] }
     #- { role: tomcat_keytool, tags: ['tomcat_keytool'] }
     

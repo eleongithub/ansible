@@ -17,31 +17,34 @@ firewall_allowed_ports:
  - { port: '{{ ftp_default_port }}', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - FTP Output trafic' }
  - { port: '{{ ftp_default_port }}', protocol: 'udp', direction: 'OUTPUT', comment: 'UDP - FTP Output trafic' }
  - { port: '22', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - SSH Input trafic' }
- - { port: '22', protocol: 'udp', direction: 'INPUT', comment: 'UDP - SSH Input trafic' }
+ #- { port: '22', protocol: 'udp', direction: 'INPUT', comment: 'UDP - SSH Input trafic' }
  - { port: '22', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - SSH Output trafic' }
- - { port: '22', protocol: 'udp', direction: 'OUTPUT', comment: 'UDP - SSH Output trafic' }
+ #- { port: '22', protocol: 'udp', direction: 'OUTPUT', comment: 'UDP - SSH Output trafic' }
  - { port: '53', protocol: 'tcp', direction: 'INPUT', comment: 'TCP DNS Input trafic' }
- - { port: '53', protocol: 'udp', direction: 'INPUT', comment: 'UDP DNS Input trafic' }
+ #- { port: '53', protocol: 'udp', direction: 'INPUT', comment: 'UDP DNS Input trafic' }
  - { port: '53', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP DNS Output trafic' }
- - { port: '53', protocol: 'udp', direction: 'OUTPUT', comment: 'UDP DNS Output trafic' }
+ #- { port: '53', protocol: 'udp', direction: 'OUTPUT', comment: 'UDP DNS Output trafic' }
  - { port: '123', protocol: 'udp', direction: 'OUTPUT', comment: 'NTP Output trafic' }
- - { port: '{{ http_default_port }}', protocol: 'tcp', direction: 'INPUT', comment: 'HTTP Input trafic' }
- - { port: '{{ http_default_port }}', protocol: 'tcp', direction: 'OUTPUT', comment: 'HTTP Output trafic' }
+ - { port: '{{ http_default_port }}', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - HTTP Input trafic' }
+ - { port: '{{ http_default_port }}', protocol: 'udp', direction: 'INPUT', comment: 'UDP - HTTP Input trafic' }
+ - { port: '{{ http_default_port }}', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - HTTP Output trafic' }
+ - { port: '{{ http_default_port }}', protocol: 'udp', direction: 'OUTPUT', comment: 'UDP - HTTP Output trafic' }
  - { port: '{{ https_default_port }}', protocol: 'tcp', direction: 'INPUT', comment: 'HTTPS Input trafic' }
  - { port: '{{ https_default_port }}', protocol: 'tcp', direction: 'OUTPUT', comment: 'HTTPS Output trafic' }
 firewall_specific_env_ports: []
 firewall_allowed_web_provider_specific_ports: []
 firwall_ftp_min_passive_port:
 firwall_ftp_max_passive_port:
-firewall_logs_input_trafic: true
-firewall_logs_output_trafic: true
+firewall_logs_input_trafic: True
+firewall_logs_output_trafic: True
 ssl_country: FR
 ssl_state: Rhone
 ssl_locality: Lyon
 ssl_organisation: Syscom
 ssl_organisation_unit: IT
 ssl_certificate_days: 3650
-nexus: http://192.168.0.16:9081/nexus
+nexus_port: 9081
+nexus: "http://192.168.0.16:{{ nexus_port }}/nexus"
 nexus_repositories: "{{ nexus }}/content/repositories"
 nexus_public_repository: "{{ nexus_repositories }}/public"
 nexus_thirdparty_repository: "{{ nexus_repositories }}/thirdparty"

@@ -16,7 +16,7 @@
   ignore_errors: true
 
 - name: Change the right of Apache directory 
-  shell: chown -R root:sys {{ apache_home }}
+  shell: chown -R {{ root_user }}:{{ root_group }} {{ apache_home }}
   
 - name: Delete user Apache
   user: name={{ apache_user }} state=absent

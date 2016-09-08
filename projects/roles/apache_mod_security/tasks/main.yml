@@ -52,24 +52,24 @@
   file: 
     path: "{{ mod_security_logs_dir }}"
     state: directory
-    owner: "{{ apache_user }}"
-    group: "{{ apache_user_group }}"
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
  
  
 - name: Create the configuration directory for Mod Security
   file: 
     path: "{{ mod_security_conf_dir }}"
     state: directory
-    owner: "{{ apache_user }}"
-    group: "{{ apache_user_group }}"
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
  
  
 - name: Copy Mod Security library into Apache module directories
   copy: 
     src : "/usr/local/modsecurity/lib/mod_security2.so"
     dest: "{{ apache_modules_dir }}/"
-    owner: "{{ apache_user }}"
-    group: "{{ apache_user_group }}"
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
  
  
 - name: Deploy Mod Security configuration files
@@ -77,8 +77,8 @@
     src: "{{item.src}}"
     dest: "{{item.dest}}"
     force: "{{item.force}}"
-    owner: "{{ apache_user }}"
-    group: "{{ apache_user_group }}"
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
   with_items: "{{ mod_security_conf_files }}"
   
 
@@ -86,8 +86,8 @@
   template: 
     src : "modsecurity_module.conf.j2"
     dest: "{{ apache_conf_dir }}/modsecurity_module.conf"
-    owner: "{{ apache_user }}"
-    group: "{{ apache_user_group }}"
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
     force: yes
 
 - name: if unique_id_module was absent, add it because unique_id_module is required for Mod Security
