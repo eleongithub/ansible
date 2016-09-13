@@ -15,7 +15,7 @@
 
   DocumentRoot "{{ item.webapps_absolute_path }}"
   <Directory "{{ item.webapps_absolute_path }}">
-    Options Indexes FollowSymLinks
+    Options None
     AllowOverride none
     Require all granted
   </Directory>

@@ -53,10 +53,10 @@ SecRequestBodyAccess On
 SecAuditEngine RelevantOnly
 
 # Log file for mod_security
-SecAuditLog {{ mod_security_logs_dir }}/audit.log
+SecAuditLog {{ mod_security_logs_dir }}/modsec-audit.log
 
 # Debug Log file
-SecDebugLog {{ mod_security_logs_dir }}/debug.log
+SecDebugLog {{ mod_security_logs_dir }}/modsec-debug.log
 
 # Debug level :
 #   0 : Nothing
