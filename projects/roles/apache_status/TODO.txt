@@ -4,6 +4,8 @@
 
 3°) Si la ligne "LoadModule status_module modules/mod_status.so" n'existe pas dans le fichier des modules, alors ajouter-le
 
+3°) Si la ligne "ExtendedStatus On" n'existe pas dans le fichier des modules, alors ajouter-le
+
 4°) Créer un fichier vhost_server_status.conf contenant les informations suivantes
 
 # ExtendedStatus controls whether Apache will generate "full" status

@@ -1,0 +1,14 @@
+---
+# This playbook contains Mod Status installation
+
+- name: Add Mod Status to the list of Apache's modules
+  lineinfile:
+    dest: "{{ apache_modules_file }}"
+    insertafter: EOF
+    line: 'LoadModule status_module {{ apache_modules_dir }}/mod_status.so'
+    
+- name: Configure ExtendedStatus directive
+  lineinfile:
+    dest: "{{ apache_httpd_file }}"
+    insertafter: EOF
+    line: 'ExtendedStatus On'
