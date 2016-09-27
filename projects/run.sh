@@ -9,4 +9,8 @@ ansible --version
 
 echo "---------------------"
 
-ansible-playbook -i inventory/dev/hosts.yml main.yml -vvvv 
+# TODO : Get this variable from Jenkins password input 
+VAULT_PASSWORD="test"
+echo $VAULT_PASSWORD > vault_pass.txt
+ansible-playbook --vault-password-file vault_pass.txt -i inventory/dev/hosts.yml main.yml -vvv
+rm vault_pass.txt

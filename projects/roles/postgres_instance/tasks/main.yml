@@ -1,6 +1,5 @@
 ---
 # This playbook contains postgres_instance tasks
-
 - name: Install python-psycopg2 package
   apt: 
     pkg: python-psycopg2
