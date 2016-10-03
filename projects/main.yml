@@ -1,33 +1,34 @@
 ---
-# This playbook deploys the whole application.  
-
-#  Apply common & firewall roles to all nodes
-#- hosts: dbserver:tomcat:apache
+  
+#hosts: dbserver:tomcat:apache
 - hosts: tomcat:apache
+  vars_files:
+    - "password/password-{{env}}.yml"
   become: yes
   roles:
     - { role: build-essential, tags: ['always'] }
     #- { role: firewall, tags: ['always'] }
-    
-# Install JDK
+
 - hosts: tomcat
+  vars_files:
+   - "password/password-{{env}}.yml"
   become: yes
   roles:
     - { role: jdk, tags: ['jdk'] }
 
-    
-#Install Postgres SGBD, schema and/or Dbmaintain
 - hosts: dbserver
+  vars_files:
+   - "password/password-{{env}}.yml"
   become: yes
   roles:
     - { role: postgres, tags: ['postgres'] }
     - { role: postgres_conf, tags: ['postgres_conf'] }
     - { role: postgres_instance, tags: ['postgres_instance'] }
     #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain
-    
-
-# Install Tomcat
+  
 - hosts: tomcat
+  vars_files:
+   - "password/password-{{env}}.yml"
   become: yes
   roles:
     - { role: tomcat, tags: ['tomcat'] }
@@ -36,23 +37,24 @@
     #- { role: tomcat_apps, tags: ['tomcat_apps'] }
     #- { role: tomcat_openssl, tags: ['tomcat_openssl'] }
     #- { role: tomcat_keytool, tags: ['tomcat_keytool'] }
-    
-#Install Apache Server
+
 - hosts: apache
+  vars_files:
+   - "password/password-{{env}}.yml"
   become: yes
   roles:
     - { role: apache, tags: ['apache'] }
     - { role: apache_conf, tags: ['apache_conf'] }
     - { role: apache_mod_security, tags: ['apache_mod_security'] }
-    #- { role: apache_status, tags: ['apache_status'] }
-    - { role: apache_mod_jk, tags: ['apache_mod_jk'] }
-    - { role: apache_private_ca, tags: ['apache_private_ca'] }
-    - { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
-    - { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
+    - { role: apache_status, tags: ['apache_status'] }
+    #- { role: apache_mod_jk, tags: ['apache_mod_jk'] }
+    #- { role: apache_private_ca, tags: ['apache_private_ca'] }
+    #- { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
+    #- { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
 
-    
-#Install ProFTP
 - hosts: proftp
+  vars_files:
+   - "password/password-{{env}}.yml"
   become: yes
   roles:
     - { role: proftp, tags: ['proftp'] }

@@ -20,7 +20,7 @@
     name: "{{ proftp_user }}"
     createhome: no 
     group: "{{ proftp_user_group }}"
-    shell: /bin/false 
+    shell: /bin/false
     comment: "ProFTD Server User"
     state: present
   when: proftp_user_exists.rc|int != 0
@@ -33,7 +33,6 @@
     force: yes
 
 - name: Define user "proftp" and group "proftp" as the owner of configuration directory
-  sudo: yes
   file:
     path: /etc/proftpd
     owner: "{{ proftp_user }}"

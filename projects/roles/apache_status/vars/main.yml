@@ -1,17 +1,7 @@
 ---
-
-server_status_servername:
-server_status_serveralias:
-server_status_require_ip:
-server_status_
-
-apache_vhosts_mod_jk:
-  vhost1:
-    serverName: 'vhosts1.fr'
-    serverAlias: 'www.vhosts1.fr'
-    use_https: True
-    ssl_subj: "/C=\"{{ ssl_country }}\"/ST=\"{{ ssl_state }}\"/L=\"{{ ssl_locality }}\"/O=\"{{ ssl_organisation }}\"/OU=\"{{ ssl_organisation_unit }}\"/CN=vhosts1.fr"
-    webapps: 'docs'
-    workers:
-        - { name: 'worker1', host: 'st-db-villeurbanne', port: '8009' }
-        - { name: 'worker2', host: 'localhost', port: '8009' }
+mod_status_url: "{{ nexus_public_repository }}/org/apache/mod_status/1.0/mod_status.so"
+mod_status_server_name: 'status.fr'
+mod_status_server_alias: 'www.status.fr'
+mod_status_require_ip: ''
+mod_status_require_host: ''
+mod_status_enable_authentication: True

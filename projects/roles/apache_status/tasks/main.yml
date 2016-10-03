@@ -1,14 +1,59 @@
 ---
-# This playbook contains Mod Status installation
-
-- name: Add Mod Status to the list of Apache's modules
+- name: Find Mod Status library in modules directory
+  find:
+    paths: "{{ apache_modules_dir }}"
+    patterns: "mod_status.so"
+  register: find_mod_status_file
+  
+- name: Download Apache Mod_Status library into modules directory
+  get_url: 
+    url: "{{ mod_status_url }}"
+    dest: "{{ apache_modules_dir }}/mod_status.so"
+  when: find_mod_status_file.matched|int == 0
+    
+- name: Check Mod Status is added to Apache's modules
+  command: grep mod_status.so {{ apache_modules_file }}
+  register: check_mod_status_load
+    
+- name: Add Mod Status to Apache's modules
   lineinfile:
     dest: "{{ apache_modules_file }}"
     insertafter: EOF
     line: 'LoadModule status_module {{ apache_modules_dir }}/mod_status.so'
+  when: check_mod_status_load.rc|int != 0 
     
 - name: Configure ExtendedStatus directive
   lineinfile:
     dest: "{{ apache_httpd_file }}"
-    insertafter: EOF
     line: 'ExtendedStatus On'
+    state: present
+
+- name: Create virtual hosts root directories
+  file: 
+    path: "{{ apache_vhosts_dir }}/{{ mod_status_server_name }}"
+    state: directory
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
+  
+- name: Provide Authentication file
+  command: "{{ apache_home }}/bin/htpasswd -csb {{ apache_vhosts_dir }}/{{ mod_status_server_name }}/.htpasswd {{ mod_status_authentication_login }} {{ mod_status_authentication_passowrd }}"
+  when: mod_status_enable_authentication
+
+- name: Copy vhost_server_status.conf file to Apache configuration directory
+  template: 
+    src: server_status.conf.j2 
+    dest: "{{ apache_conf_dir }}/server_status.conf"
+    owner: "{{ root_user | default('root') }}"
+    group: "{{ root_group | default('sys') }}"
+    force: yes
+    
+- name: Add vhost_server_status.conf to HTTPD
+  lineinfile:
+    dest: "{{ apache_httpd_file }}"
+    line: 'Include {{ apache_conf_dir }}/server_status.conf'
+    state: present 
+
+- name: Restart Apache
+  command: echo "Restart Apache..."
+  notify: 
+    - Restart Apache
