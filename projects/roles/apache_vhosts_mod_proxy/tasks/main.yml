@@ -10,8 +10,8 @@
   file: 
     path: "{{ apache_vhosts_conf_dir }}"
     state: directory
-    owner: "{{ root_user | default('root') }}"
-    group: "{{ root_group | default('sys') }}"
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
     recurse: yes
   when: not apache_vhosts_conf_dir_exists.stat.exists
     
@@ -19,8 +19,8 @@
   file: 
     path: "{{ apache_logs_dir }}/{{ item.key }}"
     state: directory
-    owner: "{{ root_user | default('root') }}"
-    group: "{{ root_group | default('sys') }}"
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
     recurse: yes
   with_dict: "{{ apache_vhosts_mod_proxy }}"
 
@@ -29,8 +29,8 @@
   file: 
     path: "{{ apache_vhosts_dir }}/{{ item.key }}"
     state: directory
-    owner: "{{ root_user | default('root') }}"
-    group: "{{ root_group | default('sys') }}"
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
     recurse: yes
   with_dict: "{{ apache_vhosts_mod_proxy }}"
   
@@ -39,8 +39,8 @@
   file: 
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/mutex"
     state: directory
-    owner: "{{ root_user | default('root') }}"
-    group: "{{ root_group | default('sys') }}"
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
     recurse: yes
   with_dict: "{{ apache_vhosts_mod_proxy }}"
    
@@ -49,8 +49,8 @@
   template: 
     src: vhosts_mod_proxy.conf.j2 
     dest: "{{ apache_vhosts_conf_dir }}/{{ item.key }}_mod_proxy.conf"
-    owner: "{{ root_user | default('root') }}"
-    group: "{{ root_group | default('sys') }}"
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
     force: yes
   with_dict: "{{ apache_vhosts_mod_proxy }}"
 

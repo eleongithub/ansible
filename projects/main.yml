@@ -47,9 +47,9 @@
     - { role: apache_conf, tags: ['apache_conf'] }
     - { role: apache_mod_security, tags: ['apache_mod_security'] }
     - { role: apache_status, tags: ['apache_status'] }
-    #- { role: apache_mod_jk, tags: ['apache_mod_jk'] }
-    #- { role: apache_private_ca, tags: ['apache_private_ca'] }
-    #- { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
+    - { role: apache_mod_jk, tags: ['apache_mod_jk'] }
+    - { role: apache_private_ca, tags: ['apache_private_ca'] }
+    - { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
     #- { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
 
 - hosts: proftp

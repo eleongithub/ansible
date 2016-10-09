@@ -36,8 +36,8 @@
   copy: 
     src: "{{ mod_jk_dir }}/apache-2.0/mod_jk.so"
     dest: "{{ apache_modules_dir }}/"
-    owner: "{{ root_user | default('root') }}"
-    group: "{{ root_group | default('sys') }}"
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
 
 
 - name: Add Mod JK to the list of Apache's modules

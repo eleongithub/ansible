@@ -6,8 +6,8 @@
   file: 
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl"
     state: directory
-    owner: "{{ root_user | default('root') }}"
-    group: "{{ root_group | default('sys') }}"
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
     recurse: yes
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
@@ -22,8 +22,8 @@
 - name: Secure passhprase (mod_jk)
   file: 
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.txt"
-    owner: "{{ root_user | default('root') }}"
-    group: "{{ root_group | default('sys') }}"
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
     mode: 0400
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
@@ -41,8 +41,8 @@
 - name: Secure passphrase.sh (mod_jk)
   file: 
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.sh"
-    owner: "{{ root_user | default('root') }}"
-    group: "{{ root_group | default('sys') }}"
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
     mode: 0500
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
@@ -62,8 +62,8 @@
 - name: Secure private key file (mod_jk)
   file: 
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/key.pem"
-    owner: "{{ root_user | default('root') }}"
-    group: "{{ root_group | default('sys') }}"
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
     mode: 0400
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
