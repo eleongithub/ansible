@@ -1,5 +1,4 @@
 ---
-  
 #hosts: dbserver:tomcat:apache
 - hosts: tomcat:apache
   vars_files:

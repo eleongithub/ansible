@@ -1,9 +1,7 @@
 ---
 # This playbook installs SSL configuration files for apache virtual hosts.
-
-
 - name: Create virtual hosts ssl directories (mod_jk)
-  file: 
+  file:
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl"
     state: directory
     owner: "{{ root_user }}"
@@ -12,55 +10,49 @@
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
 
-
 - name: Create passhprase (mod_jk)
   shell: openssl rand -base64 48 > "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.txt"
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
-  
 
 - name: Secure passhprase (mod_jk)
-  file: 
+  file:
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.txt"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
     mode: 0400
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
-  
-  
+
 - name: Copy Script shell script which will read passphrase.txt (mod_jk)
   template:
-    src: passphrase.sh.j2 
+    src: passphrase.sh.j2
     dest: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.sh"
     force: yes
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
-  
 
 - name: Secure passphrase.sh (mod_jk)
-  file: 
+  file:
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.sh"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
     mode: 0500
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
-  
 
 - name: Create the private key for the virtual hosts (mod_jk)
   command: >
-    openssl genrsa 
-      -des3 
+    openssl genrsa
+      -des3
       -passout file:"{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.txt"
-      -out "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/key.pem" {{ apache_ssl_ca_bits }} 
+      -out "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/key.pem" {{ apache_ssl_ca_bits }}
       -rand file:/dev/random
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
- 
 
 - name: Secure private key file (mod_jk)
-  file: 
+  file:
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/key.pem"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
@@ -68,27 +60,25 @@
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
 
-
 - name: Create a certificat signing request for the virtual hosts (mod_jk)
   command: >
-    openssl req 
-      -new 
+    openssl req
+      -new
       -passin file:"{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.txt"
-      -key "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/key.pem" 
+      -key "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/key.pem"
       -out "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/req.pem"
-      -subj "{{ item.value.ssl_subj }}" 
+      -subj "{{ item.value.ssl_subj }}"
       -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
 
-
 - name: Sign the certificat for the virtual hosts (mod_jk)
   command: >
-    openssl ca 
-      -batch 
-      -notext 
+    openssl ca
+      -batch
+      -notext
       -out "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/cert.pem"
-      -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf" 
+      -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
       -infiles "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/req.pem"
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"

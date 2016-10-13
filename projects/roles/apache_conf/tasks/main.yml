@@ -1,50 +1,58 @@
 ---
 # This playbook contains Apache configuration.
-
 - name: Stop Apache server script and disable it.
-  service: name=apache state=stopped enabled=no
+  service:
+    name: apache
+    state: stopped
+    enabled: no
   ignore_errors: true
 
-#- name: Remove eventual Apache from boot service
-  #shell: insserv -r apache
-  #ignore_errors: true
-  
 - name : Remove eventual Apache init script from the system
-  file: 
+  file:
     path: "{{ apache_init_script }}"
     state: absent
   ignore_errors: true
 
 - name: Change the right of Apache directory 
-  shell: chown -R {{ root_user }}:{{ root_group }} {{ apache_home }}
-  
+  file:
+    path: "{{ apache_home }}"
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
+    recurse: yes
+
 - name: Delete user Apache
-  user: name={{ apache_user }} state=absent
+  user:
+    name: "{{ apache_user }}"
+    state: absent
   ignore_errors: true
 
 - name: Delete group Apache
-  group: name={{ apache_user_group }} state=absent
+  group:
+    name: "{{ apache_user_group }}"
+    state: absent
   ignore_errors: true
-  
+
 - name: Create Group Apache 
-  group: name={{ apache_user_group }} state=present
+  group:
+    name: "{{ apache_user_group }}"
+    state: present
 
 - name: Create User Apache 
-  user: 
+  user:
     name: "{{ apache_user }}"
     createhome: no 
     group: "{{ apache_user_group }}"
     shell: /bin/false 
     comment: "Web Server"
     state: present
-  
+
 - name: Deploy configuration file for Apache
   template: 
     src: "{{item.src}}"
     dest: "{{item.dest}}"
     force: "{{item.force}}"
   with_items: "{{ apache_conf_files }}"
-   
+
 - name: Copy Apache init script
   template: 
     src: apache.sh.j2 
@@ -53,8 +61,9 @@
     mode: 0755
 
 - name: Enable Apache init script
-  service: name=apache enabled=yes
-
+  service:
+    name: apache
+    enabled: yes
 
 - name: Restart Apache
   command: echo "Restart Apache..."

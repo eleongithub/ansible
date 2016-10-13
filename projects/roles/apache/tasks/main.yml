@@ -1,73 +1,67 @@
 ---
 # This playbook contains Apache installation.
-
 - name: Get Apache version installed on the nodes
   shell: bash "{{ apache_home }}/bin/apachectl" -v 2>&1 | head -n 1 || echo "Unknown Apache Server"
   register: apache_version_result
- 
-    
+
 - name: Stop eventual Apache server runing
-  service: name=apache state=stopped enabled=no
+  service:
+    name: apache
+    state: stopped
+    enabled: no
   ignore_errors: true
   when: "(apache_version_result is not defined) or ('{{ apache_version }}' not in '{{ apache_version_result.stdout }}')"
 
-  
 - name: Install required librairies
-  apt: pkg={{ item.package }} state=present
+  apt:
+    pkg: "{{ item.package }}"
+    state: present
   with_items: "{{ apache_required_packages }}"
   when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'"
-  
-  
+
 - name : Check apache versions directory exists
-  stat: 
+  stat:
     path: "{{ apache_versions }}"
   register: apache_versions_dir_exists
   when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'"
-  
-  
+
 - name: Create apache versions directory
-  file: 
+  file:
     path: "{{ apache_versions }}"
     state: directory
   when: "('{{ apache_version }}' not in '{{ apache_version_result.stdout }}') and
          (apache_versions_dir_exists is defined and not apache_versions_dir_exists.stat.exists)"
-  
-  
+
 - name: Delete Apache home directory 
-  file: 
+  file:
     path: "{{ apache_home }}"
     state: absent
   when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'"
-  
-  
+
 - name: Create Apache home directory
-  file: 
+  file:
     path: "{{ apache_home }}"
     state: directory
   when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'"
-  
-  
+
 - name: Download Apache Archive
-  get_url: 
+  get_url:
     url: "{{ apache_url }}"
     dest: "/tmp/{{ apache_tarball_name }}"
   when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'"
-  
-  
+
 - name: Decompress Apache archive
-  unarchive: 
+  unarchive:
     src: "/tmp/{{ apache_tarball_name }}"
     dest: "{{ apache_versions }}/"
   when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'"
-  
-  
+
 - name: Delete Apache archive
-  file: 
+  file:
     path: "/tmp/{{ apache_tarball_name }}"
     state: absent
   when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'"
-  
-  
+
 - name: Compile Apache 
   shell: cd {{ apache_last_version }} &&
                 ./configure \
@@ -86,8 +80,7 @@
                 --disable-asis --disable-cgid --disable-negotiation \ 
                 --disable-userdir --disable-charset-lite \
   when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'"
-  
-  
-- name: Execute commands to install Apache. 
+
+- name: Execute commands to install Apache.
   shell: cd {{ apache_last_version }} && make && umask 022 && make install && make clean
   when: "'{{ apache_version }}' not in '{{ apache_version_result.stdout }}'"

@@ -1,7 +1,7 @@
 ---
 # This playbook contains postgres_instance tasks
 - name: Install python-psycopg2 package
-  apt: 
+  apt:
     pkg: python-psycopg2
     state: present
 
@@ -12,16 +12,14 @@
     roles: "{{ item.db_user_roles }}"
     state: present
   with_items: "{{ dbs }}"
-  
-  
+
 - name: Create database
   postgres_db:
     name: "{{ item.db_name }}"
     owner: "{{ item.db_user }}"
     state: present
   with_items: "{{ dbs }}"
- 
- 
+
 - name: Create schema
   postgres_schema:
     database: "{{ item.db_name }}"
@@ -30,10 +28,9 @@
     state: present
   with_items: "{{ dbs }}"
 
-    
 - name: Restart PostgreSQL
   command: echo "Restart PostgreSQL..."
-  notify: 
+  notify:
     - Restart PostgreSQL
     
     

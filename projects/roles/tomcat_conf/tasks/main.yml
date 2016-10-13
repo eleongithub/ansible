@@ -1,49 +1,51 @@
 ---
-    
 - name: Stop eventual tomcat server running
-  service: name=tomcat state=stopped enabled=no
+  service:
+    name: tomcat
+    state: stopped
+    enabled: no
   ignore_errors: true
 
 - name : Remove eventual tomcat init script from the system
-  file: 
+  file:
     path: "{{ tomcat_init_script }}"
     state: absent
   ignore_errors: true
   
 - name: Delete User Tomcat 
-  user: 
+  user:
     name: "{{ tomcat_user }}"
     state: absent
   ignore_errors: true
 
 - name: Delete Group Tomcat 
-  group: 
+  group:
     name: "{{ tomcat_user_group }}"
     state: absent
   ignore_errors: true
   
 - name: Create Group Tomcat 
-  group: 
+  group:
     name: "{{ tomcat_user_group }}"
     state: present
 
 - name: Create User Tomcat 
-  user: 
+  user:
     name: "{{ tomcat_user }}"
-    createhome: no 
+    createhome: no
     group: "{{ tomcat_user_group }}"
-    shell: /bin/bash 
+    shell: /bin/bash
     state: present
   
 - name: Change the owner of tomcat versions directory
-  file: 
+  file:
     path: "{{ tomcat_versions }}"
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user_group }}"
     recurse: yes
     
 - name: Change the owner of link to the last tomcat directory
-  file: 
+  file:
     src: "{{ tomcat_last_version }}"
     path: "{{ tomcat_home }}"
     state: link
@@ -52,7 +54,7 @@
     
 
 - name: Deploy conf Tomcat files (server.xml and setenv.sh)
-  template: 
+  template:
     src: "{{item.src}}"
     dest: "{{item.dest}}"
     force: "{{item.force}}"
@@ -62,16 +64,18 @@
    - "{{ tomcat_conf_files }}"
    
 - name: Copy Tomcat init script
-  template: 
+  template:
     src: "tomcat.sh.j2"
     dest: "{{ tomcat_init_script }}"
-    force: yes 
+    force: yes
     mode: 0755
 
 - name: Enable Tomcat service
-  service: name=tomcat enabled=yes
+  service:
+    name: tomcat
+    enabled: yes
 
 - name: Restart tomcat
   command: echo "Restart Tomcat service..."
-  notify: 
+  notify:
     - Restart tomcat

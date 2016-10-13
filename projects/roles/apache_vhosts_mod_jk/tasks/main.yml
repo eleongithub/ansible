@@ -1,92 +1,82 @@
 ---
 # This playbook contains apache virtual hosts installation.
-
 - name : Check virtual hosts configuration directory exists
-  stat: 
+  stat:
     path: "{{ apache_vhosts_conf_dir }}"
   register: apache_vhosts_conf_dir_exists
-  
+
 - name: Create virtual hosts configuration directories
-  file: 
+  file:
     path: "{{ apache_vhosts_conf_dir }}"
     state: directory
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
   when: not apache_vhosts_conf_dir_exists.stat.exists
-   
+
 - name: Create logs directories for Mod_Jk virtual hosts
-  file: 
+  file:
     path: "{{ apache_logs_dir }}/{{ item.key }}"
     state: directory
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
   with_dict: "{{ apache_vhosts_mod_jk }}"
 
-    
 - name: Create virtual hosts root directories
-  file: 
+  file:
     path: "{{ apache_vhosts_dir }}/{{ item.key }}"
     state: directory
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
   with_dict: "{{ apache_vhosts_mod_jk }}"
- 
-  
+
 - name: Create virtual mutex directories
-  file: 
+  file:
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/mutex"
     state: directory
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
   with_dict: "{{ apache_vhosts_mod_jk }}"
-  
-  
+
 - name: Mod JK configuration - Generate virtual hosts configuration files
-  template: 
-    src: vhosts_mod_jk.conf.j2 
+  template:
+    src: vhosts_mod_jk.conf.j2
     dest: "{{ apache_vhosts_conf_dir }}/{{ item.key }}_mod_jk.conf"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
     force: yes
   with_dict: "{{ apache_vhosts_mod_jk }}"
-  
-  
+
 - name: Install SSL certificates for virtual hosts
   include: ssl_main.yml
-  
 
 - name: Count generate virtual hosts
   shell: ls -l {{ apache_vhosts_conf_dir }}|grep "mod_jk.conf"|wc -l 
   register: count_generate_vhosts_mod_jk
-  
-  
+
 - name: Add Virtual hosts file to HTTPD
   lineinfile:
     dest: "{{ apache_httpd_file }}"
     insertafter: EOF
     line: 'Include {{ apache_vhosts_conf_dir }}/*_mod_jk.conf'
   when: count_generate_vhosts_mod_jk.stdout|int > 0
- 
- 
+
 - name: Copy workers.properties configuration file for Mod_Jk
-  template: 
-    src: workers_mod_jk.properties.j2 
+  template:
+    src: workers_mod_jk.properties.j2
     dest: "{{ apache_conf_dir }}/workers.properties"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
     force: yes
-  when: count_generate_vhosts_mod_jk.stdout|int > 0  
+  when: count_generate_vhosts_mod_jk.stdout|int > 0
 
-  
 - name: Copy mod_jk.conf file to Apache configuration directory
-  template: 
-    src: mod_jk.conf.j2 
+  template:
+    src: mod_jk.conf.j2
     dest: "{{ apache_conf_dir }}/mod_jk.conf"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
     force: yes
-  when: count_generate_vhosts_mod_jk.stdout|int > 0  
-  
+  when: count_generate_vhosts_mod_jk.stdout|int > 0
 
 - name: Add mod_jk.conf to HTTPD
   lineinfile:
@@ -94,9 +84,8 @@
     insertafter: EOF
     line: 'Include {{ apache_conf_dir }}/mod_jk.conf'
   when: count_generate_vhosts_mod_jk.stdout|int > 0
-  
-  
+
 - name: Restart Apache
   command: echo "Restart Apache..."
-  notify: 
+  notify:
     - Restart Apache

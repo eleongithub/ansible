@@ -1,36 +1,31 @@
 ---
-
 - name: Install openssl package
-  apt: 
+  apt:
     pkg: openssl
     state: present
-  
-  
+
 - name: Create certification authority (CA) main directory
-  file: 
+  file:
     path: "{{ apache_ssl_ca_conf_dir }}"
     state: directory
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
-    
 
 - name: Create CA new certificats directory
-  file: 
+  file:
     path: "{{ apache_ssl_ca_conf_dir }}/newcerts"
     state: directory
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
-    
 
 - name: Copy configuration file into CA directory
-  template: 
+  template:
     src: openssl_ca.conf.j2
     dest: "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
     force: yes
-    
-  
+
 - name: Initialize serial file
   lineinfile:
     dest: "{{ apache_ssl_ca_conf_dir }}/serial"
@@ -39,42 +34,41 @@
     line: '01'
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
-    
+
 - name: Initialize index.txt file
-  file: 
+  file:
     path: "{{ apache_ssl_ca_conf_dir }}/index.txt"
     state: touch
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
-  
+
 # Create private Key of the CA.
 - name: Create private Key of the CA
   command: >
-    openssl genrsa 
-      -out {{ apache_ssl_ca_key }} {{ apache_ssl_ca_bits }} 
+    openssl genrsa
+      -out {{ apache_ssl_ca_key }} {{ apache_ssl_ca_bits }}
       -rand file:/dev/random
-    
 
 # Protect private Key of the CA (Only read access for root who is the owner)
 - name: Protect private Key of the CA (Only read access for root who is the owner)
-  file: 
+  file:
     path: "{{ apache_ssl_ca_key }}"
-    mode: 0400 
+    mode: 0400
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
-    
+
 # Create X509 Certification for authority
 - name: Create X509 Certification for the CA
   command: >
-    openssl req -new 
-      -x509 
-      -key {{ apache_ssl_ca_key }} 
-      -out {{ apache_ssl_ca_cert }} 
-      -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf" 
-      -extensions v3_ca 
+    openssl req -new
+      -x509
+      -key {{ apache_ssl_ca_key }}
+      -out {{ apache_ssl_ca_cert }}
+      -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
+      -extensions v3_ca
       -subj "{{ apache_ssl_ca_subj }}"
-  
+
 - name: Restart Apache
   command: echo "Restart Apache..."
-  notify: 
+  notify:
     - Restart Apache
