@@ -39,7 +39,7 @@ def postgres_schema(data):
      
     state = data['state']
      
-    connect_request = "dbname=postgres user={}".format(login_user)
+    connect_request = "dbname={} user={}".format(db_name,login_user)
     
     if hostname != "localhost":
       connect_request+" host={}".format(hostname)
