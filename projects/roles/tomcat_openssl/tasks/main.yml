@@ -1,55 +1,56 @@
 ---
-
-
-- name: Install openssl package
-  apt: 
+- name: Install openssl package with APT
+  apt:
     pkg: openssl
     state: present
-    
+  when: ansible_pkg_mgr == "apt"
+
+- name: Installing openssl package with YUM
+  yum:
+    name: openssl
+    state: present
+  when: ansible_pkg_mgr == "yum"
+
 - name : Check tomcat security directory exists
-  stat: 
+  stat:
     path: "{{ tomcat_openssl_dir }}"
   register: tomcat_openssl_directory_exists
-  
-  
+
 - name: Create tomcat security directory
-  file: 
+  file:
     path: "{{ tomcat_openssl_dir }}"
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user_group }}"
-    state: directory 
+    state: directory
     recurse: yes
   when: not tomcat_openssl_directory_exists.stat.exists
-    
-    
+
 - name: Deploy SSL conf file
-  template: 
-    src: openssl.conf.j2 
+  template:
+    src: openssl.conf.j2
     dest: "{{ open_ssl_cert_config_file }}"
     force: yes
-   
+
 - name: Generating private key + certificate ...
   command: >
-    openssl req 
-      -new 
-      -x509 
-      -nodes 
-      -days {{ ssl_certificate_days }} 
-      -subj "{{ open_ssl_subj }}" 
-      -config {{ open_ssl_cert_config_file }} 
-      -extensions v3_req 
-      -out {{ open_ssl_certificate_file }} 
+    openssl req
+      -new
+      -x509
+      -nodes
+      -days {{ ssl_certificate_days }}
+      -subj "{{ open_ssl_subj }}"
+      -config {{ open_ssl_cert_config_file }}
+      -extensions v3_req
+      -out {{ open_ssl_certificate_file }}
       -keyout {{ open_ssl_private_key_file }}
 
-    
 - name: Delete Temporary SSL conf file
-  file: 
+  file:
     path: "{{ open_ssl_cert_config_file }}"
     state: absent
-    
-    
+
 - name: Deploy configuration files for Tomcat with openssl
-  template: 
+  template:
     src: "{{item.src}}"
     dest: "{{item.dest}}"
     force: "{{item.force}}"
@@ -57,9 +58,8 @@
     group: "{{ tomcat_user_group }}"
   with_items:
    - "{{ tomcat_openssl_conf_files }}"
-   
-   
+
 - name: Restart tomcat
   command: echo "Restart Tomcat service..."
-  notify: 
+  notify:
     - Restart tomcat

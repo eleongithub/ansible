@@ -4,7 +4,7 @@
     paths: "{{ apache_modules_dir }}"
     patterns: "mod_status.so"
   register: find_mod_status_file
- 
+
 - name: Download Apache Mod_Status library into modules directory
   get_url:
     url: "{{ mod_status_url }}"
@@ -27,7 +27,7 @@
     dest: "{{ apache_httpd_file }}"
     line: 'ExtendedStatus On'
     state: present
-    
+
 - name: Create virtual host directory for status
   file:
     path: "{{ apache_vhosts_dir }}/{{ mod_status_server_name }}"

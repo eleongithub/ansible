@@ -2,7 +2,7 @@
 # This playbook contains ProFTP installation.
 
 - name: Check if ProFTP is installed on the system
-  shell: proftpd --version || echo "Unknown ProFTP Server"
+  command: proftpd --version || echo "Unknown ProFTP Server"
   register: proftp_version_result
 
 - name: Purge ProFTPd Server package if present

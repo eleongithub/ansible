@@ -1,4 +1,4 @@
-#!/bin/sh  
+#!/bin/bash  
   
 # Flush iptables.
 iptables -F
@@ -15,21 +15,16 @@ iptables -P OUTPUT DROP
 # Drop forward.
 iptables -P FORWARD DROP
 
-################### TODO - Rework later
-# Drop XMAS and NULL scans.
-# iptables -A INPUT -p tcp --tcp-flags FIN,URG,PSH FIN,URG,PSH -j DROP
-# iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP 
-# iptables -A INPUT -p tcp --tcp-flags ALL NONE -j DROP 
-# iptables -A INPUT -p tcp --tcp-flags SYN,RST SYN,RST -j DROP 
-# # Drop broadcast packages.
-# iptables -A INPUT -m pkttype --pkt-type broadcast -j DROP
-################### 
 
 # Allow open connection to receive input trafic.
 iptables -t filter -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
   
 # Allow open connection to receive output trafic.
 iptables -t filter -A OUTPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+iptables -A INPUT -p tcp -m multiport --dports 80,443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp -m multiport --dports 80,443 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
 
 # Allow input loopback.
 iptables -A INPUT -i lo -j ACCEPT
@@ -41,24 +36,17 @@ iptables -t filter -A INPUT -p icmp -j ACCEPT
 # Authorize output ICMP - PING request
 iptables -t filter -A OUTPUT -p icmp -j ACCEPT
 
+
+# Authorize HTTP/HTTPS Input & Output connections
+iptables -t filter -A OUTPUT -o eth0 -p tcp --dport 80  -j ACCEPT
+iptables -t filter -A OUTPUT -o eth0 -p tcp --dport 443 -j ACCEPT
+iptables -t filter -A INPUT  -i eth0 -p tcp --sport 80  -j ACCEPT
+iptables -t filter -A INPUT  -i eth0 -p tcp --sport 443 -j ACCEPT
+
 # Add a rule for each allow port
 {% for allowed_port in firewall_allowed_ports %}
 iptables -t filter -A {{ allowed_port.direction }} -p {{ allowed_port.protocol }} --dport {{ allowed_port.port }} -j ACCEPT -m comment --comment "{{ allowed_port.comment }}"
 {% endfor %}
-
-# Add a rule for each specific environnement port
-{% for allowed_env_port in firewall_specific_env_ports %}
-iptables -t filter -A {{ allowed_env_port.direction }} -p {{ allowed_env_port.protocol }} --dport {{ allowed_env_port.port }} -j ACCEPT -m comment --comment "{{ allowed_env_port.comment }}"
-{% endfor %}
-
-# Add a rule for each allow port belongs to web provider (OVH, etc...)
-{% for allowed_specific_port in firewall_allowed_web_provider_specific_ports %}
-iptables -t filter -A {{ allowed_specific_port.direction }} -p {{ allowed_specific_port.protocol }} --dport {{ allowed_specific_port.port }} -j ACCEPT -m comment --comment "{{ allowed_specific_port.comment }}"
-{% endfor %}
-
-{% if (firwall_ftp_min_passive_port is defined) and (firwall_ftp_max_passive_port is defined) %}
-iptables -I INPUT -m state --state NEW -j ACCEPT -p tcp -m multiport --ports {{ firwall_ftp_min_passive_port }}:{{ firwall_ftp_max_passive_port }} -m comment --comment "Mode Passif - ProFTP"
-{% endif %} 
 
 # Log input trafic.
 {% if firewall_logs_input_trafic %}
@@ -70,10 +58,5 @@ iptables -A INPUT -j LOG
 iptables -A FORWARD -j LOG 
 {% endif %}
 
-
-#{% if nexus_port is defined %}
-#iptables -t filter -A INPUT -p tcp --dport {{ nexus_port }} -j ACCEPT -m comment --comment "TCP - Nexus Input trafic"
-#iptables -t filter -A OUTPUT -p tcp --dport {{ nexus_port }} -j ACCEPT -m comment --comment "TCP - Nexus Output trafic"
-#{% endif %}
 
 exit 0

@@ -11,7 +11,6 @@
   register: jdk_versions_dir_exists
   when: "(java_version_result is not defined) or ('{{ java_version }}' not in '{{ java_version_result.stdout }}')"
 
-
 - name: Create jdk version directory
   file:
     path: "{{ jdk_versions }}"

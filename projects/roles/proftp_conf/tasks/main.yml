@@ -5,7 +5,7 @@
   register: proftp_user_group_exists
   ignore_errors: True
 
-- name: Create Group proftp user group if not exists 
+- name: Create Group proftp user group if not exists
   group:
     name: "{{ proftp_user_group }}"
     state: present
@@ -51,4 +51,4 @@
 - name: Restart ProFTP
   command: echo "Restart ProFTP service..."
   notify:
-    - Restart ProFTP 
+    - Restart ProFTP

@@ -1,5 +1,4 @@
 ---
-# This playbook contains Mod JK installation
 
 - name: Create Mod JK directory
   file:
@@ -22,10 +21,10 @@
     state: absent
 
 - name: Configure Mod JK
-  shell: cd {{ mod_jk_dir }} && ./configure --with-apr={{ apr_config_file }} --with-apxs={{ apache_home }}/bin/apxs 
+  shell: cd {{ mod_jk_dir }} && ./configure --with-apr={{ apr_config_file }} --with-apxs={{ apache_home }}/bin/apxs
 
 - name: Make & Make install Mod JK
-  shell: cd {{ mod_jk_dir }} && make && make install 
+  shell: cd {{ mod_jk_dir }} && make && make install
 
 - name: Copy Mod JK library
   copy:

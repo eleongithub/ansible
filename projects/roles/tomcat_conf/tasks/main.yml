@@ -1,4 +1,5 @@
 ---
+
 - name: Stop eventual tomcat server running
   service:
     name: tomcat
@@ -11,39 +12,39 @@
     path: "{{ tomcat_init_script }}"
     state: absent
   ignore_errors: true
-  
-- name: Delete User Tomcat 
+
+- name: Delete User Tomcat
   user:
     name: "{{ tomcat_user }}"
     state: absent
   ignore_errors: true
 
-- name: Delete Group Tomcat 
+- name: Delete Group Tomcat
   group:
     name: "{{ tomcat_user_group }}"
     state: absent
   ignore_errors: true
-  
-- name: Create Group Tomcat 
+
+- name: Create Group Tomcat
   group:
     name: "{{ tomcat_user_group }}"
     state: present
 
-- name: Create User Tomcat 
+- name: Create User Tomcat
   user:
     name: "{{ tomcat_user }}"
     createhome: no
     group: "{{ tomcat_user_group }}"
     shell: /bin/bash
     state: present
-  
+
 - name: Change the owner of tomcat versions directory
   file:
     path: "{{ tomcat_versions }}"
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user_group }}"
     recurse: yes
-    
+
 - name: Change the owner of link to the last tomcat directory
   file:
     src: "{{ tomcat_last_version }}"
@@ -51,9 +52,8 @@
     state: link
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user_group }}"
-    
 
-- name: Deploy conf Tomcat files (server.xml and setenv.sh)
+- name: Deploy conf Tomcat files
   template:
     src: "{{item.src}}"
     dest: "{{item.dest}}"
@@ -62,7 +62,7 @@
     group: "{{ tomcat_user_group }}"
   with_items:
    - "{{ tomcat_conf_files }}"
-   
+
 - name: Copy Tomcat init script
   template:
     src: "tomcat.sh.j2"

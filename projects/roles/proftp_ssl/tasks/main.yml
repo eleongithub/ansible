@@ -1,8 +1,15 @@
 ---
-- name: Install openssl
+- name: Install openssl package with APT
   apt:
     pkg: openssl
     state: present
+  when: ansible_pkg_mgr == "apt"
+
+- name: Installing openssl package with YUM
+  yum:
+    name: openssl
+    state: present
+  when: ansible_pkg_mgr == "yum"
 
 - name: Create ProFTP SSL configuration directory.
   file:
@@ -59,4 +66,4 @@
 - name: Restart ProFTP
   command: echo "Restart ProFTP service..."
   notify:
-    - Restart ProFTP 
+    - Restart ProFTP

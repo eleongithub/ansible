@@ -6,7 +6,7 @@
   become: yes
   roles:
     - { role: build-essential, tags: ['always'] }
-    #- { role: firewall, tags: ['always'] }
+    - { role: firewall, tags: ['always'] }
 
 - hosts: tomcat
   vars_files:
@@ -25,7 +25,7 @@
     - { role: postgres_instance, tags: ['postgres_instance'] }
     - { role: postgres_backup, tags: ['postgres_backup'] }
     #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain
-  
+
 - hosts: tomcat
   vars_files:
    - "password/password-{{env}}.yml"
@@ -34,9 +34,9 @@
     - { role: tomcat, tags: ['tomcat'] }
     - { role: tomcat_conf, tags: ['tomcat_conf'] }
     - { role: tomcat_owasp, tags: ['tomcat_owasp'] }
-    #- { role: tomcat_apps, tags: ['tomcat_apps'] }
-    #- { role: tomcat_openssl, tags: ['tomcat_openssl'] }
-    #- { role: tomcat_keytool, tags: ['tomcat_keytool'] }
+    - { role: tomcat_apps, tags: ['tomcat_apps'] }
+    - { role: tomcat_openssl, tags: ['tomcat_openssl'] }
+    - { role: tomcat_keytool, tags: ['tomcat_keytool'] }
 
 - hosts: apache
   vars_files:

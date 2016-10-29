@@ -1,5 +1,5 @@
 ---
-# This playbook installs SSL configuration files for apache virtual hosts.
+
 - name: Create virtual hosts ssl directories (mod_jk)
   file:
     path: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl"

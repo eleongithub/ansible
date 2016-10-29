@@ -1,8 +1,15 @@
 ---
-- name: Install openssl package
+- name: Install openssl package with APT
   apt:
     pkg: openssl
     state: present
+  when: ansible_pkg_mgr == "apt"
+
+- name: Installing openssl package with YUM
+  yum:
+    name: openssl
+    state: present
+  when: ansible_pkg_mgr == "yum"
 
 - name: Create certification authority (CA) main directory
   file:
@@ -42,14 +49,12 @@
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
 
-# Create private Key of the CA.
 - name: Create private Key of the CA
   command: >
     openssl genrsa
       -out {{ apache_ssl_ca_key }} {{ apache_ssl_ca_bits }}
       -rand file:/dev/random
 
-# Protect private Key of the CA (Only read access for root who is the owner)
 - name: Protect private Key of the CA (Only read access for root who is the owner)
   file:
     path: "{{ apache_ssl_ca_key }}"
@@ -57,7 +62,6 @@
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
 
-# Create X509 Certification for authority
 - name: Create X509 Certification for the CA
   command: >
     openssl req -new

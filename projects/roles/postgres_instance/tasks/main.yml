@@ -1,5 +1,5 @@
 ---
-# This playbook contains postgres_instance tasks
+
 - name: Install python-psycopg2 package
   apt:
     pkg: python-psycopg2
@@ -29,43 +29,38 @@
   with_items: "{{ dbs }}"
 
 - name: Restart PostgreSQL
-  command: echo "Restart PostgreSQL..."
+  command: echo "Restart PostgreSQL"
   notify:
     - Restart PostgreSQL
-    
-    
-    
-    
+
+
+# --- Old version of program
 #- name: check if db user {{ db_user }} exists
   #shell: su - postgres /bin/bash -c  "psql -c \"SELECT 'existsdbuser' WHERE EXISTS(SELECT * FROM pg_user WHERE usename='{{ db_user }}');\""
   #register: check_db_user_exists
 
-
 #- name: Create user {{ db_user }}
   #shell: su - postgres /bin/bash -c  "psql -c \"CREATE USER  {{ db_user }} LOGIN password '{{ db_password }}' CREATEROLE CREATEUSER;\""
   #when: "'existsdbuser' not in check_db_user_exists.stdout"
- 
- 
+
 #- name: Check if database {{ db_name }} exists
   #shell: su - postgres /bin/bash -c  "psql -c \"SELECT 'existsdb' WHERE EXISTS(SELECT * FROM pg_database WHERE datname='{{ db_name }}');\""
   #register: check_db_exists
-  
 
 #- name: Create database {{ db_name }}
   #shell: su - postgres /bin/bash -c  "psql -c \"CREATE DATABASE {{ db_name }} OWNER={{ db_user }};\""
   #when: "'existsdb' not in check_db_exists.stdout"
-  
-  
-#- name: Check if schema {{ db_schema }} exists 
+
+#- name: Check if schema {{ db_schema }} exists
   #shell: su - postgres /bin/bash -c  "psql {{ db_name }} -c \"SELECT 'existsschema' WHERE EXISTS(SELECT * FROM pg_catalog.pg_namespace WHERE nspname='{{ db_schema }}');\""
   #register: check_schema_exists
-  
 
 #- name: Create schema {{ db_schema }}
   #shell: su - postgres /bin/bash -c  "psql {{ db_name }} -c \"CREATE SCHEMA {{ db_schema }} AUTHORIZATION {{ db_user }};\""
   #when: "'existsschema' not in check_schema_exists.stdout"
-  
+
 #- name: Restart PostgreSQL
-  #command: echo "Restart PostgreSQL..."
-  #notify: 
+  #command: echo "Restart PostgreSQL"
+  #notify:
     #- Restart PostgreSQL
+#-------------

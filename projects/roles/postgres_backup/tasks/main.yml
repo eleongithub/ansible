@@ -33,8 +33,8 @@
     day: "*"
     month: "*"
     state: present
-  
+
 - name: Restart PostgreSQL
-  command: echo "Restart PostgreSQL..."
+  command: echo "Restart PostgreSQL"
   notify:
     - Restart PostgreSQL

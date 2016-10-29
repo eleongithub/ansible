@@ -1,3 +1,5 @@
 ---
 - name: Restart ProFTP
-  service: name=proftpd state=restarted
+  service:
+    name: proftpd
+    state: restarted

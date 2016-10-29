@@ -7,34 +7,38 @@ tomcat_mod_jk_port: 8009
 ftp_default_port: 21
 apr_config_file: /usr/bin/apr-1-config
 java_home: /opt/java
+
+# Common port:
+#   22: SSH
+#   25: SMTP
+#   53: DNS
+#   80: HTTP
+#   123: NTP
+#   443: HTTPS
+#   2222: SSH alternate
+#   4949: Munin
+#   6082: Varnish admin
+#   8080: HTTP alternate (often used with Tomcat)
+#   8983: Tomcat HTTP
+#   8443: Tomcat HTTPS
+#   9000: SonarQube
+
 firewall_script_files:
  - { src: 'firewall-start-rules.sh.j2', dest: '/etc/firewall-start-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
  - { src: 'firewall-stop-rules.sh.j2', dest: '/etc/firewall-stop-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
  - { src: 'firewall.j2', dest: '/etc/init.d/firewall', force: yes, owner: 'root', group: 'root', mode: '0755' }
 firewall_allowed_ports:
- - { port: '{{ ftp_default_port }}', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - FTP Input trafic' }
- - { port: '{{ ftp_default_port }}', protocol: 'udp', direction: 'INPUT', comment: 'UDP - FTP Input trafic' }
- - { port: '{{ ftp_default_port }}', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - FTP Output trafic' }
- - { port: '{{ ftp_default_port }}', protocol: 'udp', direction: 'OUTPUT', comment: 'UDP - FTP Output trafic' }
  - { port: '22', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - SSH Input trafic' }
- #- { port: '22', protocol: 'udp', direction: 'INPUT', comment: 'UDP - SSH Input trafic' }
- - { port: '22', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - SSH Output trafic' }
- #- { port: '22', protocol: 'udp', direction: 'OUTPUT', comment: 'UDP - SSH Output trafic' }
- - { port: '53', protocol: 'tcp', direction: 'INPUT', comment: 'TCP DNS Input trafic' }
- #- { port: '53', protocol: 'udp', direction: 'INPUT', comment: 'UDP DNS Input trafic' }
- - { port: '53', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP DNS Output trafic' }
- #- { port: '53', protocol: 'udp', direction: 'OUTPUT', comment: 'UDP DNS Output trafic' }
- - { port: '123', protocol: 'udp', direction: 'OUTPUT', comment: 'NTP Output trafic' }
- - { port: '{{ http_default_port }}', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - HTTP Input trafic' }
- - { port: '{{ http_default_port }}', protocol: 'udp', direction: 'INPUT', comment: 'UDP - HTTP Input trafic' }
- - { port: '{{ http_default_port }}', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - HTTP Output trafic' }
- - { port: '{{ http_default_port }}', protocol: 'udp', direction: 'OUTPUT', comment: 'UDP - HTTP Output trafic' }
- - { port: '{{ https_default_port }}', protocol: 'tcp', direction: 'INPUT', comment: 'HTTPS Input trafic' }
- - { port: '{{ https_default_port }}', protocol: 'tcp', direction: 'OUTPUT', comment: 'HTTPS Output trafic' }
-firewall_specific_env_ports: []
-firewall_allowed_web_provider_specific_ports: []
-firwall_ftp_min_passive_port:
-firwall_ftp_max_passive_port:
+ - { port: '123', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - SMTP Input trafic' }
+ - { port: '53', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - DNS Input trafic' }
+ - { port: '53', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - DNS Output trafic' }
+ #- { port: '80', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - HTTP Input trafic' }
+ #- { port: '80', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - HTTP Input trafic' }
+ #- { port: '443', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - HTTPS Input trafic' }
+ #- { port: '443', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - HTTPS Input trafic' }
+ 
+ 
+
 firewall_logs_input_trafic: True
 firewall_logs_output_trafic: True
 ssl_country: FR

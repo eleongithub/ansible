@@ -1,5 +1,5 @@
 ---
-# This playbook contains apache virtual hosts installation.
+
 - name : Check virtual hosts configuration directory exists
   stat:
     path: "{{ apache_vhosts_conf_dir }}"
@@ -50,7 +50,7 @@
   include: ssl_main.yml
 
 - name: Count generate virtual hosts
-  shell: ls -l {{ apache_vhosts_conf_dir }}|grep "mod_jk.conf"|wc -l 
+  shell: ls -l {{ apache_vhosts_conf_dir }}|grep "mod_jk.conf"|wc -l
   register: count_generate_vhosts_mod_jk
 
 - name: Add Virtual hosts file to HTTPD

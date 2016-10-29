@@ -1,10 +1,14 @@
 ---
+
 - name: Check if tomcat is installed on the system
   shell: cat "{{ tomcat_home }}/RELEASE-NOTES"|grep "Apache Tomcat Version" || echo "Unknown Tomcat Server"
   register: tomcat_version_result
 
 - name: Stop eventual tomcat server running
-  service: name=tomcat state=stopped enabled=no
+  service:
+    name: tomcat
+    state: stopped
+    enabled: no
   when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
   ignore_errors: true
 
@@ -21,21 +25,21 @@
     recurse: yes
   when: "('{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}') and (tomcat_versions_dir_exists is defined and not tomcat_versions_dir_exists.stat.exists)"
 
-- name: Delete the tomcat home link 
+- name: Delete the tomcat home link
   file:
     dest: "{{ tomcat_home }}"
     state: absent
   when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
 
 - name: Delete the last version directory
-  file: 
+  file:
     dest: "{{ tomcat_last_version }}"
     state: absent
   when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
   ignore_errors: true
 
 - name: Install required librairies
-  apt: 
+  apt:
     pkg: "{{item.package}}"
     state: present
   with_items: "{{ tomcat_required_packages }}"
@@ -46,7 +50,7 @@
     url: "{{ tomcat_url }}"
     dest: "/tmp/{{ tomcat_tarball_name }}"
   when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
-  
+
 - name: Decompress tomcat archive
   unarchive:
     src: "/tmp/{{ tomcat_tarball_name }}"
@@ -64,13 +68,13 @@
     url: "{{ tomcat_native_url }}"
     dest: "/tmp/{{ libtcnative_util_tarball_name }}"
   when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
- 
+
 - name: Decompress Tomcat native library
   unarchive:
     src: "/tmp/{{ libtcnative_util_tarball_name }}"
     dest: "{{ tomcat_last_version }}/bin"
   when: "'{{ tomcat_version }}' not in '{{ tomcat_version_result.stdout }}'"
-  
+
 - name: Delete tomcat native library
   file:
     path: "/tmp/{{ libtcnative_util_tarball_name }}"

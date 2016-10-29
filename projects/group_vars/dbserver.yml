@@ -4,7 +4,8 @@ postgres_server_pkg: "postgresql-{{ postgres_version }}"
 postgres_client_pkg: "postgresql-client-{{ postgres_version }}"
 postgres_conf_dir: "/etc/postgresql/{{ postgres_version}}/main"
 postgres_listen_addresses: '*'
-firewall_specific_env_ports:
+
+firewallports:
  - { port: '{{ postgres_port }}', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - Postgres Input trafic' }
  - { port: '{{ postgres_port }}', protocol: 'udp', direction: 'INPUT', comment: 'UDP - Postgres Input trafic' }
  - { port: '{{ postgres_port }}', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - Postgres Output trafic' }
