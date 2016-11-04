@@ -1,2 +1,7 @@
 ---
-tomcat_dns: localhost
+tomcat_required_packages:
+ - { package: 'libapr1' } 
+ - { package: 'libapr1-dev' } 
+ - { package: 'libaprutil1' } 
+ - { package: 'libaprutil1-dev' } 
+ - { package: 'libssl-dev' }

@@ -1,17 +1,14 @@
+---
 postgres_port: 5432
 postgres_version: 9.4
 postgres_server_pkg: "postgresql-{{ postgres_version }}"
 postgres_client_pkg: "postgresql-client-{{ postgres_version }}"
 postgres_conf_dir: "/etc/postgresql/{{ postgres_version}}/main"
 postgres_listen_addresses: '*'
-
+# Activate/Deactivate UFW configuration to open port
+use_ufw_firewall: True
 firewallports:
- - { port: '{{ postgres_port }}', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - Postgres Input trafic' }
- - { port: '{{ postgres_port }}', protocol: 'udp', direction: 'INPUT', comment: 'UDP - Postgres Input trafic' }
- - { port: '{{ postgres_port }}', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - Postgres Output trafic' }
- - { port: '{{ postgres_port }}', protocol: 'udp', direction: 'OUTPUT', comment: 'UDP - Postgres Output trafic' }
- 
+ - { port: '{{ postgres_port }}', rule: 'allow', proto: 'tcp' }
 postgres_conf_files:
  - { src: 'postgresql.conf.j2', dest: '{{ postgres_conf_dir }}/postgresql.conf', force: yes }
  - { src: 'pg_hba.conf.j2', dest: '{{ postgres_conf_dir }}/pg_hba.conf', force: yes }
- 

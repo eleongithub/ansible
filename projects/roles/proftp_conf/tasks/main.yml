@@ -48,6 +48,14 @@
     mode: "{{ item.mode }}"
   with_items: "{{ proftp_conf_files }}"
 
+- name: Allow access to ProFTPd port through firewall
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items: "{{ firewallports }}"
+  when: use_ufw_firewall
+
 - name: Restart ProFTP
   command: echo "Restart ProFTP service..."
   notify:

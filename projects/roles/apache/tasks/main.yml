@@ -74,7 +74,7 @@
                 --enable-proxy --enable-access --enable-mime \
                 --enable-rewrite --enable-alias --enable-deflate \
                 --enable-expires --enable-headers --enable-status \
-                --enable-ssl --enable-socache_shmcb --enable-setenvif --enable-socache_dbm \         
+                --enable-ssl --enable-socache_shmcb --enable-setenvif --enable-socache_dbm \     
                 --disable-actions --disable-env --disable-authz_dbm --disable-cgi \
                 --disable-auth_digest --disable-authnz_ldap --disable-autoindex \
                 --disable-asis --disable-cgid --disable-negotiation \

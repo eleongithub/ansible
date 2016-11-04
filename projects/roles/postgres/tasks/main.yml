@@ -10,8 +10,3 @@
 - name: Install PostgreSQL Client
   apt: pkg={{ postgres_client_pkg }} state=present
   when: "'{{ postgres_server_pkg }}' not in '{{ postgresql_exists.stdout }}'"
-
-- name: Restart PostgreSQL
-  command: echo "Restart PostgreSQL"
-  notify:
-    - Restart PostgreSQL

@@ -46,6 +46,13 @@
     force: yes
   with_dict: "{{ apache_vhosts_mod_jk }}"
 
+- name: Allow access to mod jk port through firewall
+  ufw:
+    rule: "allow"
+    port: "{{ mod_jk_port }}"
+    proto: "tcp"
+  when: use_ufw_firewall
+
 - name: Install SSL certificates for virtual hosts
   include: ssl_main.yml
 

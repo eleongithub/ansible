@@ -59,6 +59,13 @@
   with_items:
    - "{{ tomcat_openssl_conf_files }}"
 
+- name: Allow access to Tomcat SSL port through firewall
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items: "{{ firewallports }}"
+
 - name: Restart tomcat
   command: echo "Restart Tomcat service..."
   notify:

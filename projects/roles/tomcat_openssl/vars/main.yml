@@ -1,9 +1,19 @@
 ---
-
+tomcat_http_port: 8080
+tomcat_https_port: 8443
+tomcat_shutdown_port: "8005"
+tomcat_mod_jk_port: 8009
+tomcat_shutdown_command: "SHUTDOWNA1B2Z78UJHGJKLMLM"
+tomcat_user: tomcat
+tomcat_user_group: tomcat
 tomcat_openssl_dir: "{{ tomcat_last_version }}/conf/ssl"
 tomcat_openssl_conf_files:
  - { src: 'server.xml.j2', dest: '{{ tomcat_last_version }}/conf/server.xml', force: yes }
  - { src: 'web.xml.j2', dest: '{{ tomcat_last_version }}/conf/web.xml', force: yes }
+
+firewallports:
+ - { port: '{{ tomcat_http_port }}', rule: 'allow', proto: 'tcp' }
+ - { port: '{{ tomcat_https_port }}', rule: 'allow', proto: 'tcp' }
 
 # SSL with Openssl configuration variables
 open_ssl_certificate_file: "{{ tomcat_openssl_dir }}/cacert_{{ tomcat_dns }}.crt"

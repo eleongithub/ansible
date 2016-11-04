@@ -1,0 +1,18 @@
+---
+# tasks file for fail2ban
+
+- name: Check if fail2ban is installed on the system
+  shell:
+  register:
+
+- name: Install Fail2ban
+  apt:
+    pkg: fail2ban
+    state: present
+  when:
+  
+--- Faire la configuration Fail2Ban <==> SSH dans un autre rôle
+--- http://www.sublimigeek.fr/installer-et-configurer-fail2ban-sur-un-serveur
+--- https://www.how-to.ovh/viewtopic.php?t=19
+--- À l'initial, il faut configurer SSH uniquement.
+--- Au fur et à mesure qu'on ajoute d'autre programme, on ajoutera la config fail2ban correspondant : Apache, Postfix, Proftp

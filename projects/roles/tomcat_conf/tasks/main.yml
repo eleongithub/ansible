@@ -70,6 +70,14 @@
     force: yes
     mode: 0755
 
+- name: Allow access to Tomcat port through firewall
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items: "{{ firewallports }}"
+  when: use_ufw_firewall
+
 - name: Enable Tomcat service
   service:
     name: tomcat

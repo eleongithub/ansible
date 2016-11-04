@@ -7,6 +7,14 @@
   with_items:
    - "{{ postgres_conf_files }}"
 
+- name: Allow access to postgres port through firewall
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items: "{{ firewallports }}"
+  when: use_ufw_firewall
+  
 - name: Enable/Start PostgreSQL Server
   service:
     name: postgresql

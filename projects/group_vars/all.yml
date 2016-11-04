@@ -1,46 +1,6 @@
 ---
-http_default_port: 80
-https_default_port: 443
-tomcat_http_port: 8080
-tomcat_https_port: 8443
-tomcat_mod_jk_port: 8009
-ftp_default_port: 21
 apr_config_file: /usr/bin/apr-1-config
 java_home: /opt/java
-
-# Common port:
-#   22: SSH
-#   25: SMTP
-#   53: DNS
-#   80: HTTP
-#   123: NTP
-#   443: HTTPS
-#   2222: SSH alternate
-#   4949: Munin
-#   6082: Varnish admin
-#   8080: HTTP alternate (often used with Tomcat)
-#   8983: Tomcat HTTP
-#   8443: Tomcat HTTPS
-#   9000: SonarQube
-
-firewall_script_files:
- - { src: 'firewall-start-rules.sh.j2', dest: '/etc/firewall-start-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
- - { src: 'firewall-stop-rules.sh.j2', dest: '/etc/firewall-stop-rules.sh', force: yes, owner: 'root', group: 'root', mode: '0744' }
- - { src: 'firewall.j2', dest: '/etc/init.d/firewall', force: yes, owner: 'root', group: 'root', mode: '0755' }
-firewall_allowed_ports:
- - { port: '22', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - SSH Input trafic' }
- - { port: '123', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - SMTP Input trafic' }
- - { port: '53', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - DNS Input trafic' }
- - { port: '53', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - DNS Output trafic' }
- #- { port: '80', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - HTTP Input trafic' }
- #- { port: '80', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - HTTP Input trafic' }
- #- { port: '443', protocol: 'tcp', direction: 'INPUT', comment: 'TCP - HTTPS Input trafic' }
- #- { port: '443', protocol: 'tcp', direction: 'OUTPUT', comment: 'TCP - HTTPS Input trafic' }
- 
- 
-
-firewall_logs_input_trafic: True
-firewall_logs_output_trafic: True
 ssl_country: FR
 ssl_state: Rhone
 ssl_locality: Lyon

@@ -1,4 +1,6 @@
 ---
+tomcat_user: tomcat
+tomcat_user_group: tomcat
 tomcat_remove_files:
  - { path: 'webapps/ROOT/' }
  #- { path: 'webapps/examples/' }

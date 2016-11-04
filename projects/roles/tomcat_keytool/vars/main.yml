@@ -1,10 +1,20 @@
 ---
-
-# SSL with Java Keystore
+tomcat_http_port: 8080
+tomcat_https_port: 8443
+tomcat_shutdown_port: "8005"
+tomcat_mod_jk_port: 8009
+tomcat_shutdown_command: "SHUTDOWNA1B2Z78UJHGJKLMLM"
+tomcat_user: tomcat
+tomcat_user_group: tomcat
 keystore_conf_files:
  - { src: 'server.xml.j2', dest: '{{ tomcat_last_version }}/conf/server.xml', force: yes }
  - { src: 'web.xml.j2', dest: '{{ tomcat_last_version }}/conf/web.xml', force: yes }
 keystore_dir: "{{ tomcat_last_version }}/conf/keystore"
 keystore_file: "{{ keystore_dir }}/keystore.jks"
 keystore_alias: keyAlias
+
+firewallports:
+ - { port: '{{ tomcat_http_port }}', rule: 'allow', proto: 'tcp' }
+ - { port: '{{ tomcat_https_port }}', rule: 'allow', proto: 'tcp' }
+ 
 keystore_subj: "CN={{ tomcat_dns }}, OU={{ ssl_organisation_unit }}, O={{ ssl_organisation }}, L={{ ssl_locality }}, S={{ ssl_state }}, C={{ ssl_country }}"
