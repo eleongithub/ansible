@@ -5,4 +5,6 @@
 
 - name: Copy Apache monitoring script
 
+- name: Copy script to disable apache monitoring script from crontab
+
 - name: Configure crontab for script

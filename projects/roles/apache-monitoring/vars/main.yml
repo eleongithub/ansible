@@ -1,2 +1,5 @@
 ---
 # vars file for apache-monitor
+apache_monitoring_dir: "/opt/monitoring/apache"
+apache_monitoring_script: "{{apache_monitoring_dir}}/apache_monitoring.sh"
+apache_monitoring_disabled_cron_script: "{{apache_monitoring_dir}}/disable_cron_monitoring.sh"
