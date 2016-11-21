@@ -1,15 +1,8 @@
 ---
-# tasks file for fail2ban
-
-- name: Check if fail2ban is installed on the system
-  shell:
-  register:
-
 - name: Install Fail2ban
   apt:
     pkg: fail2ban
     state: present
-  when:
   
 --- Faire la configuration Fail2Ban <==> SSH dans un autre rôle
 --- http://www.sublimigeek.fr/installer-et-configurer-fail2ban-sur-un-serveur

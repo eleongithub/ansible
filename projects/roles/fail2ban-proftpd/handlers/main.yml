@@ -1,0 +1,6 @@
+---
+# handlers file for fail2ban-proftpd
+- name: Restart ProFTP
+  service:
+    name: proftpd
+    state: restarted

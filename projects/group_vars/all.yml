@@ -12,3 +12,7 @@ nexus: "http://192.168.0.14:{{ nexus_port }}/nexus"
 nexus_repositories: "{{ nexus }}/content/repositories"
 nexus_public_repository: "{{ nexus_repositories }}/public"
 nexus_thirdparty_repository: "{{ nexus_repositories }}/thirdparty"
+
+--- Fail2ban configuration
+fail2ban_destemail: ""
+fail2ban_conf_file: "/etc/fail2ban/jail.conf"
