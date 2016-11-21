@@ -1,0 +1,8 @@
+---
+# tasks file for apache-monitor
+
+- name: Create Apache monitoring directory
+
+- name: Copy Apache monitoring script
+
+- name: Configure crontab for script
