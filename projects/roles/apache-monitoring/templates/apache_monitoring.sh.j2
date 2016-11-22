@@ -3,10 +3,7 @@
 # - e-mail the last bit of log files
 # - restarts it
 
-# https://github.com/tomiford/bash-scripts/blob/master/monitor-apache.sh
-
-
-APACHE_MONITORING_TEMP_DIR=/tmp/apache-monitor
+APACHE_MONITORING_TEMP_DIR=/tmp/apache-monitoring
 ADDRESS_MONITORING_MAIL={{ apache_monitoring_mail }}
 APACHE_ERROR_LOG_FILE={{ apache_error_log_file }}
 mkdir -p $APACHE_MONITORING_TEMP_DIR
@@ -14,38 +11,31 @@ mkdir -p $APACHE_MONITORING_TEMP_DIR
 # Get status of Apache
 service {{ apache_service_name }} status
 
-if [ $? = 0 ]; then
-    # Apache is up
-    touch ~/.apache-was-up
-else
-    # Apache is down. but if it was down already, don't keep spamming
-    if [ -f ~/.apache-was-up ]; then
-        # write a nice e-mail
-        MAIL_CONTENT=$APACHE_MONITORING_TEMP_DIR/mail.txt
-        echo -n "Apache crashed at " > $MAIL_CONTENT
-        date >> $MAIL_CONTENT
-        echo >> $MAIL_CONTENT
-        echo "------------------------" >> $MAIL_CONTENT
-        echo "Syslog:" >> $MAIL_CONTENT
-        echo "------------------------" >> $MAIL_CONTENT
-        tail -n 30 /var/log/syslog >> $MAIL_CONTENT
-        echo >> $MAIL_CONTENT
-        echo "------------------------" >> $MAIL_CONTENT
-        echo "Error log:" >> $MAIL_CONTENT
-        echo "------------------------" >> $MAIL_CONTENT
-        tail -n 30 $APACHE_ERROR_LOG_FILE >> $MAIL_CONTENT
-        echo >> $MAIL_CONTENT
-        # Restart apache
-        echo "Restarting apache..." >> $MAIL_CONTENT
-        service {{ apache_service_name }} stop >> $MAIL_CONTENT 2>&1
-        killall -9 {{ apache_service_name }} >> $MAIL_CONTENT 2>&1
-        service {{ apache_service_name }} start >> $MAIL_CONTENT 2>&1
-        echo >> $MAIL_CONTENT
-        echo "Good luck troubleshooting!" >> $MAIL_CONTENT
-        mail -s "Apache-monitoring: $(hostname) apache crashed" $ADDRESS_MONITORING_MAIL <$MAIL_CONTENT
-        rm ~/.apache-was-up
-        rm $MAIL_CONTENT
-    fi
+if [ $? != 0 ]; then
+    # Apache is down.
+    # write an e-mail
+    MAIL_CONTENT=$APACHE_MONITORING_TEMP_DIR/mail.txt
+    echo -n "Apache Server is down at " > $MAIL_CONTENT
+    date >> $MAIL_CONTENT
+    echo >> $MAIL_CONTENT
+    echo "------------------------" >> $MAIL_CONTENT
+    echo "Syslog:" >> $MAIL_CONTENT
+    echo "------------------------" >> $MAIL_CONTENT
+    tail -n 30 /var/log/syslog >> $MAIL_CONTENT
+    echo >> $MAIL_CONTENT
+    echo "------------------------" >> $MAIL_CONTENT
+    echo "Error log:" >> $MAIL_CONTENT
+    echo "------------------------" >> $MAIL_CONTENT
+    tail -n 30 $APACHE_ERROR_LOG_FILE >> $MAIL_CONTENT
+    echo >> $MAIL_CONTENT
+    # Restart apache
+    echo "Restarting apache..." >> $MAIL_CONTENT
+    service {{ apache_service_name }} stop >> $MAIL_CONTENT 2>&1
+    killall -9 {{ apache_service_name }} >> $MAIL_CONTENT 2>&1
+    service {{ apache_service_name }} start >> $MAIL_CONTENT 2>&1
+    echo >> $MAIL_CONTENT
+    mail -s "Apache-monitoring: $(hostname) apache crashed" $ADDRESS_MONITORING_MAIL <$MAIL_CONTENT
+    rm $MAIL_CONTENT
 fi
 
 rmdir $APACHE_MONITORING_TEMP_DIR
