@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+
+crontab -u root -l | grep -v '{{ apache_monitoring_script }}'  | crontab -u root -
