@@ -1,6 +1,0 @@
----
-# vars file for fail2ban-proftpd
-proftpd_enabled_fail2ban: true
-proftpd_maxretry: 6
-proftpd_destemail: "{{ fail2ban_destemail }}"
-proftpd_bantime: 600

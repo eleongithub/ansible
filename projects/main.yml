@@ -4,16 +4,15 @@
     - "password/password-{{env}}.yml"
   become: yes
   roles:
-    - { role: firewall-ufw, tags: ['always'] }
     - { role: fail2ban, tags: ['always'] }
-    - { role: fail2ban-ssh, tags: ['always'] }
+    - { role: fail2ban_ssh, tags: ['always'] }
 
 - hosts: tomcat:apache
   vars_files:
     - "password/password-{{env}}.yml"
   become: yes
   roles:
-    - { role: build-essential, tags: ['always'] }
+    - { role: build_essential, tags: ['always'] }
 
 - hosts: tomcat
   vars_files:
@@ -50,13 +49,13 @@
    - "password/password-{{env}}.yml"
   become: yes
   roles:
-    - { role: apache, tags: ['apache'] }
-    - { role: apache_conf, tags: ['apache_conf'] }
-    - { role: apache_mod_security, tags: ['apache_mod_security'] }
-    - { role: apache_status, tags: ['apache_status'] }
-    - { role: apache_mod_jk, tags: ['apache_mod_jk'] }
-    - { role: apache_private_ca, tags: ['apache_private_ca'] }
-    - { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
+    #- { role: apache, tags: ['apache'] }
+    #- { role: apache_conf, tags: ['apache_conf'] }
+    #- { role: apache_mod_security, tags: ['apache_mod_security'] }
+    #- { role: apache_status, tags: ['apache_status'] }
+    #- { role: apache_mod_jk, tags: ['apache_mod_jk'] }
+    #- { role: apache_private_ca, tags: ['apache_private_ca'] }
+    #- { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
     #- { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
 
 - hosts: proftp

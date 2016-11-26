@@ -1,12 +1,26 @@
-
 ---
-- name: Install Fail2ban
+- name: Install fail2ban
   apt:
     pkg: fail2ban
     state: present
-  
---- Faire la configuration Fail2Ban <==> SSH dans un autre rôle
---- http://www.sublimigeek.fr/installer-et-configurer-fail2ban-sur-un-serveur
---- https://www.how-to.ovh/viewtopic.php?t=19
---- À l'initial, il faut configurer SSH uniquement.
---- Au fur et à mesure qu'on ajoute d'autre programme, on ajoutera la config fail2ban correspondant : Apache, Postfix, Proftp
+
+- name: Copy original fail2ban configuration
+  copy:
+    src: "{{ fail2ban_jail_configuration_file }}"
+    dest: "{{ fail2ban_jail_configuration_orig_file }}"
+    owner: root
+    group: root
+    force: yes
+    mode: 0644
+
+- name: Copy fail2ban configuration file jail.conf
+  template:
+    src: jail.conf.j2
+    dest: "{{ fail2ban_jail_configuration_file }}"
+    owner: root
+    group: root
+    force: yes
+    mode: 0644
+
+#https://www.how-to.ovh/viewtopic.php?t=19
+#Au fur et à mesure qu'on ajoute d'autre programme, on ajoutera la config fail2ban correspondant : Apache, Postfix, Proftp

@@ -1,6 +1,5 @@
 ---
-# handlers file for fail2ban-ssh
-
+# handlers file for fail2ban-proftpd
 - name: Restart Fail2ban
   service:
     name: fail2ban

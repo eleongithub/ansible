@@ -1,2 +1,5 @@
 ---
 # vars file for fail2ban
+mta_agent: postfix
+fail2ban_jail_configuration_file: "/etc/fail2ban/jail.conf"
+fail2ban_jail_configuration_orig_file: "/etc/fail2ban/jail.conf.orig"
