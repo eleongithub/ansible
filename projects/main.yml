@@ -49,11 +49,11 @@
    - "password/password-{{env}}.yml"
   become: yes
   roles:
-    #- { role: apache, tags: ['apache'] }
-    #- { role: apache_conf, tags: ['apache_conf'] }
-    #- { role: apache_mod_security, tags: ['apache_mod_security'] }
-    #- { role: apache_status, tags: ['apache_status'] }
-    #- { role: apache_mod_jk, tags: ['apache_mod_jk'] }
+    - { role: apache, tags: ['apache'] }
+    - { role: apache_conf, tags: ['apache_conf'] }
+    - { role: apache_mod_security, tags: ['apache_mod_security'] }
+    - { role: apache_status, tags: ['apache_status'] }
+    - { role: apache_mod_jk, tags: ['apache_mod_jk'] }
     #- { role: apache_private_ca, tags: ['apache_private_ca'] }
     #- { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
     #- { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
@@ -67,3 +67,32 @@
     - { role: proftp_conf, tags: ['proftp_conf'] }
     - { role: proftp_ssl, tags: ['proftp_ssl'] }
     - { role: fail2ban_proftpd, tags: ['fail2ban_proftpd'] }
+    
+#===========  Tâche à faire sur Ansible =====================
+#II°) 
+#Se pencher sur ce lien. 
+#http://www.alphadevx.com/a/390-Installing-Ansible-on-Linux
+#Penser à bien réécrire la procédure d'installation d'Ansible avec une typologie claire des machines. S'inspirer de http://denisrosenkranz.com/tutoha-introduction-a-haproxy-sous-debian-7/
+
+#III°)
+#1°)
+    #Etablir un rôle firewall avec UFW et autoriser les ports
+#S'inspirer de :
+ #- https://github.com/weareinteractive/ansible-ufw
+ #- http://blog.octo.com/securiser-son-serveur-avec-ansible/
+ #- http://ryaneschinger.com/blog/securing-a-server-with-ansible/
+    
+#2°) Autoriser les autres ports des autres rôles avec UFW au fur et à mesur qu'on installe les autres programmes
+#3°) Etablir un rôles pour installer Fail2ban
+#IV°) Firewall manuel
+
+#http://guide.ovh.com/firewall
+
+#roles/apache_monitoring/
+#roles/commands_utils/
+#roles/firewall_manual/
+#roles/firewall_ufw/
+#roles/portsentry_conf/
+#roles/postgres_monitoring/
+#roles/proftp_monitoring/
+#roles/tomcat_monitoring/
