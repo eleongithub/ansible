@@ -34,3 +34,7 @@ apache_vhosts_conf_dir: "{{ apache_conf_dir }}/vhosts"
 
 # Activate/Deactivate UFW configuration to open port
 use_ufw_firewall: True
+
+# Apache Monitoring variables
+apache_error_log_file: "{{ apache_logs_dir }}/error.log"
+apache_service_name: "apache"

@@ -5,6 +5,8 @@
   become: yes
   roles:
     - { role: firewall-ufw, tags: ['always'] }
+    - { role: fail2ban, tags: ['always'] }
+    - { role: fail2ban-ssh, tags: ['always'] }
 
 - hosts: tomcat:apache
   vars_files:
@@ -65,3 +67,4 @@
     - { role: proftp, tags: ['proftp'] }
     - { role: proftp_conf, tags: ['proftp_conf'] }
     - { role: proftp_ssl, tags: ['proftp_ssl'] }
+    - { role: fail2ban_proftpd, tags: ['fail2ban_proftpd'] }

@@ -1,0 +1,24 @@
+---
+# tasks file for fail2ban-proftpd
+- name: Insert/Update the block into the jail Configuration file
+  blockinfile:
+    dest: "{{ fail2ban_conf_file }}"
+    block: |
+        [proftpd]
+        enabled = {{ proftpd_enabled_fail2ban }}
+        port = ftp,ftp-data,ftps,ftps-data
+        filter = proftpd
+        logpath = /var/log/proftpd/proftpd.log
+        maxretry = {{ proftpd_maxretry }}
+        bantime = {{ proftpd_bantime }}
+    owner: root
+    group: root
+    
+# TODO : Define mode for file jail.conf
+
+- name: Restart ProFTP
+  command: echo "Restart ProFTP service..."
+  notify:
+    - Restart ProFTP
+
+# http://r3dux.org/2013/06/how-to-block-ftp-hacking-attempts-using-fail2ban/

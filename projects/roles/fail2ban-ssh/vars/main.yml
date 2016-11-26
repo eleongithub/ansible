@@ -1,0 +1,5 @@
+---
+# vars file for fail2ban-ssh
+ssh_maxretry: 6
+ssh_destemail: "{{ fail2ban_destemail }}"
+ssh_bantime: 600

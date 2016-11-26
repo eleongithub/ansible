@@ -1,0 +1,41 @@
+#!/bin/bash
+# Script that checks whether apache is still up, and if not:
+# - e-mail the last bit of log files
+# - restarts it
+
+APACHE_MONITORING_TEMP_DIR=/tmp/apache-monitoring
+ADDRESS_MONITORING_MAIL={{ apache_monitoring_mail }}
+APACHE_ERROR_LOG_FILE={{ apache_error_log_file }}
+mkdir -p $APACHE_MONITORING_TEMP_DIR
+
+# Get status of Apache
+service {{ apache_service_name }} status
+
+if [ $? != 0 ]; then
+    # Apache is down.
+    # write an e-mail
+    MAIL_CONTENT=$APACHE_MONITORING_TEMP_DIR/mail.txt
+    echo -n "Apache Server is down at " > $MAIL_CONTENT
+    date >> $MAIL_CONTENT
+    echo >> $MAIL_CONTENT
+    echo "------------------------" >> $MAIL_CONTENT
+    echo "Syslog:" >> $MAIL_CONTENT
+    echo "------------------------" >> $MAIL_CONTENT
+    tail -n 30 /var/log/syslog >> $MAIL_CONTENT
+    echo >> $MAIL_CONTENT
+    echo "------------------------" >> $MAIL_CONTENT
+    echo "Error log:" >> $MAIL_CONTENT
+    echo "------------------------" >> $MAIL_CONTENT
+    tail -n 30 $APACHE_ERROR_LOG_FILE >> $MAIL_CONTENT
+    echo >> $MAIL_CONTENT
+    # Restart apache
+    echo "Restarting apache..." >> $MAIL_CONTENT
+    service {{ apache_service_name }} stop >> $MAIL_CONTENT 2>&1
+    killall -9 {{ apache_service_name }} >> $MAIL_CONTENT 2>&1
+    service {{ apache_service_name }} start >> $MAIL_CONTENT 2>&1
+    echo >> $MAIL_CONTENT
+    mail -s "Apache-monitoring: $(hostname) apache crashed" $ADDRESS_MONITORING_MAIL <$MAIL_CONTENT
+    rm $MAIL_CONTENT
+fi
+
+rmdir $APACHE_MONITORING_TEMP_DIR

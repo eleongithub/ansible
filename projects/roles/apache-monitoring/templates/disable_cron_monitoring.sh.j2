@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# http://askubuntu.com/questions/408611/how-to-remove-or-delete-single-cron-job-using-linux-command
+
+crontab -u root -l | grep -v '{{ apache_monitoring_script }}'  | crontab -u root -
