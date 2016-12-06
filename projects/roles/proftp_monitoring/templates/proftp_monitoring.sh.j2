@@ -1,0 +1,39 @@
+#!/bin/bash
+# Script that checks whether ProFTP File Server is still up, and if not:
+# - e-mail the last bit of log files
+# - restarts it
+
+PROFTP_MONITORING_TEMP_DIR=/tmp/proftp-monitoring
+ADDRESS_MAIL_MONITORING={{ proftp_monitoring_mail }}
+PROFTP_STOP_CMD="{{ proftp_stop_command }}"
+PROFTP_START_CMD="{{ proftp_start_command }}"
+PROFTP_SERVICE_NAME="{{ proftp_service_name }}"
+PROFTP_LOG_FILE="{{ proftp_log_file }}"
+mkdir -p $PROFTP_MONITORING_TEMP_DIR
+
+# Check status of ProFTP File Server
+COUNT=$(ps auxw|grep $PROFTP_SERVICE_NAME|grep -v grep|grep -v proftp_monitoring.sh|wc -l)
+if [ $COUNT -eq 0 ]
+then
+    # ProFTP File Server is down.
+    # Try to restart ans send an mail to administrator
+    MAIL_CONTENT=$PROFTP_MONITORING_TEMP_DIR/proftp_mail.txt
+    echo -n "ProFTP File Server is down at " > $MAIL_CONTENT
+    date >> $MAIL_CONTENT
+    echo >> $MAIL_CONTENT
+    echo "------------------------" >> $MAIL_CONTENT
+    echo "Error log:" >> $MAIL_CONTENT
+    echo "------------------------" >> $MAIL_CONTENT
+    tail -n 30 $PROFTP_LOG_FILE >> $MAIL_CONTENT
+    echo >> $MAIL_CONTENT
+    # Restart ProFTP File Server
+    echo "Restarting ProFTP File Server..." >> $MAIL_CONTENT  
+    $PROFTP_STOP_CMD >> $MAIL_CONTENT 2>&1
+    killall -3 $PROFTP_SERVICE_NAME
+    $PROFTP_START_CMD >> $MAIL_CONTENT 2>&1
+    echo >> $MAIL_CONTENT
+    echo >> $MAIL_CONTENT
+    mail -s "ProFTP-monitoring: $(hostname) ProFTP File Server down" $ADDRESS_MAIL_MONITORING <$MAIL_CONTENT
+    rm $MAIL_CONTENT
+fi
+rm -rf $PROFTP_MONITORING_TEMP_DIR

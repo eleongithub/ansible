@@ -1,2 +1,34 @@
 ---
-# tasks file for postgres-monitor
+# tasks file for postgres_monitoring
+
+- name: Create Postgres monitoring directory
+  file:
+    path: "{{ postgres_monitoring_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0644
+    
+- name: Copy Postgres monitoring script
+  template:
+    src: postgres_monitoring.sh.j2
+    dest: "{{ postgres_monitoring_script }}"
+    force: yes
+    owner: root
+    group: root
+    mode: 0744
+
+- name: Configure crontab to execute monitoring script each 5 minutes
+  cron:
+    name: "Monitoring Postgres Database Server"
+    job: ". {{ postgres_monitoring_script }}"
+    minute: "*/5"
+    hour: "*"
+    day: "*"
+    month: "*"
+    state: present
+    
+- name: Restart PostgreSQL
+  command: echo "Restart PostgreSQL"
+  notify:
+    - Restart PostgreSQL

@@ -1,2 +1,34 @@
 ---
-# tasks file for tomcat-monitor
+# tasks file for tomcat_monitoring
+
+- name: Create Tomcat monitoring directory
+  file:
+    path: "{{ tomcat_monitoring_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0644
+    
+- name: Copy Tomcat monitoring script
+  template:
+    src: tomcat_monitoring.sh.j2
+    dest: "{{ tomcat_monitoring_script }}"
+    force: yes
+    owner: root
+    group: root
+    mode: 0744
+
+- name: Configure crontab to execute tomcat monitoring script each 5 minutes
+  cron:
+    name: "Monitoring Tomcat"
+    job: ". {{ tomcat_monitoring_script }}"
+    minute: "*/5"
+    hour: "*"
+    day: "*"
+    month: "*"
+    state: present
+
+- name: Restart tomcat
+  command: echo "Restart Tomcat service..."
+  notify:
+    - Restart tomcat

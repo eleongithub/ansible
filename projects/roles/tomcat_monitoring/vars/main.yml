@@ -1,2 +1,9 @@
 ---
-# vars file for tomcat-monitor
+# vars file for tomcat_monitoring
+tomcat_monitoring_dir: "/opt/monitoring/tomcat"
+tomcat_monitoring_script: "{{tomcat_monitoring_dir}}/tomcat_monitoring.sh"
+tomcat_monitoring_mail: "ansible@localhost"
+tomcat_log_file: "/opt/tomcat/logs/catalina.out"
+tomcat_service_name: "tomcat"
+tomcat_stop_command: "/etc/init.d/tomcat stop"
+tomcat_start_command: "/etc/init.d/tomcat start"

@@ -31,32 +31,35 @@
     - { role: postgres_instance, tags: ['postgres_instance'] }
     - { role: postgres_backup, tags: ['postgres_backup'] }
     #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain
+    - { role: postgres_monitoring, tags: ['postgres_monitoring'] }
 
 - hosts: tomcat
   vars_files:
    - "password/password-{{env}}.yml"
   become: yes
   roles:
-    - { role: tomcat, tags: ['tomcat'] }
-    - { role: tomcat_conf, tags: ['tomcat_conf'] }
-    - { role: tomcat_owasp, tags: ['tomcat_owasp'] }
+    #- { role: tomcat, tags: ['tomcat'] }
+    #- { role: tomcat_conf, tags: ['tomcat_conf'] }
+    #- { role: tomcat_owasp, tags: ['tomcat_owasp'] }
     #- { role: tomcat_apps, tags: ['tomcat_apps'] }
     #- { role: tomcat_openssl, tags: ['tomcat_openssl'] }
     #- { role: tomcat_keytool, tags: ['tomcat_keytool'] }
+    - { role: tomcat_monitoring, tags: ['tomcat_monitoring'] }
 
 - hosts: apache
   vars_files:
    - "password/password-{{env}}.yml"
   become: yes
   roles:
-    - { role: apache, tags: ['apache'] }
-    - { role: apache_conf, tags: ['apache_conf'] }
-    - { role: apache_mod_security, tags: ['apache_mod_security'] }
-    - { role: apache_status, tags: ['apache_status'] }
-    - { role: apache_mod_jk, tags: ['apache_mod_jk'] }
+    #- { role: apache, tags: ['apache'] }
+    #- { role: apache_conf, tags: ['apache_conf'] }
+    #- { role: apache_mod_security, tags: ['apache_mod_security'] }
+    #- { role: apache_status, tags: ['apache_status'] }
+    #- { role: apache_mod_jk, tags: ['apache_mod_jk'] }
     #- { role: apache_private_ca, tags: ['apache_private_ca'] }
     #- { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
     #- { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
+    - { role: apache_monitoring, tags: ['apache_monitoring'] }
 
 - hosts: proftp
   vars_files:
@@ -66,7 +69,8 @@
     - { role: proftp, tags: ['proftp'] }
     - { role: proftp_conf, tags: ['proftp_conf'] }
     - { role: proftp_ssl, tags: ['proftp_ssl'] }
-    - { role: fail2ban_proftpd, tags: ['fail2ban_proftpd'] }
+    - { role: proftp_fail2ban, tags: ['proftp_fail2ban'] }
+    - { role: proftp_monitoring, tags: ['proftp_monitoring'] }
     
 #===========  Tâche à faire sur Ansible =====================
 #II°) 
@@ -88,11 +92,7 @@
 
 #http://guide.ovh.com/firewall
 
-#roles/apache_monitoring/
 #roles/commands_utils/
 #roles/firewall_manual/
 #roles/firewall_ufw/
 #roles/portsentry_conf/
-#roles/postgres_monitoring/
-#roles/proftp_monitoring/
-#roles/tomcat_monitoring/

@@ -1,10 +1,34 @@
 ---
-# tasks file for apache-monitor
+# tasks file for apache_monitoring
 
 - name: Create Apache monitoring directory
-
+  file:
+    path: "{{ apache_monitoring_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0644
+    
 - name: Copy Apache monitoring script
+  template:
+    src: apache_monitoring.sh.j2
+    dest: "{{ apache_monitoring_script }}"
+    force: yes
+    owner: root
+    group: root
+    mode: 0744
 
-- name: Copy script to disable apache monitoring script from crontab
-
-- name: Configure crontab for script
+- name: Configure crontab to execute monitoring script each 5 minutes
+  cron:
+    name: "Monitoring Apache Web Server"
+    job: ". {{ apache_monitoring_script }}"
+    minute: "*/5"
+    hour: "*"
+    day: "*"
+    month: "*"
+    state: present
+    
+- name: Restart Apache
+  command: echo "Restart Apache..."
+  notify:
+    - Restart Apache

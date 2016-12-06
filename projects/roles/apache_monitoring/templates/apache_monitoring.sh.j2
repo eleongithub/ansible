@@ -5,16 +5,18 @@
 
 APACHE_MONITORING_TEMP_DIR=/tmp/apache-monitoring
 ADDRESS_MONITORING_MAIL={{ apache_monitoring_mail }}
-APACHE_ERROR_LOG_FILE={{ apache_error_log_file }}
+APACHE_STOP_CMD="{{ apache_stop_command }}"
+APACHE_START_CMD="{{ apache_start_command }}"
+APACHE_SERVICE_NAME="{{ apache_service_name }}"
 mkdir -p $APACHE_MONITORING_TEMP_DIR
 
-# Get status of Apache
-service {{ apache_service_name }} status
-
-if [ $? != 0 ]; then
+# Check status of Apache
+COUNT=$(ps auxw|grep $APACHE_SERVICE_NAME|grep -v grep|wc -l)
+if [ $COUNT -eq 0 ]
+then
     # Apache is down.
-    # write an e-mail
-    MAIL_CONTENT=$APACHE_MONITORING_TEMP_DIR/mail.txt
+    # Try to restart ans send an mail to administrator
+    MAIL_CONTENT=$APACHE_MONITORING_TEMP_DIR/apache_mail.txt
     echo -n "Apache Server is down at " > $MAIL_CONTENT
     date >> $MAIL_CONTENT
     echo >> $MAIL_CONTENT
@@ -26,16 +28,23 @@ if [ $? != 0 ]; then
     echo "------------------------" >> $MAIL_CONTENT
     echo "Error log:" >> $MAIL_CONTENT
     echo "------------------------" >> $MAIL_CONTENT
+    if [ -f "{{ apache_today_error_log_file }}" ];
+    then
+      APACHE_ERROR_LOG_FILE="{{ apache_today_error_log_file }}"
+    else
+      APACHE_ERROR_LOG_FILE="{{ apache_yesterday_error_log_file }}"
+    fi 
+    
     tail -n 30 $APACHE_ERROR_LOG_FILE >> $MAIL_CONTENT
     echo >> $MAIL_CONTENT
     # Restart apache
-    echo "Restarting apache..." >> $MAIL_CONTENT
-    service {{ apache_service_name }} stop >> $MAIL_CONTENT 2>&1
-    killall -9 {{ apache_service_name }} >> $MAIL_CONTENT 2>&1
-    service {{ apache_service_name }} start >> $MAIL_CONTENT 2>&1
+    echo "Restarting apache..." >> $MAIL_CONTENT  
+    $APACHE_STOP_CMD >> $MAIL_CONTENT 2>&1
+    killall -3 $APACHE_SERVICE_NAME
+    $APACHE_START_CMD >> $MAIL_CONTENT 2>&1
     echo >> $MAIL_CONTENT
-    mail -s "Apache-monitoring: $(hostname) apache crashed" $ADDRESS_MONITORING_MAIL <$MAIL_CONTENT
+    mail -s "Apache-monitoring: $(hostname) Apache down" $ADDRESS_MONITORING_MAIL <$MAIL_CONTENT
     rm $MAIL_CONTENT
 fi
 
-rmdir $APACHE_MONITORING_TEMP_DIR
+rm -rf $APACHE_MONITORING_TEMP_DIR

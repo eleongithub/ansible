@@ -1,5 +1,5 @@
 ---
-# tasks file for fail2ban-proftpd
+# tasks file for proftp_fail2ban
 - name: Insert/Update the block into the jail Configuration file
   blockinfile:
     dest: "{{ fail2ban_jail_configuration_file }}"
@@ -11,8 +11,8 @@
         port = ftp,ftp-data,ftps,ftps-data
         filter = proftpd
         logpath = /var/log/proftpd/proftpd.log
-        maxretry = {{ proftpd_maxretry }}
-        bantime = {{ proftpd_bantime }}
+        maxretry = {{ proftp_maxretry }}
+        bantime = {{ proftp_bantime }}
     state: present
     marker: '#'
     owner: root

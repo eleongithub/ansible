@@ -1,2 +1,6 @@
 ---
-# handlers file for proftpd-monitor
+# handlers file for proftp_monitoring
+- name: Restart ProFTP
+  service:
+    name: proftpd
+    state: restarted

@@ -1,2 +1,6 @@
 ---
 # handlers file for apache-monitor
+- name: Restart Apache
+  service:
+    name: apache
+    state: restarted

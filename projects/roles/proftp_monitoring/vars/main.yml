@@ -1,2 +1,9 @@
 ---
-# vars file for proftpd-monitor
+# vars file for proftp_monitoring
+proftp_monitoring_dir: "/opt/monitoring/proftp"
+proftp_monitoring_script: "{{proftp_monitoring_dir}}/proftp_monitoring.sh"
+proftp_monitoring_mail: "ansible@localhost"
+proftp_log_file: "/var/log/proftpd/proftpd.log"
+proftp_service_name: "proftpd"
+proftp_stop_command: "/etc/init.d/proftpd stop"
+proftp_start_command: "/etc/init.d/proftpd start"

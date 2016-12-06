@@ -1,6 +1,0 @@
----
-# vars file for fail2ban-proftpd
-fail2ban_enabled: true
-proftpd_maxretry: 6
-proftpd_destination_mail: "{{ fail2ban_destination_mail }}"
-proftpd_bantime: 600
