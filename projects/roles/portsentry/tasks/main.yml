@@ -1,7 +1,45 @@
 ---
 # tasks file for portsentry
 
-- name: Install portsentry
+- name: Install portsentry package with APT
   apt:
     pkg: portsentry
     state: present
+  when: ansible_pkg_mgr == "apt"
+
+- name: Installing portsentry package with YUM
+  yum:
+    name: portsentry
+    state: present
+  when: ansible_pkg_mgr == "yum"
+
+- name: Copy portsentry.ignore IP address configuration file
+  template:
+    src: portsentry.ignore.j2
+    dest: "{{ portsentry_ignore_file }}"
+    owner: root
+    group: root
+    force: yes
+    backup: yes
+
+- name: Copy notification script
+  template:
+    src: notification.sh.j2
+    dest: "{{ portsentry_notification_script }}"
+    owner: root
+    group: root
+    force: yes
+
+- name: Copy portsentry.conf configuration file
+  template:
+    src: portsentry.conf.j2
+    dest: "{{ portsentry_config_file }}"
+    owner: root
+    group: root
+    force: yes
+    backup: yes
+
+- name: Restart portsentry
+  command: echo "Restart portsentry..."
+  notify:
+    - Restart portsentry

@@ -21,7 +21,7 @@
 - name: Configure crontab to execute tomcat monitoring script each 5 minutes
   cron:
     name: "Monitoring Tomcat"
-    job: ". {{ tomcat_monitoring_script }}"
+    job: "{{ tomcat_monitoring_script }}"
     minute: "*/5"
     hour: "*"
     day: "*"

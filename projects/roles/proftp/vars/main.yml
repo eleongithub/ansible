@@ -1,1 +1,8 @@
 ---
+ftp_default_port: 21
+firwall_ftp_min_passive_port: 5000
+firwall_ftp_max_passive_port: 5100
+# Activate/Deactivate UFW configuration to open port
+use_ufw_firewall: False
+allow_ports:
+ - { port: '{{ ftp_default_port }}', rule: 'allow', proto: 'tcp' }

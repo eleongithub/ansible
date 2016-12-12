@@ -4,9 +4,13 @@
   register: postgresql_exists
 
 - name: Install PostgreSQL Server
-  apt: pkg="{{ postgres_server_pkg }}" state=present
+  apt: 
+    pkg: "{{ postgres_server_pkg }}"
+    state: present
   when: "'{{ postgres_server_pkg }}' not in '{{ postgresql_exists.stdout }}'"
 
 - name: Install PostgreSQL Client
-  apt: pkg={{ postgres_client_pkg }} state=present
+  apt: 
+    pkg: "{{ postgres_client_pkg }}"
+    state: present
   when: "'{{ postgres_server_pkg }}' not in '{{ postgresql_exists.stdout }}'"

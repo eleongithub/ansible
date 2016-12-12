@@ -15,8 +15,7 @@ mkdir -p $PROFTP_MONITORING_TEMP_DIR
 COUNT=$(ps auxw|grep $PROFTP_SERVICE_NAME|grep -v grep|grep -v proftp_monitoring.sh|wc -l)
 if [ $COUNT -eq 0 ]
 then
-    # ProFTP File Server is down.
-    # Try to restart ans send an mail to administrator
+    # ProFTP File Server is down. Try to restart ans send an mail to administrator
     MAIL_CONTENT=$PROFTP_MONITORING_TEMP_DIR/proftp_mail.txt
     echo -n "ProFTP File Server is down at " > $MAIL_CONTENT
     date >> $MAIL_CONTENT

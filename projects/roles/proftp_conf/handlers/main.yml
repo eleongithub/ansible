@@ -1,5 +1,0 @@
----
-- name: Restart ProFTP
-  service:
-    name: proftpd
-    state: restarted

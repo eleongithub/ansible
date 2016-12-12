@@ -21,7 +21,7 @@
 - name: Configure crontab to execute monitoring script each 5 minutes
   cron:
     name: "Monitoring ProFTP File Server"
-    job: ". {{ proftp_monitoring_script }}"
+    job: "{{ proftp_monitoring_script }}"
     minute: "*/5"
     hour: "*"
     day: "*"

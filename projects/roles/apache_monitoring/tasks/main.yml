@@ -21,7 +21,7 @@
 - name: Configure crontab to execute monitoring script each 5 minutes
   cron:
     name: "Monitoring Apache Web Server"
-    job: ". {{ apache_monitoring_script }}"
+    job: "{{ apache_monitoring_script }}"
     minute: "*/5"
     hour: "*"
     day: "*"

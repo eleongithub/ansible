@@ -4,8 +4,9 @@
     - "password/password-{{env}}.yml"
   become: yes
   roles:
-    - { role: fail2ban, tags: ['always'] }
-    - { role: fail2ban_ssh, tags: ['always'] }
+    - { role: fail2ban, tags: ['fail2ban'] }
+    - { role: fail2ban_ssh, tags: ['fail2ban_ssh'] }
+    - { role: portsentry, tags: ['portsentry'] }
 
 - hosts: tomcat:apache
   vars_files:
@@ -29,7 +30,7 @@
     - { role: postgres, tags: ['postgres'] }
     - { role: postgres_conf, tags: ['postgres_conf'] }
     - { role: postgres_instance, tags: ['postgres_instance'] }
-    - { role: postgres_backup, tags: ['postgres_backup'] }
+    #- { role: postgres_backup, tags: ['postgres_backup'] }
     #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain
     - { role: postgres_monitoring, tags: ['postgres_monitoring'] }
 
@@ -38,9 +39,9 @@
    - "password/password-{{env}}.yml"
   become: yes
   roles:
-    #- { role: tomcat, tags: ['tomcat'] }
-    #- { role: tomcat_conf, tags: ['tomcat_conf'] }
-    #- { role: tomcat_owasp, tags: ['tomcat_owasp'] }
+    - { role: tomcat, tags: ['tomcat'] }
+    - { role: tomcat_conf, tags: ['tomcat_conf'] }
+    - { role: tomcat_owasp, tags: ['tomcat_owasp'] }
     #- { role: tomcat_apps, tags: ['tomcat_apps'] }
     #- { role: tomcat_openssl, tags: ['tomcat_openssl'] }
     #- { role: tomcat_keytool, tags: ['tomcat_keytool'] }
@@ -51,12 +52,12 @@
    - "password/password-{{env}}.yml"
   become: yes
   roles:
-    #- { role: apache, tags: ['apache'] }
-    #- { role: apache_conf, tags: ['apache_conf'] }
-    #- { role: apache_mod_security, tags: ['apache_mod_security'] }
-    #- { role: apache_status, tags: ['apache_status'] }
-    #- { role: apache_mod_jk, tags: ['apache_mod_jk'] }
-    #- { role: apache_private_ca, tags: ['apache_private_ca'] }
+    - { role: apache, tags: ['apache'] }
+    - { role: apache_conf, tags: ['apache_conf'] }
+    - { role: apache_mod_security, tags: ['apache_mod_security'] }
+    - { role: apache_status, tags: ['apache_status'] }
+    - { role: apache_mod_jk, tags: ['apache_mod_jk'] }
+    - { role: apache_private_ca, tags: ['apache_private_ca'] }
     #- { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
     #- { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
     - { role: apache_monitoring, tags: ['apache_monitoring'] }
@@ -67,9 +68,8 @@
   become: yes
   roles:
     - { role: proftp, tags: ['proftp'] }
-    - { role: proftp_conf, tags: ['proftp_conf'] }
-    - { role: proftp_ssl, tags: ['proftp_ssl'] }
     - { role: proftp_fail2ban, tags: ['proftp_fail2ban'] }
+    - { role: proftp_ssl, tags: ['proftp_ssl'] }
     - { role: proftp_monitoring, tags: ['proftp_monitoring'] }
     
 #===========  Tâche à faire sur Ansible =====================
@@ -95,4 +95,3 @@
 #roles/commands_utils/
 #roles/firewall_manual/
 #roles/firewall_ufw/
-#roles/portsentry_conf/
