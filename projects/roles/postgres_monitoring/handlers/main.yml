@@ -1,6 +1,0 @@
----
-# handlers file for postgres_monitoring
-- name: Restart PostgreSQL
-  service:
-    name: postgresql
-    state: restarted

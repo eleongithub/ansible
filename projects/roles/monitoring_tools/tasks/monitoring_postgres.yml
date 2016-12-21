@@ -1,4 +1,5 @@
 ---
+
 # tasks file for postgres_monitoring
 
 - name: Create Postgres monitoring directory

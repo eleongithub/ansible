@@ -1,0 +1,47 @@
+---
+# vars file for monitoring_tools
+
+monitoring_dir: "/opt/monitoring"
+# vars for apache monitoring
+enable_monitoring_apache: False
+apache_monitoring_dir: "{{monitoring_dir}}/apache"
+apache_monitoring_script: "{{apache_monitoring_dir}}/apache_monitoring.sh"
+apache_monitoring_disabled_cron_script: "{{apache_monitoring_dir}}/disable_cron_monitoring.sh"
+apache_monitoring_mail: "ansible@localhost"
+yesterday: "yesterday"
+apache_yesterday_error_log_file: "/opt/apache2/logs/error_$(date +%Y%m%d --date={{ yesterday }}).log"
+apache_today_error_log_file: "/opt/apache2/logs/error_$(date +%Y%m%d).log"
+apache_service_name: "httpd"
+apache_stop_command: "/usr/sbin/service apache stop"
+apache_start_command: "/usr/sbin/service apache start"
+
+# vars  for postgres monitoring
+enable_monitoring_postgres: False
+postgres_monitoring_dir: "{{monitoring_dir}}/postgres"
+postgres_monitoring_script: "{{postgres_monitoring_dir}}/postgres_monitoring.sh"
+postgres_monitoring_mail: "ansible@localhost"
+postgres_log_file: "/var/log/postgresql/postgresql-9.4-main.log"
+postgres_service_name: "postgres"
+postgres_stop_command: "/usr/sbin/service postgresql stop"
+postgres_start_command: "/usr/sbin/service postgresql start"
+
+# vars for proftp monitoring
+enable_monitoring_proftp: False
+proftp_monitoring_dir: "{{monitoring_dir}}/proftp"
+proftp_monitoring_script: "{{proftp_monitoring_dir}}/proftp_monitoring.sh"
+proftp_monitoring_mail: "ansible@localhost"
+proftp_log_file: "/var/log/proftpd/proftpd.log"
+proftp_service_name: "proftpd"
+proftp_stop_command: "/usr/sbin/service proftpd stop"
+proftp_start_command: "/usr/sbin/service proftpd start"
+
+
+# vars for tomcat monitoring
+enable_monitoring_tomcat: False
+tomcat_monitoring_dir: "{{monitoring_dir}}/tomcat"
+tomcat_monitoring_script: "{{tomcat_monitoring_dir}}/tomcat_monitoring.sh"
+tomcat_monitoring_mail: "ansible@localhost"
+tomcat_log_file: "/opt/tomcat/logs/catalina.out"
+tomcat_service_name: "tomcat"
+tomcat_stop_command: "/usr/sbin/service tomcat stop"
+tomcat_start_command: "/usr/sbin/service tomcat start"

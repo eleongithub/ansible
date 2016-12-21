@@ -1,4 +1,0 @@
----
-# defaults file for apache-monitor
-apache_error_log_file: "/var/log/apache2/error.log"
-apache_service_name: "apache2"

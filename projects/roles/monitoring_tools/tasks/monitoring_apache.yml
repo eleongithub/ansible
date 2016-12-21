@@ -1,5 +1,5 @@
 ---
-# tasks file for apache_monitoring
+# tasks file for monitoring apache
 
 - name: Create Apache monitoring directory
   file:

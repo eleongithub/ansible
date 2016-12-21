@@ -1,0 +1,21 @@
+---
+# handlers file for monitoring_tools
+- name: Restart Apache
+  service:
+    name: apache
+    state: restarted
+
+- name: Restart PostgreSQL
+  service:
+    name: postgresql
+    state: restarted
+
+- name: Restart ProFTP
+  service:
+    name: proftpd
+    state: restarted
+
+- name: Restart tomcat
+  service:
+    name: tomcat
+    state: restarted

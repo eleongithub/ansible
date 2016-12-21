@@ -1,4 +1,8 @@
 ---
+
+###################
+# Security
+###################
 - hosts: all
   vars_files:
     - "password/password-{{env}}.yml"
@@ -7,6 +11,8 @@
     - { role: fail2ban, tags: ['fail2ban'] }
     - { role: fail2ban_ssh, tags: ['fail2ban_ssh'] }
     - { role: portsentry, tags: ['portsentry'] }
+###################
+
 
 - hosts: tomcat:apache
   vars_files:
@@ -32,7 +38,7 @@
     - { role: postgres_instance, tags: ['postgres_instance'] }
     #- { role: postgres_backup, tags: ['postgres_backup'] }
     #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain
-    - { role: postgres_monitoring, tags: ['postgres_monitoring'] }
+    - { role: monitoring_tools, enable_monitoring_postgres: True, tags: ['postgres_monitoring'] }
 
 - hosts: tomcat
   vars_files:
@@ -45,7 +51,7 @@
     #- { role: tomcat_apps, tags: ['tomcat_apps'] }
     #- { role: tomcat_openssl, tags: ['tomcat_openssl'] }
     #- { role: tomcat_keytool, tags: ['tomcat_keytool'] }
-    - { role: tomcat_monitoring, tags: ['tomcat_monitoring'] }
+    - { role: monitoring_tools, enable_monitoring_tomcat: True, tags: ['tomcat_monitoring'] }
 
 - hosts: apache
   vars_files:
@@ -60,7 +66,7 @@
     - { role: apache_private_ca, tags: ['apache_private_ca'] }
     #- { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
     #- { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
-    - { role: apache_monitoring, tags: ['apache_monitoring'] }
+    - { role: monitoring_tools, enable_monitoring_apache: True, tags: ['apache_monitoring'] }
 
 - hosts: proftp
   vars_files:
@@ -70,7 +76,7 @@
     - { role: proftp, tags: ['proftp'] }
     - { role: proftp_fail2ban, tags: ['proftp_fail2ban'] }
     - { role: proftp_ssl, tags: ['proftp_ssl'] }
-    - { role: proftp_monitoring, tags: ['proftp_monitoring'] }
+    - { role: monitoring_tools, enable_monitoring_proftp: True, tags: ['proftp_monitoring'] }
     
 #===========  Tâche à faire sur Ansible =====================
 #II°) 
