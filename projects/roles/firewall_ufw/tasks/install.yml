@@ -1,10 +1,17 @@
 ---
 # tasks file for firewall-ufw
 
-- name : Install UFW package
+- name : Install UFW package...
   apt:
     pkg: ufw
     state: present
+  when: ansible_os_family == 'Debian'
+  
+- name : Install UFW package...
+  yum:
+    pkg: ufw
+    state: present
+  when: ansible_os_family == 'RedHat' 
 
 - name: Reset firewall policy
   ufw:

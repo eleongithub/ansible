@@ -1,15 +1,15 @@
 ---
-- name: Install openssl package with APT
+- name: Installing openssl...
   apt:
     pkg: openssl
     state: present
-  when: ansible_pkg_mgr == "apt"
+  when: ansible_os_family == 'Debian'
 
-- name: Installing openssl package with YUM
+- name: Installing openssl...
   yum:
     name: openssl
     state: present
-  when: ansible_pkg_mgr == "yum"
+  when: ansible_os_family == 'RedHat'
 
 - name : Check tomcat security directory exists
   stat:

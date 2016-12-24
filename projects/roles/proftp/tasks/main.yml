@@ -13,20 +13,36 @@
   with_items:
     - "proftpd"
     - "proftpd-basic"
-  when: "'{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}'"
+  when: "('{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}') and (ansible_os_family == 'Debian')"
 
-- name: Install ProFTPd Server package
+- name: Purge ProFTPd Server package if present
+  yum:
+    pkg: "{{ item }}"
+    state: absent
+    purge: yes
+  with_items:
+    - "proftpd"
+    - "proftpd-basic"
+  when: "('{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}') and (ansible_os_family == 'RedHat')"
+
+- name: Installing ProFTPd Server...
   apt:
     pkg: proftpd
     state: present
-  when: "'{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}'"
+  when: "('{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}') and (ansible_os_family == 'Debian')"
+ 
+- name: Installing ProFTPd Server...
+  yum:
+    pkg: proftpd
+    state: present
+  when: "('{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}') and (ansible_os_family == 'RedHat')"
 
-- name: Create Group proftp user group if not exists
+- name: Create Group proftp
   group:
     name: "{{ proftp_user_group }}"
     state: present
 
-- name: Create proftp user if not exists
+- name: Create proftp user
   user:
     name: "{{ proftp_user }}"
     createhome: no

@@ -1,19 +1,19 @@
 ---
 # tasks file for ntp
 
-- name: Install NTP with APT
+- name: Installing NTP...
   apt:
     name: ntp
     state: present
     update_cache: yes
-  when: ansible_pkg_mgr == "apt"
+  when: ansible_os_family == 'Debian'
 
-- name: Installing NTP with YUM
+- name: Installing NTP...
   yum:
     name: ntp
     state: present
     update_cache: yes
-  when: ansible_pkg_mgr == "yum"
+  when: ansible_os_family == 'RedHat'
 
 - name: Add Iptables Input trafic rule for NTP
   command: >

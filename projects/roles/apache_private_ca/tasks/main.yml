@@ -1,15 +1,15 @@
 ---
-- name: Install openssl package with APT
+- name: Installing openssl package
   apt:
     pkg: openssl
     state: present
-  when: ansible_pkg_mgr == "apt"
+  when: ansible_os_family == 'Debian'
 
-- name: Installing openssl package with YUM
+- name: Installing openssl package
   yum:
     name: openssl
     state: present
-  when: ansible_pkg_mgr == "yum"
+  when: ansible_os_family == 'RedHat'
 
 - name: Create certification authority (CA) main directory
   file:

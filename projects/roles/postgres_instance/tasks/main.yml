@@ -1,9 +1,16 @@
 ---
 
-- name: Install python-psycopg2 package
+- name: Installing python-psycopg2 package...
   apt:
     pkg: python-psycopg2
     state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Installing python-psycopg2 package...
+  yum:
+    pkg: python-psycopg2
+    state: present
+  when: ansible_os_family == 'RedHat'
 
 - name: Create user
   postgres_user:
