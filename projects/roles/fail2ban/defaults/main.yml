@@ -1,2 +1,3 @@
 ---
 # defaults file for fail2ban
+use_iptables_firewall: False

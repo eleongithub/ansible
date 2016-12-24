@@ -1,0 +1,44 @@
+---
+# This playbook contains firewall plays that will be run on all nodes.
+
+- name: Stop firewall script and disable it.
+  service:
+    name: firewall
+    state: stopped
+    enabled: no
+  ignore_errors: true
+
+- name : Remove eventual firewall init script from the system
+  file:
+    path: "/etc/init.d/firewall"
+    state: absent
+  ignore_errors: true
+
+- name: Install iptables package with APT
+  apt:
+    pkg: iptables
+    state: present
+  when: ansible_pkg_mgr == "apt"
+
+- name: Installing iptables package with YUM
+  yum:
+    name: iptables
+    state: present
+  when: ansible_pkg_mgr == "yum"
+
+- name: Copy firewall files into directories
+  template:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    force: "{{item.force}}"
+    owner: "{{item.owner}}"
+    group: "{{item.group}}"
+    mode: "{{item.mode}}"
+  with_items:
+   - "{{ firewall_script_files }}"
+
+- name: Enable firewall
+  service:
+    name: firewall
+    enabled: yes
+    state: started

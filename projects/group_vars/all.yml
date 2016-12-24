@@ -1,4 +1,5 @@
 ---
+use_iptables_firewall: True
 apr_config_file: /usr/bin/apr-1-config
 java_home: /opt/java
 ssl_country: FR

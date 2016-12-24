@@ -11,5 +11,3 @@ tomcat_native_url: "{{ nexus_public_repository }}/org/tomcat/apache/tomcat-nativ
 libtcnative_util_home: "{{ tomcat_last_version }}/bin/tomcat-native-{{ libtcnative_version }}-src/jni/native"
 libtcnative_util_tarball_name: "tomcat-native-{{ libtcnative_version }}-src.tar.gz"
 ssl_protocol: TLSv1+TLSv1.1+TLSv1.2
-# Activate/Deactivate UFW configuration to open port
-use_ufw_firewall: True

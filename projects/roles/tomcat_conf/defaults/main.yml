@@ -1,3 +1,2 @@
 ---
-# Activate/Deactivate UFW configuration to open port
-use_ufw_firewall: False
+

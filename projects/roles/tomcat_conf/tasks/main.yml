@@ -13,18 +13,6 @@
     state: absent
   ignore_errors: true
 
-- name: Delete User Tomcat
-  user:
-    name: "{{ tomcat_user }}"
-    state: absent
-  ignore_errors: true
-
-- name: Delete Group Tomcat
-  group:
-    name: "{{ tomcat_user_group }}"
-    state: absent
-  ignore_errors: true
-
 - name: Create Group Tomcat
   group:
     name: "{{ tomcat_user_group }}"
@@ -53,6 +41,14 @@
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user_group }}"
 
+- name: Create the tomcat directory
+  file:
+    path: "{{ tomcat_conf_directory }}"
+    owner: "{{ tomcat_user }}"
+    group: "{{ tomcat_user_group }}"
+    state: directory
+    recurse: yes
+
 - name: Deploy conf Tomcat files
   template:
     src: "{{item.src}}"
@@ -70,13 +66,15 @@
     force: yes
     mode: 0755
 
-- name: Allow access to Tomcat port through firewall
-  ufw:
-    rule: "{{ item.rule }}"
-    port: "{{ item.port }}"
-    proto: "{{ item.proto }}"
-  with_items: "{{ firewallports }}"
-  when: use_ufw_firewall
+- name: Add Iptables Input trafic rule for Tomcat
+  command: >
+   /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p tcp --dport {{ tomcat_http_port }} -j ACCEPT -m comment --comment "TCP - Tomcat Server Input trafic"
+  when: use_iptables_firewall
+
+- name: Add Iptables Output trafic rule for Tomcat
+  command: >
+   /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p tcp --dport {{ tomcat_http_port }} -j ACCEPT -m comment --comment "TCP - Tomcat Server Output trafic"
+  when: use_iptables_firewall
 
 - name: Enable Tomcat service
   service:

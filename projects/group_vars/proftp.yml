@@ -12,6 +12,3 @@ proftp_modules_conf_path: "/etc/proftpd/modules.conf"
 proftp_conf_files:
  - { path: '{{ proftp_modules_conf_path }}', force: yes, owner: '{{ proftp_user }}', group: '{{ proftp_user_group }}', mode: '0644' }
  - { path: '{{ proftp_conf_path }}', force: yes, owner: '{{ proftp_user }}', group: '{{ proftp_user_group }}', mode: '0644' }
-
-# Activate/Deactivate UFW configuration to open port
-use_ufw_firewall: True

@@ -8,7 +8,7 @@
     owner: root
     group: root
     mode: 0644
-    
+
 - name: Copy Proftp monitoring script
   template:
     src: proftp_monitoring.sh.j2
@@ -27,7 +27,7 @@
     day: "*"
     month: "*"
     state: present
-    
+
 - name: Restart ProFTP
   command: echo "Restart ProFTP service..."
   notify:

@@ -11,6 +11,7 @@
   file:
     path: "{{ tomcat_last_version }}/logs"
     mode: 0300
+    state: directory
     recurse: yes
 
 - name: Delete unused files or directories

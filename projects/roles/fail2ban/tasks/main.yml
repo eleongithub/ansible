@@ -22,5 +22,21 @@
     force: yes
     mode: 0644
 
+- name: Remove Required-Start line from fail2ban init script
+  lineinfile:
+    backup: yes
+    dest: "{{ fail2ban_init_script }}"
+    regexp: '^(.*)# Required-Start:(.*)'
+    state: absent
+  when: use_iptables_firewall
+
+- name: Modify fail2ban init script to run after firewall script
+  lineinfile:
+    backup: yes
+    dest: "{{ fail2ban_init_script }}"
+    line: '# Required-Start:    $local_fs $remote_fs $firewall'
+    insertafter: '^(.*)# Provides:(.*)'
+  when: use_iptables_firewall
+
 #https://www.how-to.ovh/viewtopic.php?t=19
 #Au fur et à mesure qu'on ajoute d'autre programme, on ajoutera la config fail2ban correspondant : Apache, Postfix, Proftp

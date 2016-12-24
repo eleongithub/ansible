@@ -1,6 +1,5 @@
 ---
 mod_jk_port: '8009'
-use_ufw_firewall: False
 apache_vhosts_mod_jk:
   vhost1:
     serverName: 'vhosts1.fr'

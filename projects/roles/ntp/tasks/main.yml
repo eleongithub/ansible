@@ -1,0 +1,32 @@
+---
+# tasks file for ntp
+
+- name: Install NTP with APT
+  apt:
+    name: ntp
+    state: present
+    update_cache: yes
+  when: ansible_pkg_mgr == "apt"
+
+- name: Installing NTP with YUM
+  yum:
+    name: ntp
+    state: present
+    update_cache: yes
+  when: ansible_pkg_mgr == "yum"
+
+- name: Add Iptables Input trafic rule for NTP
+  command: >
+   /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p udp --dport 123 -j ACCEPT -m comment --comment "UDP - NTP Server Input trafic"
+  when: use_iptables_firewall
+
+- name: Add Iptables Output trafic rule for NTP
+  command: >
+   /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p udp --dport 123 -j ACCEPT -m comment --comment "UDP - NTP Server Output trafic"
+  when: use_iptables_firewall
+
+- name: Start the ntp service
+  service:
+    name: ntp
+    state: started
+    enabled: true

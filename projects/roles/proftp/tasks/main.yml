@@ -57,13 +57,25 @@
     mode: "{{ item.mode }}"
   with_items: "{{ proftp_conf_files }}"
 
-- name: Allow access to ProFTPd port through firewall
-  ufw:
-    rule: "{{ item.rule }}"
-    port: "{{ item.port }}"
-    proto: "{{ item.proto }}"
-  with_items: "{{ firewallports }}"
-  when: use_ufw_firewall
+- name: Add Iptables Input trafic rule for ProFTP
+  command: >
+   /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p tcp --dport {{ ftp_default_port }} -j ACCEPT -m comment --comment "TCP - ProFTP Server Input trafic"
+  when: use_iptables_firewall
+
+- name: Add Iptables Output trafic rule for ProFTP
+  command: >
+   /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p tcp --dport {{ ftp_default_port }} -j ACCEPT -m comment --comment "TCP - ProFTP Server Output trafic"
+  when: use_iptables_firewall
+
+- name: Add Iptables Input trafic rule for ProFTP passive ports
+  command: >
+   /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p tcp --dport {{ firwall_ftp_min_passive_port }}:{{ firwall_ftp_max_passive_port }} -j ACCEPT -m comment --comment "TCP - ProFTP Server Input trafic - Passive ports"
+  when: use_iptables_firewall
+
+- name: Add Iptables Output trafic rule for ProFTP passive ports
+  command: >
+   /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p tcp --dport {{ firwall_ftp_min_passive_port }}:{{ firwall_ftp_max_passive_port }} -j ACCEPT -m comment --comment "TCP - ProFTP Server Output trafic - Passive ports"
+  when: use_iptables_firewall
 
 - name: Restart ProFTP
   command: echo "Restart ProFTP service..."

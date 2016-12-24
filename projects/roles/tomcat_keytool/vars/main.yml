@@ -12,9 +12,5 @@ keystore_conf_files:
 keystore_dir: "{{ tomcat_last_version }}/conf/keystore"
 keystore_file: "{{ keystore_dir }}/keystore.jks"
 keystore_alias: keyAlias
-
-firewallports:
- - { port: '{{ tomcat_http_port }}', rule: 'allow', proto: 'tcp' }
- - { port: '{{ tomcat_https_port }}', rule: 'allow', proto: 'tcp' }
  
 keystore_subj: "CN={{ tomcat_dns }}, OU={{ ssl_organisation_unit }}, O={{ ssl_organisation }}, L={{ ssl_locality }}, S={{ ssl_state }}, C={{ ssl_country }}"

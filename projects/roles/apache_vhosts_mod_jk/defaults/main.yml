@@ -1,4 +1,3 @@
 ---
 root_user: root
 root_group: sys
-use_ufw_firewall: False

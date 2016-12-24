@@ -8,7 +8,7 @@
     owner: root
     group: root
     mode: 0644
-    
+
 - name: Copy Tomcat monitoring script
   template:
     src: tomcat_monitoring.sh.j2
