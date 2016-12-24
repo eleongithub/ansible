@@ -7,6 +7,7 @@ firewall_script_files:
 
 firewall_input_allowed_ports:
  - { port: '22', protocol: 'tcp', comment: 'TCP - SSH Input trafic' }
+ - { port: '25', protocol: 'tcp', comment: 'TCP - SMTP Input trafic' }
  - { port: '80', protocol: 'tcp', comment: 'TCP - HTTP Input trafic' }
  - { port: '443', protocol: 'tcp', comment: 'TCP - HTTPS Input trafic' }
  - { port: '53', protocol: 'tcp', comment: 'TCP - DNS Input trafic' }
@@ -14,6 +15,7 @@ firewall_input_allowed_ports:
 
 firewall_output_allowed_ports:
  - { port: '22', protocol: 'tcp', comment: 'TCP - SSH Output trafic' }
+ - { port: '25', protocol: 'tcp', comment: 'TCP - SMTP Input trafic' }
  - { port: '80', protocol: 'tcp', comment: 'TCP - HTTP Output trafic' }
  - { port: '443', protocol: 'tcp', comment: 'TCP - HTTPS Output trafic' }
  - { port: '53', protocol: 'tcp', comment: 'TCP - DNS Output trafic' }
