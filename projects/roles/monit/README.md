@@ -21,7 +21,7 @@ A description of the settable variables for this role should go here, including 
 | Nom	        | Obligatoire	| Valeur par défaut  | Choix	| Description|
 | ------------- |:-------------:| ------------------:|:--------:|:-----------|
 | monit_daemon  | Oui		| 60		     |-		|Monit effectuera la vérification des services toutes les 60 secondes.Cette variable indique l'intervalle régulier de vérification.|
-|monit_config_file_os_family_debian|Oui		     |/etc/monit/monitrc|Fichier de configuration sur les systèmes de la famille 'Debian'.|
+|monit_config_file_os_family_debian|Oui		     |/etc/monit/monitrc|-	|Fichier de configuration sur les systèmes de la famille 'Debian'.|
 
 [coles="5*", options="header"]
 |===
