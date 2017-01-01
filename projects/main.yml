@@ -12,7 +12,17 @@
     - { role: fail2ban, tags: ['fail2ban'] }
     - { role: fail2ban_ssh, tags: ['fail2ban_ssh'] }
     - { role: portsentry, tags: ['portsentry'] }
+    - { role: monit, tags: ['monit'] }
 
+###################
+# Monitoring
+###################
+- hosts: all
+  vars_files:
+   - "password/password-{{env}}.yml"
+  become: yes
+  roles:
+    - { role: monit, tags: ['monit'] }
 
 ###################
 # Time
@@ -28,8 +38,7 @@
    - "password/password-{{env}}.yml"
   become: yes
   roles:
-    - { role: ntp, tags: ['always'] }
-
+    - { role: ntp, tags: ['ntp'] }
 
 ####################
 # Install build essential
@@ -39,8 +48,7 @@
    - "password/password-{{env}}.yml"
   become: yes
   roles:
-    - { role: build_essential, tags: ['always'] }
-
+    - { role: build_essential, tags: ['build_essential'] }
 
 ###################
 # Install JDK
@@ -51,8 +59,6 @@
   become: yes
   roles:
     - { role: jdk, tags: ['jdk'] }
-
-
 
 ###################
 # Install Data Base
@@ -67,7 +73,8 @@
     - { role: postgres_instance, tags: ['postgres_instance'] }
     #- { role: postgres_backup, tags: ['postgres_backup'] }
     #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain
-    - { role: monitoring_tools, enable_monitoring_postgres: True, tags: ['postgres_monitoring'] }
+    - { role: monit-postgresql, tags: ['monit-postgresql'] }
+    #- { role: monitoring_tools, enable_monitoring_postgres: True, tags: ['postgres_monitoring'] }
 
 
 ###################
@@ -84,40 +91,41 @@
     #- { role: tomcat_apps, tags: ['tomcat_apps'] }
     #- { role: tomcat_openssl, tags: ['tomcat_openssl'] }
     #- { role: tomcat_keytool, tags: ['tomcat_keytool'] }
-    - { role: monitoring_tools, enable_monitoring_tomcat: True, tags: ['tomcat_monitoring'] }
+    - { role: monit-tomcat, tags: ['monit-tomcat'] }
+    #- { role: monitoring_tools, enable_monitoring_tomcat: True, tags: ['tomcat_monitoring'] }
 
 
 ###################
 # Install Apache
 ###################
-- hosts: apache
-  vars_files:
-   - "password/password-{{env}}.yml"
-  become: yes
-  roles:
-    - { role: apache, tags: ['apache'] }
-    - { role: apache_conf, tags: ['apache_conf'] }
-    - { role: apache_mod_security, tags: ['apache_mod_security'] }
-    - { role: apache_status, tags: ['apache_status'] }
-    - { role: apache_mod_jk, tags: ['apache_mod_jk'] }
-    - { role: apache_private_ca, tags: ['apache_private_ca'] }
-    #- { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
-    #- { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
-    - { role: monitoring_tools, enable_monitoring_apache: True, tags: ['apache_monitoring'] }
+#- hosts: apache
+  #vars_files:
+   #- "password/password-{{env}}.yml"
+  #become: yes
+  #roles:
+    #- { role: apache, tags: ['apache'] }
+    #- { role: apache_conf, tags: ['apache_conf'] }
+    #- { role: apache_mod_security, tags: ['apache_mod_security'] }
+    #- { role: apache_status, tags: ['apache_status'] }
+    #- { role: apache_mod_jk, tags: ['apache_mod_jk'] }
+    #- { role: apache_private_ca, tags: ['apache_private_ca'] }
+    ##- { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
+    ##- { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
+    #- { role: monitoring_tools, enable_monitoring_apache: True, tags: ['apache_monitoring'] }
 
 
 ##################
 #Install ProFTP
 ##################
-- hosts: proftp
-  vars_files:
-   - "password/password-{{env}}.yml"
-  become: yes
-  roles:
-    - { role: proftp, tags: ['proftp'] }
-    - { role: proftp_fail2ban, tags: ['proftp_fail2ban'] }
-    - { role: proftp_ssl, tags: ['proftp_ssl'] }
-    - { role: monitoring_tools, enable_monitoring_proftp: True, tags: ['proftp_monitoring'] }
+#- hosts: proftp
+  #vars_files:
+   #- "password/password-{{env}}.yml"
+  #become: yes
+  #roles:
+    #- { role: proftp, tags: ['proftp'] }
+    #- { role: proftp_fail2ban, tags: ['proftp_fail2ban'] }
+    #- { role: proftp_ssl, tags: ['proftp_ssl'] }
+    #- { role: monitoring_tools, enable_monitoring_proftp: True, tags: ['proftp_monitoring'] }
 
 #===========  Tâche à faire sur Ansible =====================
 

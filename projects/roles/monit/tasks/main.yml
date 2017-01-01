@@ -1,0 +1,43 @@
+---
+# tasks file for monit
+
+- name: Install monit package
+  apt:
+    pkg: monit
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Install monit package
+  yum:
+    pkg: monit
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: Copy configuration file
+  template:
+    backup: yes
+    src: monit.conf.j2
+    dest: "{{ monit_config_file_os_family_debian }}"
+  when: ansible_os_family == 'Debian'
+
+- name: Copy configuration file
+  template:
+    backup: yes
+    src: monit.conf.j2
+    dest: "{{ monit_config_file_os_family_redhat }}"
+  when: ansible_os_family == 'RedHat'
+
+- name: Add Iptables Input trafic rule for monit
+  command: >
+   /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p tcp --dport {{ monit_admin_dashboard_port }} -j ACCEPT -m comment --comment "TCP - Monit Server Input trafic"
+  when: (monit_activate_admin_dashboard and use_iptables_firewall)
+
+- name: Add Iptables Output trafic rule for monit
+  command: >
+   /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p tcp --dport {{ monit_admin_dashboard_port }} -j ACCEPT -m comment --comment "TCP - Monit Server Output trafic"
+  when: (monit_activate_admin_dashboard and use_iptables_firewall)
+
+- name: Reload monit
+  command: echo "Reload monit..."
+  notify:
+    - Reload monit

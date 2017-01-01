@@ -1,0 +1,5 @@
+check host tomcat with address localhost
+start program = "{{ tomcat_start_command }}" 
+stop program = "{{ tomcat_stop_command }}" 
+if failed port {{ tomcat_http_port }} and protocol http then restart
+if 5 restarts within 5 cycles then timeout

@@ -1,0 +1,10 @@
+---
+# defaults file for monit
+monit_send_alert_mail: False
+monit_mail_server:
+monit_mail_address:
+monit_activate_admin_dashboard: False
+monit_admin_dashboard_port:
+monit_admin_login:
+monit_admin_password:
+use_iptables_firewall: False
