@@ -13,7 +13,7 @@ Role Variables
 
 | Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisé	| Description|
 | ------------- |:-------------:| ------------------:|:--------:|:-----------|
-|monit_sshd_config_file|Oui|/etc/monit/conf.d/sshd.conf|-|Fichier de configuration du serveur SSH à surveiller.|
+|monit_sshd_config_file|Oui|/etc/monit/conf.d/sshd.conf|/etc/monit/conf.d/sshd.conf|Fichier de configuration du serveur SSH à surveiller.|
 |sshd_stop_command|Oui|/etc/init.d/sshd stop|/usr/sbin/service sshd stop|La commande pour stopper le serveur SSH.|
 |sshd_start_command|Oui|/etc/init.d/sshd start|/usr/sbin/service sshd start|La commande pour démarrer le serveur SSH.|
 

@@ -31,7 +31,3 @@ apache_conf_keep_alive: 'On'
 apache_conf_max_keep_alive_requests: 500 
 apache_conf_keep_alive_timeout: 15
 apache_vhosts_conf_dir: "{{ apache_conf_dir }}/vhosts"
-
-# Apache Monitoring variables
-apache_error_log_file: "{{ apache_logs_dir }}/error.log"
-apache_service_name: "apache"
