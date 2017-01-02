@@ -37,7 +37,7 @@
    /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p tcp --dport {{ monit_admin_dashboard_port }} -j ACCEPT -m comment --comment "TCP - Monit Server Output trafic"
   when: (monit_activate_admin_dashboard and use_iptables_firewall)
 
-- name: Reload monit
-  command: echo "Reload monit..."
-  notify:
-    - Reload monit
+#- name: Reload monit
+  #command: echo "Reload monit..."
+  #notify:
+    #- Reload monit

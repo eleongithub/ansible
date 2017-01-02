@@ -1,0 +1,4 @@
+---
+# defaults file for monit_sshd
+sshd_stop_command: "/etc/init.d/sshd stop"
+sshd_start_command: "/etc/init.d/sshd start"

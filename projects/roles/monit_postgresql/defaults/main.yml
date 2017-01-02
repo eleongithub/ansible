@@ -1,0 +1,5 @@
+---
+# defaults file for monit_postgresql
+postgres_port: 5432
+postgres_stop_command: "/etc/init.d/postgresql stop"
+postgres_start_command: "/etc/init.d/postgresql start"

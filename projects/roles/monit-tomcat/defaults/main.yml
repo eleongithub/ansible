@@ -1,3 +1,0 @@
----
-# defaults file for monit-tomcat
-tomcat_http_port: 8080

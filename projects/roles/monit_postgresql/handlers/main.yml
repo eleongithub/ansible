@@ -1,0 +1,6 @@
+---
+# handlers file for monit_postgresql
+- name: Reload monit
+  service:
+    name: monit
+    state: reloaded

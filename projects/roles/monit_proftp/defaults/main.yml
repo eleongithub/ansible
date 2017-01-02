@@ -1,0 +1,4 @@
+---
+# defaults file for monit_proftp
+proftp_stop_command: "/etc/init.d/proftpd stop"
+proftp_start_command: "/etc/init.d/proftpd start"

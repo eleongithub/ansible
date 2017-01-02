@@ -1,3 +1,0 @@
----
-# defaults file for monit-postgresql
-postgres_port: 5432

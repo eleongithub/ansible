@@ -12,7 +12,6 @@
     - { role: fail2ban, tags: ['fail2ban'] }
     - { role: fail2ban_ssh, tags: ['fail2ban_ssh'] }
     - { role: portsentry, tags: ['portsentry'] }
-    - { role: monit, tags: ['monit'] }
 
 ###################
 # Monitoring
@@ -23,6 +22,7 @@
   become: yes
   roles:
     - { role: monit, tags: ['monit'] }
+    - { role: monit_sshd, tags: ['monit_sshd'] }
 
 ###################
 # Time
@@ -73,9 +73,7 @@
     - { role: postgres_instance, tags: ['postgres_instance'] }
     #- { role: postgres_backup, tags: ['postgres_backup'] }
     #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain
-    - { role: monit-postgresql, tags: ['monit-postgresql'] }
-    #- { role: monitoring_tools, enable_monitoring_postgres: True, tags: ['postgres_monitoring'] }
-
+    - { role: monit_postgresql, tags: ['monit_postgresql'] }
 
 ###################
 # Install Tomcat
@@ -91,54 +89,46 @@
     #- { role: tomcat_apps, tags: ['tomcat_apps'] }
     #- { role: tomcat_openssl, tags: ['tomcat_openssl'] }
     #- { role: tomcat_keytool, tags: ['tomcat_keytool'] }
-    - { role: monit-tomcat, tags: ['monit-tomcat'] }
-    #- { role: monitoring_tools, enable_monitoring_tomcat: True, tags: ['tomcat_monitoring'] }
+    - { role: monit_tomcat, tags: ['monit_tomcat'] }
 
 
 ###################
 # Install Apache
 ###################
-#- hosts: apache
-  #vars_files:
-   #- "password/password-{{env}}.yml"
-  #become: yes
-  #roles:
-    #- { role: apache, tags: ['apache'] }
-    #- { role: apache_conf, tags: ['apache_conf'] }
-    #- { role: apache_mod_security, tags: ['apache_mod_security'] }
-    #- { role: apache_status, tags: ['apache_status'] }
+- hosts: apache
+  vars_files:
+   - "password/password-{{env}}.yml"
+  become: yes
+  roles:
+    - { role: apache, tags: ['apache'] }
+    - { role: apache_conf, tags: ['apache_conf'] }
+    - { role: apache_mod_security, tags: ['apache_mod_security'] }
+    - { role: apache_status, tags: ['apache_status'] }
     #- { role: apache_mod_jk, tags: ['apache_mod_jk'] }
     #- { role: apache_private_ca, tags: ['apache_private_ca'] }
     ##- { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
     ##- { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
-    #- { role: monitoring_tools, enable_monitoring_apache: True, tags: ['apache_monitoring'] }
+    - { role: monit_apache, tags: ['monit_apache'] }
+
 
 
 ##################
 #Install ProFTP
 ##################
-#- hosts: proftp
-  #vars_files:
-   #- "password/password-{{env}}.yml"
-  #become: yes
-  #roles:
-    #- { role: proftp, tags: ['proftp'] }
-    #- { role: proftp_fail2ban, tags: ['proftp_fail2ban'] }
-    #- { role: proftp_ssl, tags: ['proftp_ssl'] }
-    #- { role: monitoring_tools, enable_monitoring_proftp: True, tags: ['proftp_monitoring'] }
+- hosts: proftp
+  vars_files:
+   - "password/password-{{env}}.yml"
+  become: yes
+  roles:
+    - { role: proftp, tags: ['proftp'] }
+    - { role: proftp_fail2ban, tags: ['proftp_fail2ban'] }
+    - { role: proftp_ssl, tags: ['proftp_ssl'] }
+    - { role: monit_proftp, tags: ['monit_proftp'] }
 
-#===========  Tâche à faire sur Ansible =====================
 
-#III°)
-#S'inspirer de :
- #- https://github.com/weareinteractive/ansible-ufw
- #- http://blog.octo.com/securiser-son-serveur-avec-ansible/
- #- http://ryaneschinger.com/blog/securing-a-server-with-ansible/
-    
-#2°) Autoriser les autres ports des autres rôles avec UFW au fur et à mesur qu'on installe les autres programmes
-#3°) Etablir un rôles pour installer Fail2ban
-#IV°) Firewall manuel
-
-#http://guide.ovh.com/firewall
-
-#roles/commands_utils/
+#===========  Tâche à faire sur Ansible =====================   
+ ##TODO Roles
+  #- apache_fail2ban
+  #- Postfix
+  #- HAProxy
+  #- Dbmaintain or Liquibase ( à choisir en fonction de la techno utilisé en environnement de Dev

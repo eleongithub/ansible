@@ -1,0 +1,6 @@
+---
+# handlers file for monit_apache
+- name: Reload monit
+  service:
+    name: monit
+    state: reloaded

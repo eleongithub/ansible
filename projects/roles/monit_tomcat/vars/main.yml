@@ -1,0 +1,5 @@
+---
+# vars file for monit_tomcat
+monit_tomcat_config_file: "/etc/monit/conf.d/tomcat.conf"
+tomcat_stop_command: "/usr/sbin/service tomcat stop"
+tomcat_start_command: "/usr/sbin/service tomcat start"

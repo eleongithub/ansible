@@ -1,0 +1,16 @@
+---
+# tasks file for monit_postgresql
+
+- name: Copy configuration file
+  template:
+    backup: yes
+    src: postgresql.conf.j2
+    dest: "{{ monit_postgres_config_file }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Reload monit
+  command: echo "Reload monit..."
+  notify:
+    - Reload monit
