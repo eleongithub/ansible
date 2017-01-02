@@ -13,7 +13,7 @@ Role Variables
 
 | Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
 | ------------- |:-------------:| ------------------:|:--------:|:-----------|
-|monit_proftp_config_file|Oui|/etc/monit/conf.d/proftpd.conf|-|Fichier de configuration du serveur ProFTP à surveiller.|
+|monit_proftp_config_file|Oui|/etc/monit/conf.d/proftpd.conf|/etc/monit/conf.d/proftpd.conf|Fichier de configuration du serveur ProFTP à surveiller.|
 |apache_stop_command|Oui|/etc/init.d/proftpd stop|/usr/sbin/service proftpd stop|La commande pour stopper le serveur ProFTP.|
 |apache_start_command|Oui|/etc/init.d/proftpd start|/usr/sbin/service proftpd start|La commande pour démarrer le serveur ProFTP.|
 

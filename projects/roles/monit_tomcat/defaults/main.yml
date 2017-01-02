@@ -1,3 +1,5 @@
 ---
 # defaults file for monit_tomcat
 tomcat_http_port: 8080
+tomcat_stop_command: "/etc/init.d/tomcat stop"
+tomcat_start_command: "/etc/init.d/tomcat start"

@@ -13,10 +13,10 @@ Role Variables
 
 | Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
 | ------------- |:-------------:| ------------------:|:--------:|:-----------|
-|tomcat_http_port| Oui|8080|-|Port d'écoute du serveur Apache Tomcat.|
-|monit_tomcat_config_file|Oui|/etc/monit/conf.d/tomcat.conf|-|Fichier de configuration du serveur Apache Tomcat à surveiller.|
-|tomcat_stop_command|Oui|/usr/sbin/service tomcat stop|-|La commande pour stopper le serveur Apache Tomcat.|
-|tomcat_start_command|Oui|/usr/sbin/service tomcat start|-|La commande pour démarrer le serveur Apache Tomcat.|
+|tomcat_http_port| Oui|8080|8080|Port d'écoute du serveur Apache Tomcat.|
+|monit_tomcat_config_file|Oui|/etc/monit/conf.d/tomcat.conf|/etc/monit/conf.d/tomcat.conf|Fichier de configuration du serveur Apache Tomcat à surveiller.|
+|tomcat_stop_command|Oui|/etc/init.d/tomcat stop|/usr/sbin/service tomcat stop|La commande pour stopper le serveur Apache Tomcat.|
+|tomcat_start_command|Oui|/etc/init.d/tomcat start|/usr/sbin/service tomcat start|La commande pour démarrer le serveur Apache Tomcat.|
 
 
 Dependencies

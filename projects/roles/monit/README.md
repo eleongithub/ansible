@@ -17,17 +17,17 @@ Role Variables
 
 | Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
 | ------------- |:-------------:| ------------------:|:--------:|:-----------|
-|monit_daemon| Oui|60|-|Monit effectuera la vérification des services toutes les 60 secondes.Cette variable indique l'intervalle régulier de vérification.|
+|monit_daemon| Oui|60|60|Monit effectue la vérification des services toutes les 60 secondes.Cette variable indique l'intervalle régulier de temps pour chaque vérification.|
 |monit_config_file_os_family_debian|Oui|/etc/monit/monitrc|/etc/monit/monitrc|Fichier de configuration sur les systèmes de la famille 'Debian'.|
 |monit_config_file_os_family_redhat|Oui|/etc/monit.conf|/etc/monit.conf|Fichier de configuration sur les systèmes de la famille 'RedHat'.|
-|monit_send_alert_mail|Non|False|True|Si `True`, monit va envoyer un mail d'alerte en cas de panne d'un service. Si `False`, monit n'envoyera pas de mail d'alerte à l'administrateur du système.|
+|monit_send_alert_mail|Non|False|True|Si `True`, monit envoie un mail d'alerte en cas de panne d'un service. Si `False`, monit n'envoie pas de mail d'alerte à l'administrateur du système.|
 |monit_mail_server|Non|-|localhost|Adresse du serveur de mail que monit utilisera pour envoyer les mails d'alerte à l'administrateur du système.|
 |monit_mail_address|Non|-|-|Adresse mail à laquelle monit envoyera les mails d'alerte.|
-|monit_activate_admin_dashboard|Non|False|True|Si `True`, monit activera l'interface d'admin sur lequel on peut suivre les services qui sont surveillés. Si `False`, monit n'activera pas l'interface d'admin.|
-|monit_admin_dashboard_port|Non|2812|2812|Port d'écoute de l'interface d'admin de monit. À renseigner (2812 par exemple) si `monit_activate_admin_dashboard` est à `True`.|
-|monit_admin_login|Non|-|-|Login à saisir pour se connecter à l'interface d'admin de monit. À renseigner si `monit_activate_admin_dashboard` est à `True`.|
-|monit_admin_password|Non|-|-|Mot de passe à saisir pour se connecter à l'interface d'admin de monit. À renseigner si `monit_activate_admin_dashboard` est à `True`.|
-|use_iptables_firewall|Non|False|True|Si `True` et `monit_activate_admin_dashboard`=`True`, une tâche va ouvrir le port `monit_admin_dashboard_port` via iptables. À renseigner si `monit_activate_admin_dashboard` est à `True`.|
+|monit_activate_admin_dashboard|Non|False|True|Si `True`, monit active l'interface d'admin sur lequel on peut suivre les services qui sont surveillés. Si `False`, monit n'active pas l'interface d'admin.|
+|monit_admin_dashboard_port|Non|2812|2812|Port d'écoute de l'interface d'admin de monit. À renseigner si `monit_activate_admin_dashboard`=`True`.|
+|monit_admin_login|Non|-|-|Login à saisir pour se connecter à l'interface d'admin de monit. À renseigner si `monit_activate_admin_dashboard`=`True`.|
+|monit_admin_password|Non|-|-|Mot de passe à saisir pour se connecter à l'interface d'admin de monit. À renseigner si `monit_activate_admin_dashboard`=`True`.|
+|use_iptables_firewall|Non|False|True|Si `True` et `monit_activate_admin_dashboard`=`True`, une tâche ouvre le port `monit_admin_dashboard_port` via iptables. À renseigner si `monit_activate_admin_dashboard`=`True`.|
 
 Dependencies
 ------------

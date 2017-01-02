@@ -13,8 +13,8 @@ Role Variables
 
 | Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
 | ------------- |:-------------:| ------------------:|:--------:|:-----------|
-|apache_pid_file| Oui|/var/run/httpd.pid|-|Fichier PID contenant l'ID du processus httpd.|
-|monit_apache_config_file|Oui|/etc/monit/conf.d/apache.conf|-|Fichier de configuration du serveur Web Apache à surveiller.|
+|apache_pid_file| Oui|/var/run/httpd.pid|/opt/apache2/logs/httpd.pid|Fichier PID contenant l'ID du processus httpd.|
+|monit_apache_config_file|Oui|/etc/monit/conf.d/apache.conf|/etc/monit/conf.d/apache.conf|Fichier de configuration du serveur Web Apache à surveiller.|
 |apache_stop_command|Oui|/etc/init.d/apache2 stop|/usr/sbin/service apache stop|La commande pour stopper le serveur Web Apache.|
 |apache_start_command|Oui|/etc/init.d/apache2 start|/usr/sbin/service apache start|La commande pour démarrer le serveur Web Apache.|
 
