@@ -5,10 +5,7 @@ postgres_instance est un rôle qui crée des utilisateurs, des bases de données
 
 Role Variables
 --------------
-dbs:
-  - { db_user: 'apps', db_password: "{{ db_apps_password }}", db_user_roles: 'CREATEROLE CREATEUSER',  db_name: 'apps', db_schema: 'apps' }
-  - { db_user: 'apps1', db_password: "{{ db_apps1_password }}", db_user_roles: 'CREATEROLE CREATEUSER',  db_name: 'apps1', db_schema: 'apps1' }
-  
+
 | Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
 | ------------- |:-------------:| ------------------:|:--------:|:-----------|
 |dbs| Oui|-|-|Liste des utilisateurs, base de données et schémas à créer sur la BDD.|

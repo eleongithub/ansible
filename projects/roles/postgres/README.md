@@ -1,7 +1,7 @@
 postgres
 =========
 
-postgres est un rôle qui installe le serveur de base de données PostgreSQL et la gère certaines configurations via les fichiers pg_hba.conf et postgresql.conf.
+postgres est un rôle qui installe le serveur de base de données PostgreSQL et gère des configurations via les fichiers pg_hba.conf et postgresql.conf.
 
 Role Variables
 --------------
@@ -9,10 +9,10 @@ Role Variables
 | Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
 | ------------- |:-------------:| ------------------:|:--------:|:-----------|
 |postgres_version| Oui|-|9.4|Version de PostgreSQL à installer.|
-|postgres_listen_addresses|Oui|-|*|Liste des adresses IP qui peuvent interrogées la base de données.|
+|postgres_listen_addresses|Oui|-|*|Liste des adresses IP qui peuvent interroger la base de données.|
 |postgres_server_pkg|Oui|-|postgresql-9.4|Nom du package du serveur PostgreSQL.|
 |postgres_client_pkg|Oui|-|postgresql-client-9.4|Nom du package du client PSQL.|
-|postgres_conf_files|Oui|-|postgresql.conf & pg_hba.conf|Liste des fichiers de configurations à déployer après l'installation.|
+|postgres_conf_files|Oui|-|postgresql.conf & pg_hba.conf|Liste des fichiers de configurations à déployer.|
 |postgres_port|Oui|-|5432|Port d'écoute de la base de données.|
 |use_iptables_firewall|Non|False|True|Si `True`, une tâche ouvre le port `postgres_port` via iptables.|
 |network_interface|Oui|eth0|eth0|Interface réseau sur lequel les règles Iptables seront appliquées.|
