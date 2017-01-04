@@ -32,7 +32,7 @@
     #content: {{ timezone }}
     #dest: "/etc/timezone"
     #notify: update tzdata
-    
+
 - hosts: all
   vars_files:
    - "password/password-{{env}}.yml"
@@ -69,10 +69,9 @@
   become: yes
   roles:
     - { role: postgres, tags: ['postgres'] }
-    - { role: postgres_conf, tags: ['postgres_conf'] }
     - { role: postgres_instance, tags: ['postgres_instance'] }
-    #- { role: postgres_backup, tags: ['postgres_backup'] }
-    #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain
+    - { role: postgres_backup, tags: ['postgres_backup'] }
+    #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain or Liquibase ( à choisir en fonction de la techno utilisé en environnement de Dev)
     - { role: monit_postgresql, tags: ['monit_postgresql'] }
 
 ###################
@@ -86,9 +85,9 @@
     - { role: tomcat, tags: ['tomcat'] }
     - { role: tomcat_conf, tags: ['tomcat_conf'] }
     - { role: tomcat_owasp, tags: ['tomcat_owasp'] }
-    #- { role: tomcat_apps, tags: ['tomcat_apps'] }
-    #- { role: tomcat_openssl, tags: ['tomcat_openssl'] }
-    #- { role: tomcat_keytool, tags: ['tomcat_keytool'] }
+    ##- { role: tomcat_apps, tags: ['tomcat_apps'] }
+    ##- { role: tomcat_openssl, tags: ['tomcat_openssl'] }
+    ##- { role: tomcat_keytool, tags: ['tomcat_keytool'] }
     - { role: monit_tomcat, tags: ['monit_tomcat'] }
 
 
@@ -104,11 +103,11 @@
     - { role: apache_conf, tags: ['apache_conf'] }
     - { role: apache_mod_security, tags: ['apache_mod_security'] }
     - { role: apache_status, tags: ['apache_status'] }
-    #- { role: apache_mod_jk, tags: ['apache_mod_jk'] }
-    #- { role: apache_private_ca, tags: ['apache_private_ca'] }
-    ##- { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
-    ##- { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
-    - { role: monit_apache, tags: ['monit_apache'] }
+    ##- { role: apache_mod_jk, tags: ['apache_mod_jk'] }
+    ##- { role: apache_private_ca, tags: ['apache_private_ca'] }
+    ###- { role: apache_vhosts_mod_jk, tags: ['apache_vhosts_mod_jk'] }
+    ###- { role: apache_vhosts_mod_proxy, tags: ['apache_vhosts_mod_proxy'] }
+    #- { role: monit_apache, tags: ['monit_apache'] }
 
 
 
@@ -126,9 +125,8 @@
     - { role: monit_proftp, tags: ['monit_proftp'] }
 
 
-#===========  Tâche à faire sur Ansible =====================   
+#===========  Tâche à faire sur Ansible =====================
  ##TODO Roles
   #- apache_fail2ban
   #- Postfix
   #- HAProxy
-  #- Dbmaintain or Liquibase ( à choisir en fonction de la techno utilisé en environnement de Dev

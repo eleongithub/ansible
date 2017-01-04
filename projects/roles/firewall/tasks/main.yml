@@ -8,12 +8,6 @@
     enabled: no
   ignore_errors: true
 
-- name : Remove eventual firewall init script from the system
-  file:
-    path: "/etc/init.d/firewall"
-    state: absent
-  ignore_errors: true
-
 - name: Installing iptables package...
   apt:
     pkg: iptables

@@ -21,7 +21,9 @@ firewall_output_allowed_ports:
  - { port: '53', protocol: 'tcp', comment: 'TCP - DNS Output trafic' }
  - { port: '53', protocol: 'udp', comment: 'UDP - DNS Output trafic' }
 
- 
+firewall_logs_input_trafic: True
+firewall_logs_output_trafic: True
+
 # Common port:
 #   21 - ftp
 #   22: SSH
@@ -40,6 +42,3 @@ firewall_output_allowed_ports:
 #   8443: Tomcat HTTPS
 #   9000: SonarQube
 # for more informations about ports and their utilies, look at  http://guide.ovh.com/firewall
-
-firewall_logs_input_trafic: True
-firewall_logs_output_trafic: True

@@ -1,7 +1,7 @@
 monit
 =========
 
-monit est un outil open-source de monitoring des services (SSH, PostgresSQL, Apache Tomcat, Apache,etc...) présents sur le serveur qui l'héberge. 
+monit est un outil open-source de monitoring des services (SSH, PostgreSQL, Apache Tomcat, Apache,etc...) présents sur le serveur qui l'héberge. 
 En cas d'indisponibilité d'un service, il peut :
   - déclencher un redémarrage automatique,
   - alerter par mail l'administrateur du système.

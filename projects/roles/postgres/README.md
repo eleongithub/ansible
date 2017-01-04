@@ -1,17 +1,21 @@
-Role Name
+postgres
 =========
 
-A brief description of the role goes here.
-
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+postgres est un rôle qui installe le serveur de base de données PostgreSQL et la gère certaines configurations via les fichiers pg_hba.conf et postgresql.conf.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
+| ------------- |:-------------:| ------------------:|:--------:|:-----------|
+|postgres_version| Oui|-|9.4|Version de PostgreSQL à installer.|
+|postgres_listen_addresses|Oui|-|*|Liste des adresses IP qui peuvent interrogées la base de données.|
+|postgres_server_pkg|Oui|-|postgresql-9.4|Nom du package du serveur PostgreSQL.|
+|postgres_client_pkg|Oui|-|postgresql-client-9.4|Nom du package du client PSQL.|
+|postgres_conf_files|Oui|-|postgresql.conf & pg_hba.conf|Liste des fichiers de configurations à déployer après l'installation.|
+|postgres_port|Oui|-|5432|Port d'écoute de la base de données.|
+|use_iptables_firewall|Non|False|True|Si `True`, une tâche ouvre le port `postgres_port` via iptables.|
+|network_interface|Oui|eth0|eth0|Interface réseau sur lequel les règles Iptables seront appliquées.|
 
 Dependencies
 ------------
@@ -21,11 +25,9 @@ A list of other roles hosted on Galaxy should go here, plus any details in regar
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: postgres }
 
 License
 -------

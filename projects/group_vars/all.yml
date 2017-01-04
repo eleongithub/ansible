@@ -12,7 +12,6 @@ nexus_port: 9081
 nexus: "http://192.168.0.13:{{ nexus_port }}/nexus"
 nexus_repositories: "{{ nexus }}/content/repositories"
 nexus_public_repository: "{{ nexus_repositories }}/public"
-nexus_thirdparty_repository: "{{ nexus_repositories }}/thirdparty"
 
 #Fail2ban configuration
 fail2ban_destination_mail: ""

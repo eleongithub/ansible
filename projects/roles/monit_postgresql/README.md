@@ -1,7 +1,7 @@
 monit_postgresql
 =========
 
-monit_postgresql permet de configurer monit afin de surveiller le SGBD PostgresSQL.
+monit_postgresql permet de configurer monit afin de surveiller le SGBD PostgreSQL.
 
 Requirements
 ------------
@@ -13,10 +13,10 @@ Role Variables
 
 | Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
 | ------------- |:-------------:| ------------------:|:--------:|:-----------|
-|postgres_port| Oui|5432|5432|Port d'écoute du serveur PostgresSQL.|
-|monit_postgres_config_file|Oui|/etc/monit/conf.d/postgresql.conf|/etc/monit/conf.d/postgresql.conf|Fichier de configuration du serveur PostgresSQL à surveiller.|
-|postgres_stop_command|Oui|/etc/init.d/postgresql stop|/usr/sbin/service postgresql stop|La commande pour stopper le serveur PostgresSQL.|
-|postgres_start_command|Oui|/etc/init.d/postgresql start|/usr/sbin/service postgresql start|La commande pour démarrer le serveur PostgresSQL.|
+|postgres_port| Oui|5432|5432|Port d'écoute du serveur PostgreSQL.|
+|monit_postgres_config_file|Oui|/etc/monit/conf.d/postgresql.conf|/etc/monit/conf.d/postgresql.conf|Fichier de configuration du serveur PostgreSQL à surveiller.|
+|postgres_stop_command|Oui|/etc/init.d/postgresql stop|/usr/sbin/service postgresql stop|La commande pour stopper le serveur PostgreSQL.|
+|postgres_start_command|Oui|/etc/init.d/postgresql start|/usr/sbin/service postgresql start|La commande pour démarrer le serveur PostgreSQL.|
 
 Dependencies
 ------------

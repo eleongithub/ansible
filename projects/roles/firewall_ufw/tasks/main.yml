@@ -1,6 +1,35 @@
 ---
-# tasks file for firewall-ufw
+# tasks file for firewall_ufw
 
-- name: Compatibility check - Installation on Debian systems
-  include: install.yml
-  when: ansible_os_family == "Debian"
+- name : Install UFW package...
+  apt:
+    pkg: ufw
+    state: present
+  when: ansible_os_family == 'Debian'
+  
+- name : Install UFW package...
+  yum:
+    pkg: ufw
+    state: present
+  when: ansible_os_family == 'RedHat' 
+
+- name: Reset firewall policy
+  ufw:
+    state: reset
+
+- name : Enable UFW and close all ports by default
+  ufw:
+    state: enabled
+    policy: deny
+
+- name: Allow access to common ports
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items: "{{ allow_ports }}"
+
+- name: Reload UFW
+  command: echo "Reload UFW..."
+  notify:
+    - Reload UFW

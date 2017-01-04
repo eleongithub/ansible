@@ -1,17 +1,26 @@
-Role Name
+firewall
 =========
 
-A brief description of the role goes here.
+Iptables est un outil en ligne de commande qui permet de configurer Netfilter,
+module des noyau Linux qui fournit les par-feu, le partage de réseau Internet et l'historisation du trafic réseau.
+firewall utilise la commande Iptables pour fournir un par-feu qui :
+- ouvre les ports utilisés sur la plupart des serveurs (HTTP-80, HTTPS-443, SSH-22, etc...)
+- maintiennent les autres ports fermés.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Iptables
 
 Role Variables
 --------------
-
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+ 
+| Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
+| ------------- |:-------------:| ------------------:|:--------:|:-----------|
+|firewall_script_files| Oui|-|-|Liste des scripts Bash à copier sur le serveur cible avec les droits utilisateurs associés.|
+|firewall_input_allowed_ports|Oui|-|-|Listes des ports à ouvrir en entrée avec les protocoles associés.|
+|network_interface|Oui|eth0|eth0|Interface réseau sur lequel les règles Iptables seront appliqués.|
+|firewall_output_allowed_ports|Oui|-|-|Listes des ports à ouvrir en sortie avec les protocoles associés.|
 
 Dependencies
 ------------
@@ -25,7 +34,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: firewall }
 
 License
 -------
