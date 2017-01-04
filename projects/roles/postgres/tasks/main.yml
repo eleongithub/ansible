@@ -3,7 +3,7 @@
   shell: aptitude search {{ postgres_server_pkg }} || echo "Unknown PostgreSQL Server"
   register: postgresql_exists
 #TODO : Rechercher comment vérifier la présence d'un package en environnement Redhat/Fedora/etc...
-  
+
 - name: Installing PostgreSQL Server...
   apt:
     pkg: "{{ item }}"
@@ -12,7 +12,7 @@
     - "{{ postgres_server_pkg }}"
     - "{{ postgres_client_pkg }}"
   when: "('{{ postgres_server_pkg }}' not in '{{ postgresql_exists.stdout }}') and (ansible_os_family == 'Debian')"
-  
+
 - name: Installing PostgreSQL Server...
   yum:
     pkg: "{{ item }}"
@@ -21,3 +21,28 @@
     - "{{ postgres_server_pkg }}"
     - "{{ postgres_client_pkg }}"
   when: "('{{ postgres_server_pkg }}' not in '{{ postgresql_exists.stdout }}') and (ansible_os_family == 'RedHat')"
+
+- name: Deploy configurations files
+  template:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    force: "{{item.force}}"
+    backup: yes
+  with_items:
+   - "{{ postgres_conf_files }}"
+
+# Postgres behind iptables firewall : Look at https://www.digitalocean.com/community/tutorials/iptables-essentials-common-firewall-rules-and-commands
+- name: Add Iptables Input trafic rule for Postgres
+  command: >
+   /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p tcp --dport {{ postgres_port }} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT -m comment --comment "TCP - Postgres Server Input trafic"
+  when: use_iptables_firewall
+
+- name: Add Iptables Output trafic rule for Postgres
+  command: >
+   /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p tcp --sport {{ postgres_port }} -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT -m comment --comment "TCP - Postgres Server Output trafic"
+  when: use_iptables_firewall
+
+- name: Restart PostgreSQL
+  command: echo "Restart PostgreSQL"
+  notify:
+    - Restart PostgreSQL
