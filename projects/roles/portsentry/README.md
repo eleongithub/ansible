@@ -1,17 +1,23 @@
-Role Name
+porsentry
 =========
 
-A brief description of the role goes here.
+Porsentry est un programme de détection et de blocage de scan de ports. En effet, les hackers utilisent souvent des programmes (nmap par exemple) pour scanner les serveurs afin de connaître les ports ouverts sur un serveur.
+Ce sont des techniques préalables pour connaître les portes ouvertes sur la machine. Pour pallier ces opérations, portsentry détecte les tentatives de scan de ports et les neutralisent.
+Le rôle portsentry automatise l'installation du programme éponyme et modifie les fichiers de configurations.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisé	| Description|
+| ------------- |:-------------:| ------------------:|:--------:|:-----------|
+|portsentry_config_file|Oui|/etc/default/portsentry|/etc/default/portsentry|Fichier de configuration de porsentry.|
+|portsentry_notification_script|Non|-|/etc/portsentry/notification.sh|Programme Bash qui notifie à l'administrateur les activités suspectes détectées par portsentry.|
+|portsentry_ignore_file|Oui|/etc/portsentry/portsentry.ignore|/etc/portsentry/portsentry.ignore|Fichier contenant la liste des adresses IP à ignorer en cas de scan.|
+|portsentry_monitoring_mail|Non|-|-|Adresse mail de l'administrateur système.|
 
 Dependencies
 ------------
@@ -25,7 +31,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: portsentry }
 
 License
 -------
