@@ -12,6 +12,7 @@ tomcat_openssl_conf_files:
  - { src: 'web.xml.j2', dest: '{{ tomcat_last_version }}/conf/web.xml', force: yes }
 
 # SSL with Openssl configuration variables
+tomcat_dns: localhost
 open_ssl_certificate_file: "{{ tomcat_openssl_dir }}/cacert_{{ tomcat_dns }}.crt"
 open_ssl_private_key_file: "{{ tomcat_openssl_dir }}/cacert_{{ tomcat_dns }}.key"
 open_ssl_cert_config_file: "{{ tomcat_last_version }}/conf/openssl.conf"

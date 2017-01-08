@@ -41,7 +41,7 @@
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user_group }}"
 
-- name: Create the tomcat directory
+- name: Create the tomcat configuration directory
   file:
     path: "{{ tomcat_conf_directory }}"
     owner: "{{ tomcat_user }}"
@@ -49,7 +49,7 @@
     state: directory
     recurse: yes
 
-- name: Deploy conf Tomcat files
+- name: Deploy configuration Tomcat files
   template:
     src: "{{item.src}}"
     dest: "{{item.dest}}"
@@ -63,6 +63,8 @@
   template:
     src: "tomcat.sh.j2"
     dest: "{{ tomcat_init_script }}"
+    owner: root
+    group: root
     force: yes
     mode: 0755
 

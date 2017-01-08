@@ -1,7 +1,7 @@
-Role Name
+tomcat_conf
 =========
 
-A brief description of the role goes here.
+Ce rôle s'occupe de la configuration de Tomcat.
 
 Requirements
 ------------
@@ -10,8 +10,19 @@ Any pre-requisites that may not be covered by Ansible itself or the role should 
 
 Role Variables
 --------------
-
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+ 
+| Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
+| ------------- |:-------------:| ------------------:|:--------:|:-----------|
+|tomcat_http_port| Oui|8080|8080|Port d'écoute HTTP du serveur Apache Tomcat.|
+|tomcat_https_port| Oui|8443|8443|Port d'écoute HTTPS du serveur Apache Tomcat.|
+|tomcat_shutdown_port| Oui|8005|8005|Port d'écoute sur lequel Apache Tomcat reçoit un ordre d'arrêt.|
+|tomcat_mod_jk_port| Oui|8009|8009|Port Mod JK.|
+|tomcat_shutdown_command| Oui|-|-|Commande d'arrêt envoyé sur le port `tomcat_shutdown_port`.|
+|tomcat_init_script|Oui|/etc/init.d/tomcat|/etc/init.d/tomcat|Script Shell pour contrôler (start|stop|status) le serveur Apache Tomcat.|
+|tomcat_user|Oui|tomcat|tomcat|Utilisateur dédié au fonctionnement du serveur Apache Tomcat.|
+|tomcat_user_group|Oui|tomcat|tomcat|Groupe de l'utilisateur dédié au fonctionnement du serveur Apache Tomcat.|
+|tomcat_conf_directory|Oui|-|-|Répertoire contenant les fichiers de configuration d'Apache Tomcat.|
+|tomcat_conf_files|Oui|-|-|Liste de fichiers de configuration d'Apache Tomcat.|
 
 Dependencies
 ------------
@@ -25,7 +36,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: tomcat_conf }
 
 License
 -------

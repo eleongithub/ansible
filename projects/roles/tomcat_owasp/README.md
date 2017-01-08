@@ -1,17 +1,22 @@
-Role Name
+tomcar_owasp
 =========
 
-A brief description of the role goes here.
+Ce rôle applique les recommandations OWASP au serveur Apache Tomcat.
+Pour plus d'informations concernant les recommandations OWASP, consulter https://www.owasp.org/index.php/Securing_tomcat.
+
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
+| ------------- |:-------------:| ------------------:|:--------:|:-----------|
+|tomcat_user|Oui|tomcat|tomcat|Utilisateur dédié au fonctionnement du serveur Apache Tomcat.|
+|tomcat_user_group|Oui|tomcat|tomcat|Groupe de l'utilisateur dédié au fonctionnement du serveur Apache Tomcat.|
+|tomcat_remove_files|Oui|-|-|Liste de fichiers/répertoires à supprimer.|
 
 Dependencies
 ------------
@@ -25,7 +30,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: tomcat_owasp }
 
 License
 -------
