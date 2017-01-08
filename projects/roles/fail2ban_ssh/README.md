@@ -1,7 +1,7 @@
 fail2ban_ssh
 =========
 
-fail2ban_ssh ajoute une configuration pour ajouter pour surveiller les échecs d'authentification sur le serveur SSH.
+Le rôle fail2ban_ssh ajoute une configuration pour que Fail2Ban surveille les échecs d'authentification sur le serveur SSH.
 
 Requirements
 ------------
