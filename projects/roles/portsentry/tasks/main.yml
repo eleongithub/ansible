@@ -19,6 +19,7 @@
     dest: "{{ portsentry_ignore_file }}"
     owner: root
     group: root
+    mode: 0644
     force: yes
     backup: yes
 
@@ -29,6 +30,7 @@
     owner: root
     group: root
     force: yes
+    
 
 - name: Copy portsentry.conf configuration file
   template:
@@ -36,6 +38,7 @@
     dest: "{{ portsentry_config_file }}"
     owner: root
     group: root
+    mode: 0644
     force: yes
     backup: yes
 

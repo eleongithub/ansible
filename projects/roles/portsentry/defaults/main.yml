@@ -1,2 +1,5 @@
 ---
 # defaults file for portsentry
+tcp_mode: "tcp"
+udp_mode: "udp"
+portsentry_config_file: "/etc/portsentry/portsentry.conf"

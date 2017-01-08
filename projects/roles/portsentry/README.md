@@ -1,9 +1,9 @@
 porsentry
 =========
 
-Porsentry est un programme de détection et de blocage de scan de ports. En effet, les hackers utilisent souvent des programmes (nmap par exemple) pour scanner les serveurs afin de connaître les ports ouverts sur un serveur.
-Ce sont des techniques préalables pour connaître les portes ouvertes sur la machine. Pour pallier ces opérations, portsentry détecte les tentatives de scan de ports et les neutralisent.
-Le rôle portsentry automatise l'installation du programme éponyme et modifie les fichiers de configurations.
+les hackers, avantde procéder à des attaques, utilisent des programmes (nmap par exemple) pour scanner les serveurs afin de connaître les ports ouverts.
+Porsentry est un programme de détection de scan et de blocage de l'attaquant. Il peut aussi envoyer des mails de notification lorsqu'il détecte un scan de port.
+Ce rôle permet d'automatiser l'installation de Porsentry sur un serveur.
 
 Requirements
 ------------
@@ -14,10 +14,12 @@ Role Variables
 
 | Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisé	| Description|
 | ------------- |:-------------:| ------------------:|:--------:|:-----------|
+|tcp_mode|Oui|tcp|atcp|Mode de surveillance TCP(tcp, stcp,atcp).|
+|udp_mode|Oui|udp|audp|Mode de surveillance UDP(udp, sudp,audp).|
 |portsentry_config_file|Oui|/etc/default/portsentry|/etc/default/portsentry|Fichier de configuration de porsentry.|
-|portsentry_notification_script|Non|-|/etc/portsentry/notification.sh|Programme Bash qui notifie à l'administrateur les activités suspectes détectées par portsentry.|
+|portsentry_notification_script|Non|-|/etc/portsentry/notification.sh|Programme Bash qui notifie à l'admin les scans de ports détectés.|
 |portsentry_ignore_file|Oui|/etc/portsentry/portsentry.ignore|/etc/portsentry/portsentry.ignore|Fichier contenant la liste des adresses IP à ignorer en cas de scan.|
-|portsentry_monitoring_mail|Non|-|-|Adresse mail de l'administrateur système.|
+|portsentry_alert_mail|Non|-|-|Adresse mail de l'administrateur système.|
 
 Dependencies
 ------------
