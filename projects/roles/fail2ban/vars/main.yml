@@ -4,3 +4,4 @@ mta_agent: postfix
 fail2ban_init_script: "/etc/init.d/fail2ban"
 fail2ban_jail_configuration_file: "/etc/fail2ban/jail.conf"
 fail2ban_jail_configuration_orig_file: "/etc/fail2ban/jail.conf.orig"
+fail2ban_alert_mail: "{{ fail2ban_destination_mail }}"

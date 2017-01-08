@@ -1,6 +1,5 @@
 ---
 java_version: 1.8.0_73
-#java_version: 1.7.0_79
 jdk_versions: /opt/jdk_versions
 jdk_last_version: "{{ jdk_versions }}/jdk{{ java_version }}"
 jdk_tarball_name_32: jdk-8u73-linux-i586.tar.gz

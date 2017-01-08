@@ -71,7 +71,7 @@
     - { role: postgres, tags: ['postgres'] }
     - { role: postgres_instance, tags: ['postgres_instance'] }
     - { role: postgres_backup, tags: ['postgres_backup'] }
-    #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain or Liquibase ( à choisir en fonction de la techno utilisé en environnement de Dev)
+    #- { role: dbmaintain, tags: ['dbmaintain'] } # TODO Dbmaintain or Liquibase ( à choisir en fonction de la techno de versionning de BDD utilisée en environnement de Dev)
     - { role: monit_postgresql, tags: ['monit_postgresql'] }
 
 ###################

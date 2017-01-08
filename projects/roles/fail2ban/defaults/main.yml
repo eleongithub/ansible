@@ -1,3 +1,5 @@
 ---
 # defaults file for fail2ban
 use_iptables_firewall: False
+mta_agent:
+fail2ban_alert_mail:
