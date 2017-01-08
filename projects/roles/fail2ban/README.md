@@ -1,7 +1,7 @@
 fail2ban
 =========
 
-fail2ban est un programme écrit en Python qui a pour but de détecter les attaques de type Brute-Force.
+Fail2Ban est un programme écrit en Python qui a pour but de détecter les attaques de type Brute-Force.
 Il lit les fichiers logs de plusieurs serveurs (SSH, FTP, HTTP, etc...) et étudie les comportements inhabituels
 d'échecs d'authentification répétés. Il bannit l'adresse IP du client avec une règle iptables.
 
@@ -13,10 +13,10 @@ Role Variables
 --------------
 | Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
 | ------------- |:-------------:| ------------------:|:--------:|:-----------|
-|mta_agent| Non|-|-|Type se serveur de mail que Postfix utilisera pour envoyer des mails d'alerte.|
+|mta_agent| Non|-|-|Serveur de mail que Fail2Ban utilisera pour envoyer des mails d'alerte.|
 |fail2ban_init_script|Oui|/etc/init.d/fail2ban|/etc/init.d/fail2ban|Script de contrôle du programme Fail2Ban.|
-|fail2ban_jail_configuration_file|Oui|/etc/fail2ban/jail.conf|/etc/fail2ban/jail.conf|Fichier de configuration de fail2ban.|
-|fail2ban_jail_configuration_orig_file|Oui|/etc/fail2ban/jail.conf.orig|/etc/fail2ban/jail.conf.orig|Fichier de configuration de fail2ban.|
+|fail2ban_jail_configuration_file|Oui|/etc/fail2ban/jail.conf|/etc/fail2ban/jail.conf|Fichier de configuration personnalisé de Fail2Ban.|
+|fail2ban_jail_configuration_orig_file|Oui|/etc/fail2ban/jail.conf.orig|/etc/fail2ban/jail.conf.orig|Fichier de configuration original de Fail2Ban.|
 |fail2ban_alert_mail|Non|-|user@localhost|Adresse mail de réception des mails d'alerte.|
 
 Dependencies
