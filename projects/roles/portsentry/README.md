@@ -1,7 +1,7 @@
 porsentry
 =========
 
-les hackers, avantde procéder à des attaques, utilisent des programmes (nmap par exemple) pour scanner les serveurs afin de connaître les ports ouverts.
+les hackers, avant de procéder à des attaques, utilisent des programmes (nmap par exemple) pour scanner les serveurs afin de connaître les ports ouverts.
 Porsentry est un programme de détection de scan et de blocage de l'attaquant. Il peut aussi envoyer des mails de notification lorsqu'il détecte un scan de port.
 Ce rôle permet d'automatiser l'installation de Porsentry sur un serveur.
 
