@@ -12,7 +12,7 @@ Role Variables
  
 | Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
 | ------------- |:-------------:| ------------------:|:--------:|:-----------|
-|tomcat_http_port| Oui|8080|8080|Port HHTP Apache Tomcat.|
+|tomcat_http_port| Oui|8080|8080|Port HTTP Apache Tomcat.|
 |tomcat_https_port| Oui|8443|8443|Port d'écoute HTTPS Apache Tomcat.|
 |tomcat_mod_jk_port| Oui|8009|8009|Port Mod JK.|
 |tomcat_shutdown_port| Oui|8005|8005|Port d'écoute sur lequel Apache Tomcat reçoit un ordre d'arrêt.|

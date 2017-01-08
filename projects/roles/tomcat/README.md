@@ -16,10 +16,10 @@ Role Variables
 | Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
 | ------------- |:-------------:| ------------------:|:--------:|:-----------|
 |tomcat_required_packages| Oui|-|-|Liste des packages pré-requis pour installer Apache Tomcat.|
-|tomcat_http_port| Oui|8080|8080|Port HHTP Apache Tomcat.|
+|tomcat_http_port| Oui|8080|8080|Port HTTP Apache Tomcat.|
 |tomcat_version| Oui|8.0.32|8.0.32|Version d'Apache Tomcat à installer.|
 |tomcat_tarball_name|Oui|apache-tomcat-8.0.32.tar.gz|apache-tomcat-8.0.32.tar.gz|Fichier archive du serveur Apache Tomcat.|
-|tomcat_url|Oui|-|-|URL pour télécharger Apache Tomcat sur un repository Nexus.|
+|tomcat_url|Oui|-|-|URL pour télécharger Apache Tomcat sur un repository Nexus privé.|
 |tomcat_versions|Oui|-|-|Répertoire d'installation de toutes les versions d'Apache Tomcat.|
 |tomcat_last_version|Oui|-|-|Répertoire d'installation de la dernière d'Apache Tomcat.|
 |tomcat_home|Oui|-|-|Lien qui pointe sur le répertoire d'installation de la dernière d'Apache Tomcat.|
