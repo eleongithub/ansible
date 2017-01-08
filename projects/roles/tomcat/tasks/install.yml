@@ -17,7 +17,7 @@
     path: "{{ tomcat_versions }}"
     state: directory
     recurse: yes
-  when: tomcat_versions_dir_exists.stat.exists
+  when: not tomcat_versions_dir_exists.stat.exists
 
 - name: Delete the tomcat home link
   file:
@@ -36,7 +36,7 @@
     state: present
   with_items: "{{ tomcat_required_packages }}"
   when: "ansible_os_family == 'Debian'"
-
+ 
 # TODO : tomcat_required_packages - Rework : Est-ce les même noms de packages sur des environnements ansible_os_family == 'RedHat' ??
 - name: Install required librairies
   yum:
@@ -45,35 +45,7 @@
   with_items: "{{ tomcat_required_packages }}"
   when: "ansible_os_family == 'RedHat'"
 
-- name: Download tomcat Archive
-  get_url:
-    url: "{{ tomcat_url }}"
-    dest: "/tmp/{{ tomcat_tarball_name }}"
-
-- name: Decompress tomcat archive
-  unarchive:
-    src: "/tmp/{{ tomcat_tarball_name }}"
-    dest: "{{ tomcat_versions }}/"
-
-- name: Delete tomcat archive
-  file:
-    path: "/tmp/{{ tomcat_tarball_name }}"
-    state: absent
-
-- name: Download native library
-  get_url:
-    url: "{{ tomcat_native_url }}"
-    dest: "/tmp/{{ libtcnative_util_tarball_name }}"
-
-- name: Decompress Tomcat native library
-  unarchive:
-    src: "/tmp/{{ libtcnative_util_tarball_name }}"
-    dest: "{{ tomcat_last_version }}/bin"
-
-- name: Delete tomcat native library
-  file:
-    path: "/tmp/{{ libtcnative_util_tarball_name }}"
-    state: absent
+- include: download.yml
 
 - name: Install Tomcat native library with SSL
   shell: cd {{ libtcnative_util_home }} && ./configure --with-apr={{ apr_config_file }} --with-java-home={{ java_home }} --with-ssl=yes --prefix={{ tomcat_last_version }} && make && make install

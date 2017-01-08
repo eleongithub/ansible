@@ -5,6 +5,9 @@
   register: java_version_result
   ignore_errors: True
 
+- include: install.yml
+  when: "(java_version_result is not defined) or ('{{ java_version }}' not in '{{ java_version_result.stdout }}')"
+
 - name : Check jdk versions directory exists
   stat:
     path: "{{ jdk_versions }}"
