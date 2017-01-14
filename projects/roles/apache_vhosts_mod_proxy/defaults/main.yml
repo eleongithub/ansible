@@ -1,3 +1,12 @@
 ---
 root_user: root
 root_group: sys
+apache_vhosts_mod_proxy:
+  vhosts2:
+    serverName: 'vhosts2.fr'
+    serverAlias: 'www.vhosts2.fr'
+    use_https: False
+    ssl_subj: ""
+    webapps: 'examples'
+    host: 'localhost'
+    port: '8080'

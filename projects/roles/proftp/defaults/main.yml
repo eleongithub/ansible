@@ -1,1 +1,4 @@
 ---
+ftp_default_port: 21
+firwall_ftp_min_passive_port: 5000
+firwall_ftp_max_passive_port: 5100

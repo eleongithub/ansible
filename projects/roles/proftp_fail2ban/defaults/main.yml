@@ -1,2 +1,7 @@
 ---
 # defaults file for proftp_fail2ban
+fail2ban_enabled: true
+proftp_maxretry: 6
+proftp_destination_mail: "{{ fail2ban_destination_mail }}"
+proftp_bantime: 600
+

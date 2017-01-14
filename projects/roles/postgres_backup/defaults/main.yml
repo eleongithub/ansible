@@ -1,2 +1,6 @@
 ---
 # defaults file for postgres_backup
+backup_dir: "/home/backups/database/postgresql/"
+postgres_backup_files:
+ - { src: 'pg_backup.config.j2', dest: '{{ postgres_conf_dir }}/pg_backup.config', force: yes }
+ - { src: 'pg_backup_rotated.sh.j2', dest: '{{ postgres_conf_dir }}/pg_backup_rotated.sh', force: yes }

@@ -20,18 +20,6 @@
     group: "{{ root_group }}"
     recurse: yes
 
-- name: Delete user Apache
-  user:
-    name: "{{ apache_user }}"
-    state: absent
-  ignore_errors: true
-
-- name: Delete group Apache
-  group:
-    name: "{{ apache_user_group }}"
-    state: absent
-  ignore_errors: true
-
 - name: Create Group Apache
   group:
     name: "{{ apache_user_group }}"

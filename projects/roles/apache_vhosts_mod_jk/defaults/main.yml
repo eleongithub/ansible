@@ -1,3 +1,14 @@
 ---
 root_user: root
 root_group: sys
+mod_jk_port: '8009'
+apache_vhosts_mod_jk:
+  vhost1:
+    serverName: 'vhosts1.fr'
+    serverAlias: 'www.vhosts1.fr'
+    use_https: True
+    ssl_subj: "/C=\"{{ ssl_country }}\"/ST=\"{{ ssl_state }}\"/L=\"{{ ssl_locality }}\"/O=\"{{ ssl_organisation }}\"/OU=\"{{ ssl_organisation_unit }}\"/CN=vhosts1.fr"
+    webapps: 'docs'
+    workers:
+        - { name: 'worker1', host: 'st-db-villeurbanne', port: '{{ mod_jk_port }}' }
+        - { name: 'worker2', host: 'localhost', port: '{{ mod_jk_port }}' }

@@ -1,2 +1,6 @@
 ---
 # defaults file for fail2ban-ssh
+fail2ban_enabled: true
+sshd_maxretry: 6
+sshd_destination_mail: "{{ fail2ban_destination_mail }}"
+sshd_bantime: 600

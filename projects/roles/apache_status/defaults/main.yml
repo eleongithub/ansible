@@ -1,3 +1,9 @@
 ---
 root_user: root
 root_group: sys
+mod_status_url: "{{ nexus_public_repository }}/org/apache/mod_status/1.0/mod_status.so"
+mod_status_server_name: 'status.fr'
+mod_status_server_alias: 'www.status.fr'
+mod_status_require_ip: ''
+mod_status_require_host: ''
+mod_status_enable_authentication: True

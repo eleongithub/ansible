@@ -1,8 +1,2 @@
 ---
 # vars file for portsentry
-tcp_mode: "atcp"
-udp_mode: "audp"
-portsentry_config_file: "/etc/default/portsentry"
-portsentry_notification_script: "/etc/portsentry/notification.sh"
-portsentry_ignore_file : "/etc/portsentry/portsentry.ignore"
-portsentry_alert_mail: "ansible@localhost"

@@ -1,0 +1,15 @@
+---
+apache_required_packages:
+ - { package: 'perl' }
+ - { package: 'libpcre3' }
+ - { package: 'libpcre3-dev' }
+ - { package: 'zlib1g' }
+ - { package: 'zlib1g-dev' }
+ - { package: 'libxml2' }
+ - { package: 'libxml2-dev' }
+ - { package: 'libaprutil1' }
+ - { package: 'libaprutil1-dev' }
+ - { package: 'libssl-dev' }
+ - { package: 'automake' }
+ - { package: 'libapr1' }
+ - { package: 'libapr1-dev' }

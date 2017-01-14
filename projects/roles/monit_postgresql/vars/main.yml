@@ -1,5 +1,2 @@
 ---
 # vars file for monit_postgresql
-monit_postgres_config_file: "/etc/monit/conf.d/postgresql.conf"
-postgres_stop_command: "/usr/sbin/service postgresql stop"
-postgres_start_command: "/usr/sbin/service postgresql start"

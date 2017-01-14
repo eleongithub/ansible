@@ -1,2 +1,34 @@
 ---
 # defaults file for firewall-ufw
+
+# Common port:
+#   21 - ftp
+#   22: SSH
+#   23 - telnet
+#   25: SMTP
+#   53: DNS
+#   80: HTTP
+#   110 - pop3
+#   123: NTP
+#   143 - imap
+#   443: HTTPS
+#   1000 - webmin
+#   2222: SSH alternate
+#   4949: Munin
+#   6082: Varnish admin
+#   8080: HTTP alternate (often used with Tomcat)
+#   8983: Tomcat HTTP
+#   8443: Tomcat HTTPS
+#   9000: SonarQube
+# for more informations about ports, look at  http://guide.ovh.com/firewall
+
+
+# We make a choice to open these ports.
+allow_ports:
+ - { port: '22', rule: 'allow', proto: 'tcp' }
+ - { port: '23', rule: 'allow', proto: 'tcp' }
+ - { port: '25', rule: 'allow', proto: 'tcp' }
+ - { port: '53', rule: 'allow', proto: 'tcp' }
+ - { port: '80', rule: 'allow', proto: 'tcp' }
+ - { port: '443', rule: 'allow', proto: 'tcp' }
+ - { port: '123', rule: 'allow', proto: 'tcp' }

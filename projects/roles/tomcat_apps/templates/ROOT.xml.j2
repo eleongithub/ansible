@@ -1,0 +1,18 @@
+<Context>
+  
+  <!-- Load config file from directory -->
+  <Loader className="org.apache.catalina.loader.VirtualWebappLoader" virtualClasspath="{{ apps_conf_path }}" />
+
+  <Resource name="jdbc/im_ws"
+    factory="com.syscom.encryptDS.EncryptedDataSourceFactory"
+    auth="Container"
+    type="javax.sql.DataSource"
+    maxActive="{{ bdd_maxactive }}"
+    maxIdle="{{ bdd_maxidle }}"
+    maxWait="{{ bdd_maxwait }}"
+    username="{{ bdd_username }}"
+    password="{{ bdd_encrypt_password }}"
+    driverClassName="{{ bdd_driver_class_name }}"
+    url="{{ bdd_url }}" />
+
+</Context>
