@@ -32,9 +32,9 @@
   template:
     src: "{{item.src}}"
     dest: "{{item.dest}}"
-    force: "{{item.force}}"
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user_group }}"
+    force: yes
   with_items:
    - "{{ keystore_conf_files }}"
 

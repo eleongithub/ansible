@@ -21,7 +21,11 @@
   with_items: "{{ tomcat_remove_files }}"
 
 - name: Delete script *.bat files. We don't need them on Linux plateform
-  command: rm {{ tomcat_last_version }}/bin/*.bat
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_fileglob:
+    - "{{ tomcat_last_version }}/bin/*.bat"
   ignore_errors: true
 
 - name: Create tomcat server info directory

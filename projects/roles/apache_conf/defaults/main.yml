@@ -1,3 +1,6 @@
 ---
 root_user: root
 root_group: sys
+apache_conf_files:
+ - { src: 'httpd.conf.j2', dest: '{{ apache_httpd_file }}' }
+ - { src: 'modules.conf.j2', dest: '{{ apache_modules_file }}' }

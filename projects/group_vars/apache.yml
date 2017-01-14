@@ -19,10 +19,6 @@ root_user: root
 root_group: sys
 apache_user: wwwd
 apache_user_group: wwwd
-apache_conf_files:
- - { src: 'httpd.conf.j2', dest: '{{ apache_httpd_file }}', force: yes }
- - { src: 'modules.conf.j2', dest: '{{ apache_modules_file }}', force: yes }
-
 # Logs level possibilities : debug, info, notice, warn, error, crit, alert, emerg.
 apache_conf_log_level: warn
 apache_conf_max_clients: 300

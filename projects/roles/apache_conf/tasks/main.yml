@@ -38,7 +38,9 @@
   template:
     src: "{{item.src}}"
     dest: "{{item.dest}}"
-    force: "{{item.force}}"
+    owner: "{{root_user}}"
+    group: "{{root_group}}"
+    force: yes
   with_items: "{{ apache_conf_files }}"
 
 - name: Copy Apache init script

@@ -83,9 +83,9 @@
   template:
     src: "{{item.src}}"
     dest: "{{item.dest}}"
-    force: "{{item.force}}"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
+    force: yes
   with_items: "{{ mod_security_conf_files }}"
 
 - name: Copy modsecurity_module.conf.j2 into Apache conf directory

@@ -37,9 +37,9 @@
   file:
     src: "{{ tomcat_last_version }}"
     path: "{{ tomcat_home }}"
-    state: link
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user_group }}"
+    state: link
 
 - name: Create the tomcat configuration directory
   file:
@@ -53,9 +53,9 @@
   template:
     src: "{{item.src}}"
     dest: "{{item.dest}}"
-    force: "{{item.force}}"
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user_group }}"
+    force: yes
   with_items:
    - "{{ tomcat_conf_files }}"
 

@@ -9,7 +9,7 @@ tomcat_user: tomcat
 tomcat_user_group: tomcat
 tomcat_conf_directory: "{{ tomcat_last_version }}/conf"
 tomcat_conf_files:
- - { src: 'server.xml.j2', dest: '{{ tomcat_conf_directory }}/server.xml', force: yes }
- - { src: 'setenv.sh.j2', dest: '{{ tomcat_last_version }}/bin/setenv.sh', force: yes }
- - { src: 'web.xml.j2', dest: '{{ tomcat_conf_directory }}/web.xml', force: yes }
- - { src: 'logging.properties.j2', dest: '{{ tomcat_conf_directory }}/logging.properties', force: yes }
+ - { src: 'server.xml.j2', dest: '{{ tomcat_conf_directory }}/server.xml' }
+ - { src: 'setenv.sh.j2', dest: '{{ tomcat_last_version }}/bin/setenv.sh' }
+ - { src: 'web.xml.j2', dest: '{{ tomcat_conf_directory }}/web.xml' }
+ - { src: 'logging.properties.j2', dest: '{{ tomcat_conf_directory }}/logging.properties' }

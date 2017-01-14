@@ -7,8 +7,8 @@ tomcat_shutdown_command: "SHUTDOWNA1B2Z78UJHGJKLMLM"
 tomcat_user: tomcat
 tomcat_user_group: tomcat
 keystore_conf_files:
- - { src: 'server.xml.j2', dest: '{{ tomcat_last_version }}/conf/server.xml', force: yes }
- - { src: 'web.xml.j2', dest: '{{ tomcat_last_version }}/conf/web.xml', force: yes }
+ - { src: 'server.xml.j2', dest: '{{ tomcat_last_version }}/conf/server.xml' }
+ - { src: 'web.xml.j2', dest: '{{ tomcat_last_version }}/conf/web.xml' }
 keystore_dir: "{{ tomcat_last_version }}/conf/keystore"
 keystore_file: "{{ keystore_dir }}/keystore.jks"
 keystore_alias: keyAlias
