@@ -1,12 +1,14 @@
 ---
 root_user: root
 root_group: sys
+apache_home: /opt/apache2
+apache_conf_dir: "{{ apache_home }}/conf"
 apache_ssl_ca_bits: 2048
 apache_ssl_ca_md: sha256
 apache_ssl_ca_conf_dir: "{{ apache_conf_dir }}/ssl/ca"
 apache_ssl_ca_key: "{{ apache_ssl_ca_conf_dir }}/ca_key.pem"
 apache_ssl_ca_cert: "{{ apache_ssl_ca_conf_dir }}/ca_cert.pem"
-apache_ssl_ca_default_days: "{{ ssl_certificate_days }}"
+apache_ssl_ca_default_days: 3650
 apache_ssl_ca_country: FR
 apache_ssl_ca_state: Rhone
 apache_ssl_ca_locality: Lyon

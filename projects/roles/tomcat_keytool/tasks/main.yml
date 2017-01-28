@@ -26,7 +26,7 @@
       -keypass {{ keystore_password }}
       -keystore {{ keystore_file }}
       -storepass {{ keystore_password }}
-      -validity {{ ssl_certificate_days }}
+      -validity 3650
 
 - name: Deploy configuration files for Tomcat with openssl
   template:

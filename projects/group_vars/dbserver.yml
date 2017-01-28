@@ -1,4 +1,1 @@
 ---
-postgres_port: 5432
-postgres_version: 9.4
-postgres_conf_dir: "/etc/postgresql/{{postgres_version}}/main"

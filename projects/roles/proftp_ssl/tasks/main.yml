@@ -57,9 +57,9 @@
 - name: Define owner, group and right on ProFTP configuration files
   file:
     path: "{{ item.path }}"
-    force: "{{ item.force }}"
-    owner: "{{ item.owner }}"
-    group: "{{ item.group }}"
+    force: yes
+    owner: "{{ proftp_user }}"
+    group: "{{ proftp_user_group }}"
     mode: "{{ item.mode }}"
   with_items: "{{ proftp_ssl_files }}"
 

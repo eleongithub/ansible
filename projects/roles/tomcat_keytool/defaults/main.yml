@@ -6,6 +6,8 @@ tomcat_mod_jk_port: 8009
 tomcat_shutdown_command: "SHUTDOWNA1B2Z78UJHGJKLMLM"
 tomcat_user: tomcat
 tomcat_user_group: tomcat
+tomcat_versions: "/opt/tomcat_versions"
+tomcat_last_version: "{{ tomcat_versions }}/apache-tomcat-{{ tomcat_version }}"
 keystore_conf_files:
  - { src: 'server.xml.j2', dest: '{{ tomcat_last_version }}/conf/server.xml' }
  - { src: 'web.xml.j2', dest: '{{ tomcat_last_version }}/conf/web.xml' }
@@ -13,4 +15,10 @@ keystore_dir: "{{ tomcat_last_version }}/conf/keystore"
 keystore_file: "{{ keystore_dir }}/keystore.jks"
 keystore_alias: keyAlias
 tomcat_dns: localhost
+ssl_protocol: TLSv1+TLSv1.1+TLSv1.2
+ssl_country: FR
+ssl_state: Rhone
+ssl_locality: Lyon
+ssl_organisation: Syscom
+ssl_organisation_unit: IT
 keystore_subj: "CN={{ tomcat_dns }}, OU={{ ssl_organisation_unit }}, O={{ ssl_organisation }}, L={{ ssl_locality }}, S={{ ssl_state }}, C={{ ssl_country }}"

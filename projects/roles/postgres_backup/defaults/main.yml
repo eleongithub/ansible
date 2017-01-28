@@ -1,6 +1,8 @@
 ---
 # defaults file for postgres_backup
+postgres_version: 9.4
+postgres_conf_dir: "/etc/postgresql/{{postgres_version}}/main"
 backup_dir: "/home/backups/database/postgresql/"
 postgres_backup_files:
- - { src: 'pg_backup.config.j2', dest: '{{ postgres_conf_dir }}/pg_backup.config', force: yes }
- - { src: 'pg_backup_rotated.sh.j2', dest: '{{ postgres_conf_dir }}/pg_backup_rotated.sh', force: yes }
+ - { src: 'pg_backup.config.j2', dest: '{{ postgres_conf_dir }}/pg_backup.config' }
+ - { src: 'pg_backup_rotated.sh.j2', dest: '{{ postgres_conf_dir }}/pg_backup_rotated.sh' }

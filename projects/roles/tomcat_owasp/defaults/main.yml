@@ -1,6 +1,8 @@
 ---
 tomcat_user: tomcat
 tomcat_user_group: tomcat
+tomcat_versions: "/opt/tomcat_versions"
+tomcat_last_version: "{{ tomcat_versions }}/apache-tomcat-{{ tomcat_version }}"
 tomcat_remove_files:
  - { path: 'webapps/ROOT/' }
  #- { path: 'webapps/examples/' }

@@ -1,6 +1,7 @@
 ---
 # defaults file for fail2ban-ssh
-fail2ban_enabled: true
+fail2ban_enabled: True
 sshd_maxretry: 6
-sshd_destination_mail: "{{ fail2ban_destination_mail }}"
+sshd_destination_mail: "ansible@localhost"
+fail2ban_jail_configuration_file: "/etc/fail2ban/jail.conf"
 sshd_bantime: 600

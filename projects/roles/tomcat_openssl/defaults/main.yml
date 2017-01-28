@@ -6,16 +6,22 @@ tomcat_mod_jk_port: 8009
 tomcat_shutdown_command: "SHUTDOWNA1B2Z78UJHGJKLMLM"
 tomcat_user: tomcat
 tomcat_user_group: tomcat
+tomcat_versions: "/opt/tomcat_versions"
+tomcat_last_version: "{{ tomcat_versions }}/apache-tomcat-{{ tomcat_version }}"
 tomcat_openssl_dir: "{{ tomcat_last_version }}/conf/ssl"
 tomcat_openssl_conf_files:
  - { src: 'server.xml.j2', dest: '{{ tomcat_last_version }}/conf/server.xml' }
  - { src: 'web.xml.j2', dest: '{{ tomcat_last_version }}/conf/web.xml' }
-
-# SSL with Openssl configuration variables
 tomcat_dns: localhost
 open_ssl_certificate_file: "{{ tomcat_openssl_dir }}/cacert_{{ tomcat_dns }}.crt"
 open_ssl_private_key_file: "{{ tomcat_openssl_dir }}/cacert_{{ tomcat_dns }}.key"
 open_ssl_cert_config_file: "{{ tomcat_last_version }}/conf/openssl.conf"
 open_ssl_cert_subjectAltName: "DNS:{{ tomcat_dns }}"
 open_ssl_cert_common_name: "{{ tomcat_dns }}"
+ssl_protocol: TLSv1+TLSv1.1+TLSv1.2
+ssl_country: FR
+ssl_state: Rhone
+ssl_locality: Lyon
+ssl_organisation: Syscom
+ssl_organisation_unit: IT
 open_ssl_subj: "/C=\"{{ ssl_country }}\"/ST=\"{{ ssl_state }}\"/L=\"{{ ssl_locality }}\"/O=\"{{ ssl_organisation }}\"/OU=\"{{ ssl_organisation_unit }}\"/CN={{ open_ssl_cert_common_name }}"

@@ -66,13 +66,15 @@
 
 - name: Define owner, group and right on ProFTP configuration files
   file:
-    path: "{{ item.path }}"
-    force: "{{ item.force }}"
-    owner: "{{ item.owner }}"
-    group: "{{ item.group }}"
-    mode: "{{ item.mode }}"
-  with_items: "{{ proftp_conf_files }}"
-
+    path: "{{ item }}"
+    force: yes
+    owner: "{{ proftp_user }}"
+    group: "{{ proftp_user_group }}"
+    mode: "0644"
+  with_items: 
+    - "{{ proftp_modules_conf_path }}"
+    - "{{ proftp_conf_path }}"
+ 
 - name: Add Iptables Input trafic rule for ProFTP
   command: >
    /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p tcp --dport {{ ftp_default_port }} -j ACCEPT -m comment --comment "TCP - ProFTP Server Input trafic"

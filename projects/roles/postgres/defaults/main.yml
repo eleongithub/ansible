@@ -1,8 +1,11 @@
 ---
+postgres_port: 5432
 use_iptables_firewall: False
 postgres_listen_addresses: '*'
+postgres_version: 9.4
+postgres_conf_dir: "/etc/postgresql/{{postgres_version}}/main"
 postgres_server_pkg: "postgresql-{{postgres_version}}"
 postgres_client_pkg: "postgresql-client-{{postgres_version}}"
 postgres_conf_files:
- - { src: 'postgresql.conf.j2', dest: '{{ postgres_conf_dir }}/postgresql.conf', force: yes }
- - { src: 'pg_hba.conf.j2', dest: '{{ postgres_conf_dir }}/pg_hba.conf', force: yes }
+ - { src: 'postgresql.conf.j2', dest: '{{ postgres_conf_dir }}/postgresql.conf' }
+ - { src: 'pg_hba.conf.j2', dest: '{{ postgres_conf_dir }}/pg_hba.conf' }

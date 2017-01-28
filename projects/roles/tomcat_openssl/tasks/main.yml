@@ -37,7 +37,7 @@
       -new
       -x509
       -nodes
-      -days {{ ssl_certificate_days }}
+      -days 3650
       -subj "{{ open_ssl_subj }}"
       -config {{ open_ssl_cert_config_file }}
       -extensions v3_req

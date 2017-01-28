@@ -1,6 +1,16 @@
 ---
+http_default_port: 80
+https_default_port: 443
+apache_home: /opt/apache2
+apache_server_admin: admin@example.com
+apache_vhosts_dir: "{{ apache_home }}/vhosts"
+apache_logs_dir: "{{ apache_home }}/logs"
+apache_conf_dir: "{{ apache_home }}/conf"
+apache_httpd_file: "{{ apache_conf_dir }}/httpd.conf"
 root_user: root
 root_group: sys
+apache_conf_log_level: warn
+apache_vhosts_conf_dir: "{{ apache_conf_dir }}/vhosts"
 apache_vhosts_mod_proxy:
   vhosts2:
     serverName: 'vhosts2.fr'

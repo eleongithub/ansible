@@ -1,13 +1,17 @@
 ---
+proftp_conf_path: "/etc/proftpd/proftpd.conf"
 proftp_tls_conf_path: "/etc/proftpd/tls.conf"
 proftp_tls_log_file: "/var/log/proftpd/tls.log"
 proftp_ssl_conf_dir: "/etc/proftpd/ssl"
 proftp_ssl_cert_file: "{{ proftp_ssl_conf_dir }}/ftp.cert.pem"
 proftp_ssl_key_file: "{{ proftp_ssl_conf_dir }}/ftp.key.pem"
+proftp_dns: "vhosts1.fr"
 proftp_ssl_subj: "/C=\"FR\"/ST=\"Rhone\"/L=\"Lyon\"/O=\"Syscom\"/OU=\"IT\"/CN={{ proftp_dns }}"
 proftp_ssl_config_file: "{{ proftp_ssl_conf_dir }}/openssl_ca.conf"
+proftp_user: "proftpd"
+proftp_user_group: "proftpd"
 proftp_ssl_files:
- - { path: '{{ proftp_tls_conf_path }}', force: yes, owner: '{{ proftp_user }}', group: '{{ proftp_user_group }}', mode: '0644' }
- - { path: '{{ proftp_ssl_cert_file }}', force: yes, owner: '{{ proftp_user }}', group: '{{ proftp_user_group }}', mode: '0644' }
- - { path: '{{ proftp_ssl_key_file }}', force: yes, owner: '{{ proftp_user }}', group: '{{ proftp_user_group }}', mode: '0400' }
- - { path: '{{ proftp_ssl_config_file }}', force: yes, owner: '{{ proftp_user }}', group: '{{ proftp_user_group }}', mode: '0644' }
+ - { path: '{{ proftp_tls_conf_path }}', mode: '0644' }
+ - { path: '{{ proftp_ssl_cert_file }}', mode: '0644' }
+ - { path: '{{ proftp_ssl_key_file }}', mode: '0400' }
+ - { path: '{{ proftp_ssl_config_file }}', mode: '0644' }

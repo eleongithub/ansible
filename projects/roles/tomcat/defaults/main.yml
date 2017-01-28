@@ -1,4 +1,16 @@
 ---
+tomcat_version: 8.0.32
+libtcnative_version: 1.1.34
+apr_config_file: /usr/bin/apr-1-config
+java_home: /opt/java
+tomcat_tarball_name: "apache-tomcat-{{ tomcat_version }}.tar.gz"
+tomcat_url: "{{ nexus_public_repository }}/org/tomcat/apache/apache-tomcat/{{ tomcat_version }}/{{ tomcat_tarball_name }}"
+tomcat_versions: "/opt/tomcat_versions"
+tomcat_last_version: "{{ tomcat_versions }}/apache-tomcat-{{ tomcat_version }}"
+tomcat_home: /opt/tomcat
+tomcat_native_url: "{{ nexus_public_repository }}/org/tomcat/apache/tomcat-native/{{ libtcnative_version }}/tomcat-native-{{ libtcnative_version }}.tar.gz"
+libtcnative_util_home: "{{ tomcat_last_version }}/bin/tomcat-native-{{ libtcnative_version }}-src/jni/native"
+libtcnative_util_tarball_name: "tomcat-native-{{ libtcnative_version }}-src.tar.gz"
 tomcat_required_packages:
  - { package: 'libapr1' } 
  - { package: 'libapr1-dev' } 

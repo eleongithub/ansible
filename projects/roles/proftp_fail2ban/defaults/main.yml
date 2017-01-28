@@ -2,5 +2,6 @@
 # defaults file for proftp_fail2ban
 fail2ban_enabled: true
 proftp_maxretry: 6
-proftp_destination_mail: "{{ fail2ban_destination_mail }}"
+proftp_destination_mail: "ansible@localhost"
+fail2ban_jail_configuration_file: "/etc/fail2ban/jail.conf"
 proftp_bantime: 600

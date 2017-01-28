@@ -1,6 +1,12 @@
 ---
 root_user: root
 root_group: sys
+apache_home: /opt/apache2
+apache_logs_dir: "{{ apache_home }}/logs"
+apache_conf_dir: "{{ apache_home }}/conf"
+apache_modules_dir: "{{ apache_home }}/modules"
+apache_modules_file: "{{ apache_conf_dir }}/modules.conf"
+apache_httpd_file: "{{ apache_conf_dir }}/httpd.conf"
 mod_security_version: 2.9.1
 mod_security_url : "{{ nexus_public_repository }}/org/modsecurity/modsecurity/{{ mod_security_version }}/modsecurity-{{ mod_security_version }}.tar.gz"
 mod_security_tarball_name: "modsecurity-{{ mod_security_version }}.tar.gz"
