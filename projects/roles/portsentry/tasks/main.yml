@@ -13,35 +13,18 @@
     state: present
   when: ansible_os_family == 'RedHat'
 
-- name: Copy portsentry.ignore IP address configuration file
+
+- name: Copy porsentry configuration files
   template:
-    src: portsentry.ignore.j2
-    dest: "{{ portsentry_ignore_file }}"
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    force: yes
     owner: root
     group: root
-    mode: 0644
-    force: yes
-    backup: yes
-
-- name: Copy notification script
-  template:
-    src: notification.sh.j2
-    dest: "{{ portsentry_notification_script }}"
-    owner: root
-    group: root
-    force: yes
-    
-
-- name: Copy portsentry.conf configuration file
-  template:
-    src: portsentry.conf.j2
-    dest: "{{ portsentry_config_file }}"
-    owner: root
-    group: root
-    mode: 0644
-    force: yes
-    backup: yes
-
+    mode: "{{item.mode}}"
+  with_items:
+   - "{{ portsentry_files }}"
+   
 - name: Restart portsentry
   command: echo "Restart portsentry..."
   notify:
