@@ -5,37 +5,9 @@
   shell: proftpd --version || echo "Unknown ProFTP Server"
   register: proftp_version_result
 
-- name: Purge ProFTPd Server package if present
-  apt:
-    pkg: "{{ item }}"
-    state: absent
-    purge: yes
-  with_items:
-    - "proftpd"
-    - "proftpd-basic"
-  when: "('{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}') and (ansible_os_family == 'Debian')"
-
-- name: Purge ProFTPd Server package if present
-  yum:
-    pkg: "{{ item }}"
-    state: absent
-    purge: yes
-  with_items:
-    - "proftpd"
-    - "proftpd-basic"
-  when: "('{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}') and (ansible_os_family == 'RedHat')"
-
-- name: Installing ProFTPd Server...
-  apt:
-    pkg: proftpd
-    state: present
-  when: "('{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}') and (ansible_os_family == 'Debian')"
- 
-- name: Installing ProFTPd Server...
-  yum:
-    pkg: proftpd
-    state: present
-  when: "('{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}') and (ansible_os_family == 'RedHat')"
+- name : Install proftp packages
+  include: install.yml
+  when: "('{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}')"
 
 - name: Create Group proftp
   group:
@@ -74,27 +46,11 @@
   with_items: 
     - "{{ proftp_modules_conf_path }}"
     - "{{ proftp_conf_path }}"
- 
-- name: Add Iptables Input trafic rule for ProFTP
-  command: >
-   /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p tcp --dport {{ ftp_default_port }} -j ACCEPT -m comment --comment "TCP - ProFTP Server Input trafic"
-  when: use_iptables_firewall
 
-- name: Add Iptables Output trafic rule for ProFTP
-  command: >
-   /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p tcp --dport {{ ftp_default_port }} -j ACCEPT -m comment --comment "TCP - ProFTP Server Output trafic"
+- name: Add Iptables rules for ProFTP
+  include: iptables.yml
   when: use_iptables_firewall
-
-- name: Add Iptables Input trafic rule for ProFTP passive ports
-  command: >
-   /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p tcp --dport {{ firwall_ftp_min_passive_port }}:{{ firwall_ftp_max_passive_port }} -j ACCEPT -m comment --comment "TCP - ProFTP Server Input trafic - Passive ports"
-  when: use_iptables_firewall
-
-- name: Add Iptables Output trafic rule for ProFTP passive ports
-  command: >
-   /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p tcp --dport {{ firwall_ftp_min_passive_port }}:{{ firwall_ftp_max_passive_port }} -j ACCEPT -m comment --comment "TCP - ProFTP Server Output trafic - Passive ports"
-  when: use_iptables_firewall
-
+  
 - name: Restart ProFTP
   command: echo "Restart ProFTP service..."
   notify:
