@@ -24,9 +24,9 @@
   template:
     src: "{{item.src}}"
     dest: "{{item.dest}}"
-    force: "{{item.force}}"
-    owner: "{{item.owner}}"
-    group: "{{item.group}}"
+    force: yes
+    owner: root
+    group: root
     mode: "{{item.mode}}"
   with_items:
    - "{{ firewall_script_files }}"

@@ -1,9 +1,9 @@
 ---
 network_interface: 'eth0'
 firewall_script_files:
- - { src: 'firewall-start-rules.j2', dest: '/etc/firewall-start-rules', force: yes, owner: 'root', group: 'root', mode: '0744' }
- - { src: 'firewall-stop-rules.j2', dest: '/etc/firewall-stop-rules', force: yes, owner: 'root', group: 'root', mode: '0744' }
- - { src: 'firewall.j2', dest: '/etc/init.d/firewall', force: yes, owner: 'root', group: 'root', mode: '0755' }
+ - { src: 'firewall-start-rules.j2', dest: '/etc/firewall-start-rules', mode: '0744' }
+ - { src: 'firewall-stop-rules.j2', dest: '/etc/firewall-stop-rules', mode: '0744' }
+ - { src: 'firewall.j2', dest: '/etc/init.d/firewall', mode: '0755' }
 
 firewall_input_allowed_ports:
  - { port: '22', protocol: 'tcp', comment: 'TCP - SSH Input trafic' }
