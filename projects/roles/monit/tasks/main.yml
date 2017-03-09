@@ -11,16 +11,10 @@
     backup: yes
     src: monit.conf.j2
     dest: "{{ monit_config_file }}"
-
-- name: Add Iptables Input trafic rule for monit
-  command: >
-   /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p tcp --dport {{ monit_admin_dashboard_port }} -j ACCEPT -m comment --comment "TCP - Monit Server Input trafic"
-  when: (monit_activate_admin_dashboard and use_iptables_firewall)
-
-- name: Add Iptables Output trafic rule for monit
-  command: >
-   /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p tcp --dport {{ monit_admin_dashboard_port }} -j ACCEPT -m comment --comment "TCP - Monit Server Output trafic"
-  when: (monit_activate_admin_dashboard and use_iptables_firewall)
+    
+- name : Iptables rules
+  include: iptables.yml
+  when: monit_activate_admin_dashboard and iptables_enabled
 
 #- name: Reload monit
   #command: echo "Reload monit..."

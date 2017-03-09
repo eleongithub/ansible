@@ -14,7 +14,7 @@ Role Variables
 |postgres_client_pkg|Oui|-|postgresql-client-9.4|Nom du package du client PSQL.|
 |postgres_conf_files|Oui|-|postgresql.conf & pg_hba.conf|Liste des fichiers de configurations à déployer.|
 |postgres_port|Oui|-|5432|Port d'écoute de la base de données.|
-|use_iptables_firewall|Non|False|True|Si `True`, une tâche ouvre le port `postgres_port` via iptables.|
+|iptables_enabled|Non|False|True|Si `True`, une tâche ouvre le port `postgres_port` via iptables.|
 |network_interface|Oui|eth0|eth0|Interface réseau sur lequel les règles Iptables seront appliquées.|
 
 Dependencies

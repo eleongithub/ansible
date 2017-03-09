@@ -49,7 +49,7 @@
 
 - name: Add Iptables rules for ProFTP
   include: iptables.yml
-  when: use_iptables_firewall
+  when: iptables_enabled
   
 - name: Restart ProFTP
   command: echo "Restart ProFTP service..."

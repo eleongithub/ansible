@@ -1,6 +1,6 @@
 ---
 postgres_port: 5432
-use_iptables_firewall: False
+iptables_enabled: False
 postgres_listen_addresses: '*'
 postgres_version: 9.4
 postgres_conf_dir: "/etc/postgresql/{{postgres_version}}/main"

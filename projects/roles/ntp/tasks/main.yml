@@ -7,15 +7,9 @@
     state: present
     update_cache: yes
 
-- name: Add Iptables Input trafic rule for NTP
-  command: >
-   /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p udp --dport 123 -j ACCEPT -m comment --comment "UDP - NTP Server Input trafic"
-  when: use_iptables_firewall
-
-- name: Add Iptables Output trafic rule for NTP
-  command: >
-   /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p udp --dport 123 -j ACCEPT -m comment --comment "UDP - NTP Server Output trafic"
-  when: use_iptables_firewall
+- name: Add Iptables rules
+  include: iptables.yml
+  when: iptables_enabled
 
 - name: Start the ntp service
   service:

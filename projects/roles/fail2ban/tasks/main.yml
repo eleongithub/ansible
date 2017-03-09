@@ -9,7 +9,7 @@
   stat:
     path: "{{ fail2ban_jail_configuration_orig_file }}"
   register: fail2ban_conf_orig_file_exists
-  when: use_iptables_firewall
+  when: iptables_enabled
 
 - name: Copy original fail2ban configuration
   copy:
@@ -36,7 +36,7 @@
     dest: "{{ fail2ban_init_script }}"
     regexp: '^(.*)# Required-Start:(.*)'
     state: absent
-  when: use_iptables_firewall
+  when: iptables_enabled
 
 - name: Modify fail2ban init script to run after firewall script
   lineinfile:
@@ -44,4 +44,4 @@
     dest: "{{ fail2ban_init_script }}"
     line: '# Required-Start:    $local_fs $remote_fs $firewall'
     insertafter: '^(.*)# Provides:(.*)'
-  when: use_iptables_firewall
+  when: iptables_enabled

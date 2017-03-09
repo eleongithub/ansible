@@ -1,12 +1,5 @@
 ---       
-use_iptables_firewall: True
-#apr_config_file: /usr/bin/apr-1-config
-#java_home: /opt/java
-#ssl_country: FR
-#ssl_state: Rhone
-#ssl_locality: Lyon
-#ssl_organisation: Syscom
-#ssl_organisation_unit: IT
+iptables_enabled: True
 nexus: "http://192.168.0.13:9081/nexus"
 nexus_repositories: "{{ nexus }}/content/repositories"
 nexus_public_repository: "{{ nexus_repositories }}/public"

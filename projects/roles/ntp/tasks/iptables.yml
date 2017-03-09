@@ -1,0 +1,9 @@
+---
+
+- name: Add Iptables Input trafic rule for NTP
+  command: >
+   /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p udp --dport 123 -j ACCEPT -m comment --comment "UDP - NTP Server Input trafic"
+
+- name: Add Iptables Output trafic rule for NTP
+  command: >
+   /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p udp --dport 123 -j ACCEPT -m comment --comment "UDP - NTP Server Output trafic"

@@ -26,7 +26,7 @@ Role Variables
 |monit_admin_dashboard_port|Non|2812|2812|Port d'écoute de l'interface d'admin de monit. À renseigner si `monit_activate_admin_dashboard`=`True`.|
 |monit_admin_login|Non|-|-|Login à saisir pour se connecter à l'interface d'admin de monit. À renseigner si `monit_activate_admin_dashboard`=`True`.|
 |monit_admin_password|Non|-|-|Mot de passe à saisir pour se connecter à l'interface d'admin de monit. À renseigner si `monit_activate_admin_dashboard`=`True`.|
-|use_iptables_firewall|Non|False|True|Si `True` et `monit_activate_admin_dashboard`=`True`, une tâche ouvre le port `monit_admin_dashboard_port` via iptables. À renseigner si `monit_activate_admin_dashboard`=`True`.|
+|iptables_enabled|Non|False|True|Si `True` et `monit_activate_admin_dashboard`=`True`, une tâche ouvre le port `monit_admin_dashboard_port` via iptables. À renseigner si `monit_activate_admin_dashboard`=`True`.|
 
 Dependencies
 ------------

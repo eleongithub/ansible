@@ -1,6 +1,6 @@
 ---
 # defaults file for fail2ban
-use_iptables_firewall: False
+iptables_enabled: False
 mta_agent: postfix
 fail2ban_init_script: "/etc/init.d/fail2ban"
 fail2ban_jail_configuration_file: "/etc/fail2ban/jail.conf"

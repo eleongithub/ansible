@@ -68,15 +68,9 @@
     force: yes
     mode: 0755
 
-- name: Add Iptables Input trafic rule for Tomcat
-  command: >
-   /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p tcp --dport {{ tomcat_http_port }} -j ACCEPT -m comment --comment "TCP - Tomcat Server Input trafic"
-  when: use_iptables_firewall
-
-- name: Add Iptables Output trafic rule for Tomcat
-  command: >
-   /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p tcp --dport {{ tomcat_http_port }} -j ACCEPT -m comment --comment "TCP - Tomcat Server Output trafic"
-  when: use_iptables_firewall
+- name: Add Iptables rule
+  include: iptables.yml
+  when: iptables_enabled
 
 - name: Enable Tomcat service
   service:
