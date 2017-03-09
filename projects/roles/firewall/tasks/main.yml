@@ -12,13 +12,6 @@
   apt:
     pkg: iptables
     state: present
-  when: ansible_os_family == 'Debian'
-
-- name: Installing iptables package...
-  yum:
-    name: iptables
-    state: present
-  when: ansible_os_family == 'RedHat'
 
 - name: Copy firewall files into directories
   template:

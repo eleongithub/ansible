@@ -4,13 +4,6 @@
   apt:
     pkg: fail2ban
     state: present
-  when: ansible_os_family == 'Debian'
-
-- name: Installing fail2ban
-  yum:
-    pkg: fail2ban
-    state: present
-  when: ansible_os_family == 'RedHat'
 
 - name : Check original fail2ban configuration file exists
   stat:

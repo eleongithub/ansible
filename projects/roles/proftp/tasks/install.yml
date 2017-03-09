@@ -9,26 +9,8 @@
   with_items:
     - "proftpd"
     - "proftpd-basic"
-  when: "ansible_os_family == 'Debian'"
-
-- name: Purge ProFTPd Server package if present
-  yum:
-    pkg: "{{ item }}"
-    state: absent
-    purge: yes
-  with_items:
-    - "proftpd"
-    - "proftpd-basic"
-  when: "ansible_os_family == 'RedHat'"
 
 - name: Installing ProFTPd Server...
   apt:
     pkg: proftpd
     state: present
-  when: "ansible_os_family == 'Debian'"
- 
-- name: Installing ProFTPd Server...
-  yum:
-    pkg: proftpd
-    state: present
-  when: "ansible_os_family == 'RedHat'"

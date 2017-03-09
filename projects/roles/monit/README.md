@@ -18,8 +18,7 @@ Role Variables
 | Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
 | ------------- |:-------------:| ------------------:|:--------:|:-----------|
 |monit_daemon| Oui|60|60|Monit effectue la vérification des services toutes les 60 secondes.Cette variable indique l'intervalle régulier de temps pour chaque vérification.|
-|monit_config_file_os_family_debian|Oui|/etc/monit/monitrc|/etc/monit/monitrc|Fichier de configuration sur les systèmes de la famille 'Debian'.|
-|monit_config_file_os_family_redhat|Oui|/etc/monit.conf|/etc/monit.conf|Fichier de configuration sur les systèmes de la famille 'RedHat'.|
+|monit_config_file|Oui|/etc/monit/monitrc|/etc/monit/monitrc|Fichier de configuration.|
 |monit_send_alert_mail|Non|False|True|Si `True`, monit envoie un mail d'alerte en cas de panne d'un service. Si `False`, monit n'envoie pas de mail d'alerte à l'administrateur du système.|
 |monit_mail_server|Non|-|localhost|Adresse du serveur de mail que monit utilisera pour envoyer les mails d'alerte à l'administrateur du système.|
 |monit_mail_address|Non|-|-|Adresse mail à laquelle monit envoyera les mails d'alerte.|

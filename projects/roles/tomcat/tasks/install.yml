@@ -35,15 +35,6 @@
     pkg: "{{item.package}}"
     state: present
   with_items: "{{ tomcat_required_packages }}"
-  when: "ansible_os_family == 'Debian'"
- 
-# TODO : tomcat_required_packages - Rework : Est-ce les même noms de packages sur des environnements ansible_os_family == 'RedHat' ??
-- name: Install required librairies
-  yum:
-    pkg: "{{item.package}}"
-    state: present
-  with_items: "{{ tomcat_required_packages }}"
-  when: "ansible_os_family == 'RedHat'"
 
 - include: download.yml
 

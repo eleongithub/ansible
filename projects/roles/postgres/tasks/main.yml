@@ -2,7 +2,6 @@
 - name: Check if postgresql is installed on the system
   shell: aptitude search {{ postgres_server_pkg }} || echo "Unknown PostgreSQL Server"
   register: postgresql_exists
-#TODO : Rechercher comment vérifier la présence d'un package en environnement Redhat/Fedora/etc...
 
 - name: Installing PostgreSQL Server...
   apt:
@@ -11,16 +10,6 @@
   with_items:
     - "{{ postgres_server_pkg }}"
     - "{{ postgres_client_pkg }}"
-  when: "('{{ postgres_server_pkg }}' not in '{{ postgresql_exists.stdout }}') and (ansible_os_family == 'Debian')"
-
-- name: Installing PostgreSQL Server...
-  yum:
-    pkg: "{{ item }}"
-    state: present
-  with_items:
-    - "{{ postgres_server_pkg }}"
-    - "{{ postgres_client_pkg }}"
-  when: "('{{ postgres_server_pkg }}' not in '{{ postgresql_exists.stdout }}') and (ansible_os_family == 'RedHat')"
 
 - name: Deploy configurations files
   template:

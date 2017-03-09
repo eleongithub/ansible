@@ -1,7 +1,7 @@
 ---
 
 ###################
-# Security & Monitoring
+# Security, Monitoring & build essential
 ###################
 - hosts: all
   vars_files:
@@ -15,15 +15,6 @@
     - { role: monit, tags: ['monit'] }
     - { role: monit_sshd, tags: ['monit_sshd'] }
     - { role: ntp, tags: ['ntp'] }
- 
-####################
-# Install build essential
-###################
-- hosts: all
-  vars_files:
-   - "password/password-{{env}}.yml"
-  become: yes
-  roles:
     - { role: build_essential, tags: ['build_essential'] }
 
 
@@ -70,8 +61,6 @@
     - { role: apache_mod_jk, tags: ['apache_mod_jk'] }
     - { role: apache_private_ca, tags: ['apache_private_ca'] }
     - { role: monit_apache, tags: ['monit_apache'] }
-
-
 
 ##################
 #Install ProFTP

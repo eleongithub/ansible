@@ -6,14 +6,6 @@
     name: ntp
     state: present
     update_cache: yes
-  when: ansible_os_family == 'Debian'
-
-- name: Installing NTP...
-  yum:
-    name: ntp
-    state: present
-    update_cache: yes
-  when: ansible_os_family == 'RedHat'
 
 - name: Add Iptables Input trafic rule for NTP
   command: >

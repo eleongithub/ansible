@@ -1,8 +1,7 @@
 ---
 # defaults file for monit
 monit_daemon: 60
-monit_config_file_os_family_debian: "/etc/monit/monitrc"
-monit_config_file_os_family_redhat: "/etc/monit.conf"
+monit_config_file: "/etc/monit/monitrc"
 monit_send_alert_mail: True
 monit_mail_server: localhost
 monit_mail_address: ansible@localhost

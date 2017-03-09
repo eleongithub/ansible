@@ -5,10 +5,3 @@
   apt:
     pkg: postfix
     state: present
-  when: ansible_os_family == 'Debian'
-
-- name: Install postfix package
-  yum:
-    pkg: postfix
-    state: present
-  when: ansible_os_family == 'RedHat'

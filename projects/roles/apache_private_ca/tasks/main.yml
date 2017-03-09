@@ -3,13 +3,6 @@
   apt:
     pkg: openssl
     state: present
-  when: ansible_os_family == 'Debian'
-
-- name: Installing openssl package
-  yum:
-    name: openssl
-    state: present
-  when: ansible_os_family == 'RedHat'
 
 - name: Create certification authority (CA) main directory
   file:

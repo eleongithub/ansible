@@ -3,13 +3,6 @@
   apt:
     pkg: openssl
     state: present
-  when: ansible_os_family == 'Debian'
-
-- name: Installing openssl...
-  yum:
-    name: openssl
-    state: present
-  when: ansible_os_family == 'RedHat'
 
 - name : Check tomcat security directory exists
   stat:
