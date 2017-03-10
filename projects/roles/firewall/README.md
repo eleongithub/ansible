@@ -22,7 +22,7 @@ Role Variables
 |firewall_input_allowed_ports|-|Listes des ports à ouvrir en entrée avec les protocoles associés.|
 |firewall_output_allowed_ports|-|Listes des ports à ouvrir en sortie avec les protocoles associés.|
 
-Plus d'informations sur les variables  [ici](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/firewall/defaults/main.yml)
+Plus d'informations sur les variables  [ici](https://github.com/eleongithub/ansible//ansible-postgresql-role/blob/master/defaults/main.yml)
 
 Dependencies
 ------------
@@ -33,7 +33,6 @@ Example Playbook
 ----------------
 
 Install firewall
-```yaml
 - hosts: all
   roles:
     - { role: firewall }
