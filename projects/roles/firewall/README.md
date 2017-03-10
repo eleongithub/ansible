@@ -33,10 +33,12 @@ Example Playbook
 ----------------
 
 Install firewall
-    - hosts: all
-      roles:
-         - { role: firewall }
-         
+```yaml
+- hosts: all
+  roles:
+    - { role: firewall }
+```
+
 License
 -------
 
