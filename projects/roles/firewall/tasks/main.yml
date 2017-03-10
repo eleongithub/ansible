@@ -1,5 +1,5 @@
 ---
-# This playbook contains firewall plays that will be run on all nodes.
+# tasks file for firewall
 
 - name: Stop firewall script and disable it.
   service:

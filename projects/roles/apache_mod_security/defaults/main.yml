@@ -1,5 +1,6 @@
 ---
-root_user: root
+# defaults file for apache_mod_security
+oot_user: root
 root_group: sys
 apache_home: /opt/apache2
 apache_logs_dir: "{{ apache_home }}/logs"

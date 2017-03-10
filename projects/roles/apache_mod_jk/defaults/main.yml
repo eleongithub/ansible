@@ -1,4 +1,5 @@
 ---
+# defaults file for apache_mod_jk
 root_user: root
 root_group: sys
 apache_home: /opt/apache2

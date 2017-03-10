@@ -1,7 +1,7 @@
 ---
+# tasks file for build_essential
 
 - name: Installed build-essential(dpkg-dev, g++, gcc, libc6-dev, libc-dev, make)
   apt:
     pkg: build-essential
     state: present
-  when: ansible_os_family == 'Debian'

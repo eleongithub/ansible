@@ -1,5 +1,6 @@
 ---
 # defaults file for proftp_fail2ban
+
 fail2ban_enabled: true
 proftp_maxretry: 6
 proftp_destination_mail: "ansible@localhost"

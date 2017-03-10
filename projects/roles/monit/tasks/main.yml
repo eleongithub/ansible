@@ -11,7 +11,7 @@
     backup: yes
     src: monit.conf.j2
     dest: "{{ monit_config_file }}"
-    
+
 - name : Iptables rules
   include: iptables.yml
   when: monit_activate_admin_dashboard and iptables_enabled

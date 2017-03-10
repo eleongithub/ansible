@@ -1,4 +1,5 @@
 ---
+# handlers file for postgres_backup
 
 - name: Restart PostgreSQL
   service:

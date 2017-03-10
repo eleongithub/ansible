@@ -1,5 +1,6 @@
 ---
 # tasks file for postgres_backup
+
 - name : Check backups directory exists
   stat:
     path: "{{ backup_dir }}"

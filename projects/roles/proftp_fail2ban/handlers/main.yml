@@ -1,5 +1,6 @@
 ---
 # handlers file for proftp_fail2ban
+
 - name: Restart Fail2ban
   service:
     name: fail2ban

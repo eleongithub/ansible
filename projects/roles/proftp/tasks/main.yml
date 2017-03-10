@@ -1,5 +1,5 @@
 ---
-# This playbook contains ProFTP installation.
+# tasks file for proftp
 
 - name: Check if ProFTP is installed on the system
   shell: proftpd --version || echo "Unknown ProFTP Server"

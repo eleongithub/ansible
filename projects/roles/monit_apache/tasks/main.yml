@@ -1,5 +1,6 @@
 ---
 # tasks file for monit_apache
+
 - name: Copy configuration file
   template:
     backup: yes
@@ -13,4 +14,3 @@
   command: echo "Reload monit..."
   notify:
     - Reload monit
-

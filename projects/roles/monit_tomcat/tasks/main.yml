@@ -1,5 +1,6 @@
 ---
 # tasks file for monit_tomcat
+
 - name: Copy configuration file
   template:
     backup: yes

@@ -1,5 +1,5 @@
 ---
-# defaults file for firewall-ufw
+# defaults file for firewall_ufw
 
 # Common port:
 #   21 - ftp
@@ -20,15 +20,3 @@
 #   8983: Tomcat HTTP
 #   8443: Tomcat HTTPS
 #   9000: SonarQube
-# for more informations about ports, look at  http://guide.ovh.com/firewall
-
-
-# We make a choice to open these ports.
-allow_ports:
- - { port: '22', rule: 'allow', proto: 'tcp' }
- - { port: '23', rule: 'allow', proto: 'tcp' }
- - { port: '25', rule: 'allow', proto: 'tcp' }
- - { port: '53', rule: 'allow', proto: 'tcp' }
- - { port: '80', rule: 'allow', proto: 'tcp' }
- - { port: '443', rule: 'allow', proto: 'tcp' }
- - { port: '123', rule: 'allow', proto: 'tcp' }

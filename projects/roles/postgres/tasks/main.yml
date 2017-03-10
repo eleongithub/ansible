@@ -1,4 +1,6 @@
 ---
+# tasks file for postgres
+
 - name: Check if postgresql is installed on the system
   shell: aptitude search {{ postgres_server_pkg }} || echo "Unknown PostgreSQL Server"
   register: postgresql_exists

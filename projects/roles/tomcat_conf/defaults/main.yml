@@ -1,4 +1,6 @@
 ---
+# defaults file for tomcat_conf
+
 java_home: /opt/java
 tomcat_http_port: 8080
 tomcat_https_port: 8443

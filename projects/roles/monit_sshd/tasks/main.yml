@@ -1,5 +1,6 @@
 ---
 # tasks file for monit_sshd
+
 - name: Copy configuration file
   template:
     backup: yes

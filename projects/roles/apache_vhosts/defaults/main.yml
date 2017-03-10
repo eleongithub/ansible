@@ -1,4 +1,6 @@
 ---
+# defaults file for apache_vhosts
+
 http_default_port: 80
 apache_home: /opt/apache2
 apache_vhosts_dir: "{{ apache_home }}/vhosts"
@@ -20,4 +22,3 @@ apache_vhosts:
     use_https: True
     ssl_subj: "/C=\"{{ ssl_country }}\"/ST=\"{{ ssl_state }}\"/L=\"{{ ssl_locality }}\"/O=\"{{ ssl_organisation }}\"/OU=\"{{ ssl_organisation_unit }}\"/CN=vhosts1.fr"
     docs: 'docs'
-    

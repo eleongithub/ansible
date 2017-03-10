@@ -1,5 +1,6 @@
 ---
 # defaults file for monit_postgresql
+
 postgres_port: 5432
 postgres_version: 9.4
 monit_postgres_config_file: "/etc/monit/conf.d/postgresql.conf"

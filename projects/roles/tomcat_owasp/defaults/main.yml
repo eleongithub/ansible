@@ -1,4 +1,6 @@
 ---
+# defaults file for tomcat_owasp
+
 tomcat_user: tomcat
 tomcat_user_group: tomcat
 tomcat_versions: "/opt/tomcat_versions"

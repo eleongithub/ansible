@@ -1,4 +1,6 @@
 ---
+# defaults file for proftp
+
 proftp_version: "1.3.5"
 proftp_user: "proftpd"
 proftp_user_group: "proftpd"

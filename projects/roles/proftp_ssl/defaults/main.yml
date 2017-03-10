@@ -1,4 +1,6 @@
 ---
+# defaults file for proftp_ssl
+
 proftp_conf_path: "/etc/proftpd/proftpd.conf"
 proftp_tls_conf_path: "/etc/proftpd/tls.conf"
 proftp_tls_log_file: "/var/log/proftpd/tls.log"

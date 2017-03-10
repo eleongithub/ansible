@@ -1,5 +1,6 @@
 ---
-# defaults file for fail2ban-ssh
+# defaults file for fail2ban_ssh
+
 fail2ban_enabled: True
 sshd_maxretry: 6
 sshd_destination_mail: "ansible@localhost"

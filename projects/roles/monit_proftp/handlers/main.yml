@@ -1,5 +1,6 @@
 ---
 # handlers file for monit_proftp
+
 - name: Reload monit
   service:
     name: monit

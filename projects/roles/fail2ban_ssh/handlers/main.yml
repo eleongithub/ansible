@@ -1,5 +1,6 @@
 ---
-# handlers file for fail2ban-ssh
+# handlers file for fail2ban_ssh
+
 - name: Restart Fail2ban
   service:
     name: fail2ban

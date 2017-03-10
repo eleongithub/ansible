@@ -34,46 +34,46 @@
 ###################
 # Install Tomcat
 ###################
-- hosts: tomcat
-  vars_files:
-   - "password/password-{{env}}.yml"
-  become: yes
-  roles:
-    - { role: jdk, tags: ['jdk'] }
-    - { role: tomcat, tags: ['tomcat'] }
-    - { role: tomcat_conf, tags: ['tomcat_conf'] }
-    - { role: tomcat_owasp, tags: ['tomcat_owasp'] }
-    - { role: monit_tomcat, tags: ['monit_tomcat'] }
+#- hosts: tomcat
+  #vars_files:
+   #- "password/password-{{env}}.yml"
+  #become: yes
+  #roles:
+    #- { role: jdk, tags: ['jdk'] }
+    #- { role: tomcat, tags: ['tomcat'] }
+    #- { role: tomcat_conf, tags: ['tomcat_conf'] }
+    #- { role: tomcat_owasp, tags: ['tomcat_owasp'] }
+    #- { role: monit_tomcat, tags: ['monit_tomcat'] }
 
 
 ###################
 # Install Apache
 ###################
-- hosts: apache
-  vars_files:
-   - "password/password-{{env}}.yml"
-  become: yes
-  roles:
-    - { role: apache, tags: ['apache'] }
-    - { role: apache_conf, tags: ['apache_conf'] }
-    - { role: apache_mod_security, tags: ['apache_mod_security'] }
-    - { role: apache_status, tags: ['apache_status'] }
-    - { role: apache_mod_jk, tags: ['apache_mod_jk'] }
-    - { role: apache_private_ca, tags: ['apache_private_ca'] }
-    - { role: monit_apache, tags: ['monit_apache'] }
+#- hosts: apache
+  #vars_files:
+   #- "password/password-{{env}}.yml"
+  #become: yes
+  #roles:
+    #- { role: apache, tags: ['apache'] }
+    #- { role: apache_conf, tags: ['apache_conf'] }
+    #- { role: apache_mod_security, tags: ['apache_mod_security'] }
+    #- { role: apache_status, tags: ['apache_status'] }
+    #- { role: apache_mod_jk, tags: ['apache_mod_jk'] }
+    #- { role: apache_private_ca, tags: ['apache_private_ca'] }
+    #- { role: monit_apache, tags: ['monit_apache'] }
 
 ##################
 #Install ProFTP
 ##################
-- hosts: proftp
-  vars_files:
-   - "password/password-{{env}}.yml"
-  become: yes
-  roles:
-    - { role: proftp, tags: ['proftp'] }
-    - { role: proftp_fail2ban, tags: ['proftp_fail2ban'] }
-    - { role: proftp_ssl, tags: ['proftp_ssl'] }
-    - { role: monit_proftp, tags: ['monit_proftp'] }
+#- hosts: proftp
+  #vars_files:
+   #- "password/password-{{env}}.yml"
+  #become: yes
+  #roles:
+    #- { role: proftp, tags: ['proftp'] }
+    #- { role: proftp_fail2ban, tags: ['proftp_fail2ban'] }
+    #- { role: proftp_ssl, tags: ['proftp_ssl'] }
+    #- { role: monit_proftp, tags: ['monit_proftp'] }
 
 
 #===========  Tâche à faire sur Ansible =====================

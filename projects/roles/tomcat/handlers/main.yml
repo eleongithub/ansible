@@ -1,5 +1,6 @@
-# roles/tomcat/handlers/main.yml
 ---
+# handlers file for tomcat
+
 - name: Restart tomcat
   service:
     name: tomcat

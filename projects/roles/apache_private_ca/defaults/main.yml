@@ -1,4 +1,6 @@
 ---
+# defaults file for apache_private_ca
+
 root_user: root
 root_group: sys
 apache_home: /opt/apache2

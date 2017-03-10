@@ -1,4 +1,5 @@
 ---
+# tasks file for apache_vhosts_mod_proxy
 
 - name : Check virtual hosts configuration directory exists
   stat:

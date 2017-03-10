@@ -1,4 +1,6 @@
 ---
+# default file for apache_status
+
 http_default_port: 80
 root_user: root
 root_group: sys

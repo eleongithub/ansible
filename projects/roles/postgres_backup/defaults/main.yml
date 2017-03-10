@@ -1,5 +1,6 @@
 ---
 # defaults file for postgres_backup
+
 postgres_version: 9.4
 postgres_conf_dir: "/etc/postgresql/{{postgres_version}}/main"
 backup_dir: "/home/backups/database/postgresql/"

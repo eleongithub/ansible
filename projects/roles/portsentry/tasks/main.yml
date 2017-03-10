@@ -1,6 +1,7 @@
 ---
 # tasks file for portsentry
 
+
 - name: Installing portsentry...
   apt:
     pkg: portsentry
@@ -16,7 +17,7 @@
     mode: "{{item.mode}}"
   with_items:
    - "{{ portsentry_files }}"
-   
+
 - name: Restart portsentry
   command: echo "Restart portsentry..."
   notify:

@@ -1,4 +1,6 @@
 ---
+# defaults file for jdk
+
 java_version: 1.8.0_73
 jdk_versions: /opt/jdk_versions
 java_home: /opt/java

@@ -1,4 +1,6 @@
 ---
+# defaults file for apache_conf
+
 http_default_port: 80
 https_default_port: 443
 apache_home: /opt/apache2

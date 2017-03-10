@@ -1,4 +1,6 @@
 ---
+# handlers file for apache_status
+
 - name: Restart Apache
   service:
     name: apache

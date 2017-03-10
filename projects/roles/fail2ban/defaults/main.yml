@@ -1,5 +1,6 @@
 ---
 # defaults file for fail2ban
+
 iptables_enabled: False
 mta_agent: postfix
 fail2ban_init_script: "/etc/init.d/fail2ban"

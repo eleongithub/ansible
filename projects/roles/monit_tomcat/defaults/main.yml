@@ -1,5 +1,6 @@
 ---
 # defaults file for monit_tomcat
+
 tomcat_http_port: 8080
 monit_tomcat_config_file: "/etc/monit/conf.d/tomcat.conf"
 tomcat_stop_command: "/usr/sbin/service tomcat stop"

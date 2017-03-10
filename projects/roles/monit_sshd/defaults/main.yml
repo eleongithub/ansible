@@ -1,5 +1,6 @@
 ---
 # defaults file for monit_sshd
+
 monit_sshd_config_file: "/etc/monit/conf.d/sshd.conf"
 sshd_stop_command: "/usr/sbin/service sshd stop"
 sshd_start_command: "/usr/sbin/service sshd start"
