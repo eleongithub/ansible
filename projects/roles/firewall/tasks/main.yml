@@ -8,7 +8,7 @@
     enabled: no
   ignore_errors: true
 
-- name: Installing iptables package...
+- name: Installing iptables package
   apt:
     pkg: iptables
     state: present

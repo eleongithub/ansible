@@ -22,7 +22,7 @@ Role Variables
 |firewall_input_allowed_ports|-|Input open ports.|
 |firewall_output_allowed_ports|-|Output open ports.|
 
-More informations about variables [heare.](https://github.com/eleongithub/ansible//ansible-postgresql-role/blob/master/defaults/main.yml)
+More informations about variables [here.](https://github.com/eleongithub/ansible//ansible-postgresql-role/blob/master/defaults/main.yml)
 
 Dependencies
 ------------

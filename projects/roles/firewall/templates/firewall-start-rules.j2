@@ -53,12 +53,12 @@ $IPTABLES -t filter -A OUTPUT -o {{ network_interface }} -p {{ allow_output_port
 
 
 # Log input trafic.
-{% if firewall_logs_input_trafic %}
+{% if firewall_enabled_logs_input_trafic %}
 $IPTABLES -A INPUT -j LOG
 {% endif %} 
 
 # Log output trafic.
-{% if firewall_logs_output_trafic %}
+{% if firewall_enabled_logs_output_trafic %}
 $IPTABLES -A OUTPUT -j LOG 
 {% endif %}
 
