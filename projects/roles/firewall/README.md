@@ -21,6 +21,8 @@ Role Variables
 |firewall_script_files|-|Bash scripts used by firewall program.|
 |firewall_input_allowed_ports|-|Input open ports.|
 |firewall_output_allowed_ports|-|Output open ports.|
+|firewall_enabled_logs_input_trafic|True|Enable log input trafic|
+|firewall_enabled_logs_output_trafic|True|Enable log output trafic|
 
 More informations about variables [here.](https://github.com/eleongithub/ansible//ansible-postgresql-role/blob/master/defaults/main.yml)
 
