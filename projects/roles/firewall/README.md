@@ -14,27 +14,29 @@ Requirements
 
 Role Variables
 --------------
- 
-| Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
-| ------------- |:-------------:| ------------------:|:--------:|:-----------|
-|firewall_script_files| Oui|-|-|Liste des scripts Bash à copier sur le serveur cible avec les droits utilisateurs associés.|
-|firewall_input_allowed_ports|Oui|-|-|Listes des ports à ouvrir en entrée avec les protocoles associés.|
-|network_interface|Oui|eth0|eth0|Interface réseau sur lequel les règles Iptables seront appliquées.|
-|firewall_output_allowed_ports|Oui|-|-|Listes des ports à ouvrir en sortie avec les protocoles associés.|
+
+| Nom	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|network_interface|eth0|Interface réseau sur lequel les règles Iptables sont appliquées.|
+|firewall_script_files|-|Liste des scripts Bash utiles pour le parfeu.|
+|firewall_input_allowed_ports|-|Listes des ports à ouvrir en entrée avec les protocoles associés.|
+|firewall_output_allowed_ports|-|Listes des ports à ouvrir en sortie avec les protocoles associés.|
+
+Plus d'informations sur les variables  [ici](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/firewall/defaults/main.yml)
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: firewall }
+Install firewall
+```yaml
+- hosts: all
+  roles:
+    - { role: firewall }
 
 License
 -------
@@ -44,4 +46,4 @@ BSD
 Author Information
 ------------------
 
-Created in 2016 by Eric LEGBA.
+Eric LEGBA.
