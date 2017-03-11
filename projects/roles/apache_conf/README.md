@@ -47,7 +47,9 @@ apache_conf_files:
 |apache_conf_keep_alive|On|Keep alive configuration|
 |apache_conf_max_keep_alive_requests|150|Max keep alive requests|
 |apache_conf_keep_alive_timeout|15|Keep alive timeout|
- 
+
+More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/apache_conf/defaults/main.yml)
+
 Dependencies
 ------------
 
