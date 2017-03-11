@@ -28,6 +28,7 @@ Role Variables
 |fail2ban_jail_configuration_orig_file|/etc/fail2ban/jail.conf.orig|Fail2Ban's original configuration file.|
 |fail2ban_alert_mail|user@localhost|Email address for receiving alerts.|
 
+More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/fail2ban/defaults/main.yml)
 Dependencies
 ------------
 
