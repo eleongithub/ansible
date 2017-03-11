@@ -13,21 +13,8 @@ None.
 
 Role Variables
 --------------
-
-root_user: root
-root_group: sys
-apache_user: wwwd
-apache_user_group: wwwd
-apache_conf_log_level: warn
-apache_conf_max_clients: 300
-apache_conf_keep_alive: 'On'
-apache_conf_max_keep_alive_requests: 500
-apache_conf_keep_alive_timeout: 15
-apache_conf_files:
- - { src: 'httpd.conf.j2', dest: '{{ apache_httpd_file }}' }
- - { src: 'modules.conf.j2', dest: '{{ apache_modules_file }}' }
  
- | Name	        | Default Value	| Description|
+| Name	        | Default Value	| Description|
 | ------------- |:-------------:| ----------:|
 |http_default_port|80|HTTP Port|
 |https_default_port|443|HTTPS Port|
