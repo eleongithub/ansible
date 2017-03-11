@@ -24,7 +24,7 @@ Role Variables
 |firewall_enabled_logs_input_trafic|True|Enable log input trafic|
 |firewall_enabled_logs_output_trafic|True|Enable log output trafic|
 
-More informations about variables [here.](https://github.com/eleongithub/ansible//ansible-postgresql-role/blob/master/defaults/main.yml)
+More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/firewall/defaults/main.yml)
 
 Dependencies
 ------------
