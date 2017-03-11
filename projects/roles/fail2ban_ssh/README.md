@@ -18,6 +18,8 @@ Role Variables
 |sshd_destination_mail|root@localhost|Email address for receiving alerts.|
 |sshd_bantime|600 seconds (10 minutes)|Exclusion time.|
 
+More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/fail2ban_ssh/defaults/main.yml)
+
 Dependencies
 ------------
 
