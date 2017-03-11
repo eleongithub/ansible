@@ -16,4 +16,4 @@ mod_status_server_alias: 'www.status.fr'
 mod_status_require_ip: ''
 mod_status_require_host: ''
 mod_status_enable_authentication: True
-apache_server_admin: admin@example.com
+apache_server_admin: root@localhost

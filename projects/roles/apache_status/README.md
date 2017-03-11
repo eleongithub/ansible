@@ -1,31 +1,52 @@
-Role Name
+apache_status
 =========
 
-A brief description of the role goes here.
+apache_status adds status module and its configurations to Apache server.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
+ 
+| Name	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|http_default_port|80|HTTP Port|
+|apache_home|/opt/apache2|Installation directory for the current version of Apache|
+|apache_logs_dir|/opt/apache2/logs|Directory containing Apache's log files|
+|apache_conf_dir|/opt/apache2/conf|Directory containing Apache's configuration files|
+|apache_modules_file|/opt/apache2/conf/modules.conf|List of the modules|
+|apache_httpd_file|/opt/apache2/conf/httpd.conf|HTTPD configuration file|
+|apache_init_script|/etc/init.d/apache|Script to control Apache server (start/stop/restart/reload)|
+|mod_status_require_ip|''|Restricted IP Address which are allowed to connect to Apache status interface|
+|mod_status_require_host|''|Restricted hosts which are allowed to connect to Apache status interface|
+|apache_vhosts_dir|/opt/apache2/vhosts|Apache's virtual hosts directory|
+|apache_modules_dir|/opt/apache2/modules|Apache's modules directory|
+|mod_status_url|http://xx.xx.xx.xx....|Url to download the mod status library (Repo Nexus).|
+|mod_status_server_name|status.fr|HTTP Address to get mod status interface|
+|mod_status_server_alias|www.status.fr|HTTP Address to get mod status interface|
+|mod_status_enable_authentication|True|Enable authentication popup (Login & Password) before access to mod status interface|
+|apache_server_admin|root@localhost|Apache administrator mail.|
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+
+More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/apache_status/defaults/main.yml)
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- apache
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Install apache_conf
+```yaml
+- hosts: all
+  roles:
+    - { role: apache_status }
+```
 
 License
 -------
@@ -34,5 +55,4 @@ BSD
 
 Author Information
 ------------------
-
-Created in 2016 by Eric LEGBA.
+Eric LEGBA.
