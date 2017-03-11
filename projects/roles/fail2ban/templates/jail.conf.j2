@@ -60,7 +60,11 @@ usedns = warn
 #
 # Destination email address used solely for the interpolations in
 # jail.{conf,local} configuration files.
+{% if (fail2ban_alert_mail is defined) and (fail2ban_alert_mail != None) %}
 destemail = {{ fail2ban_alert_mail }}
+{% else %}
+destemail = root@localhost
+{% endif %}
 
 #
 # Name of the sender for mta actions
@@ -82,7 +86,12 @@ banaction = iptables-multiport
 # email action. Since 0.8.1 upstream fail2ban uses sendmail
 # MTA for the mailing. Change mta configuration parameter to mail
 # if you want to revert to conventional 'mail'.
+{% if (mta_agent is defined) and (mta_agent != None) %}
 mta = {{ mta_agent }}
+{% else %}
+mta = postfix
+{% endif %}
+
 
 # Default protocol
 protocol = tcp

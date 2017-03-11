@@ -1,37 +1,47 @@
 fail2ban
 =========
 
-Fail2Ban est un programme écrit en Python qui a pour but de détecter les attaques de type Brute-Force.
-Il lit les fichiers logs de plusieurs serveurs (SSH, FTP, HTTP, etc...) et étudie les comportements inhabituels
-d'échecs d'authentification répétés. Il bannit l'adresse IP du client avec une règle iptables.
+Fail2Ban is a program written in Python that aims to detect Brute-Force attacks.
+It reads the log files of several servers (SSH, FTP, HTTP, etc ...) and studies the unusual behaviors
+of repeated authentication failures. It bans the IP address of the client with an iptables rule.
+fail2ban is an Ansible role that allows you to install the eponymous program with the basic configurations.
 
 Requirements
 ------------
 
+None.
+iptables_enabled: False
+mta_agent: postfix
+fail2ban_init_script: "/etc/init.d/fail2ban"
+fail2ban_jail_configuration_file: "/etc/fail2ban/jail.conf"
+fail2ban_jail_configuration_orig_file: "/etc/fail2ban/jail.conf.orig"
+fail2ban_alert_mail: "ansible@localhost"
 
 Role Variables
 --------------
-| Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
-| ------------- |:-------------:| ------------------:|:--------:|:-----------|
-|mta_agent| Non|-|-|Serveur de mail que Fail2Ban utilisera pour envoyer des mails d'alerte.|
-|fail2ban_init_script|Oui|/etc/init.d/fail2ban|/etc/init.d/fail2ban|Script de contrôle du programme Fail2Ban.|
-|fail2ban_jail_configuration_file|Oui|/etc/fail2ban/jail.conf|/etc/fail2ban/jail.conf|Fichier de configuration personnalisé de Fail2Ban.|
-|fail2ban_jail_configuration_orig_file|Oui|/etc/fail2ban/jail.conf.orig|/etc/fail2ban/jail.conf.orig|Fichier de configuration original de Fail2Ban.|
-|fail2ban_alert_mail|Non|-|user@localhost|Adresse mail de réception des mails d'alerte.|
+| Name	        | Default Value	| Description|
+| ------------- |:-------------:| -----------|
+|iptables_enabled|False|Booleen to change the configuration of fail2ban if an iptables firewall is enabled on the server.|
+|mta_agent|postfix|Mail server to send alerts.|
+|fail2ban_init_script|/etc/init.d/fail2ban|Script Bash to control (start, stop, status, etc...) Fail2Ban.|
+|fail2ban_jail_configuration_file|/etc/fail2ban/jail.conf|Fail2Ban configuration file.|
+|fail2ban_jail_configuration_orig_file|/etc/fail2ban/jail.conf.orig|Fail2Ban's original configuration file.|
+|fail2ban_alert_mail|user@localhost|Email address for receiving alerts.|
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: fail2ban }
+Install fail2ban
+```yaml
+- hosts: all
+  roles:
+    - { role: fail2ban }
+```
 
 License
 -------
@@ -41,4 +51,4 @@ BSD
 Author Information
 ------------------
 
-Created in 2016 by Eric LEGBA.
+Eric LEGBA.
