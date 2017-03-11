@@ -1,31 +1,39 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+apache role compile Apache server from source and installs if from scratch. 
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Name	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|apache_version|2.4.23|Apache's Version.|
+|apache_versions|/opt/apache_versions|Directory containing Apache version sources that have been installed.|
+|apache_home|/opt/apache2|Installation directory for the current version of Apache.|
+|apache_last_version|/opt/apache_versions/httpd-2.4.23|Directory containing Apache 2.4.23 sources.|
+|apache_tarball_name|httpd-2.4.23.tar.gz|Apache archive tar.gz.|
+|apache_url|http://xx.xx.xx.xx:9081/nexus/content/repositories/public/org/apache/httpd/2.4.23/httpd-2.4.23.tar.gz|Url to download the apache archive (Repo Nexus).|
+|apache_required_packages|-|List of prerequisite packages to install Apache.|
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None
 
 Example Playbook
 ----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Install apache
+```yaml
+- hosts: servers
+  roles:
+    - { role: apache }
+```
 
 License
 -------
@@ -35,4 +43,4 @@ BSD
 Author Information
 ------------------
 
-Created in 2016 by Eric LEGBA.
+Eric LEGBA.

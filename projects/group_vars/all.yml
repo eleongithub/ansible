@@ -1,6 +1,6 @@
 ---       
 iptables_enabled: True
-nexus: "http://192.168.0.13:9081/nexus"
+nexus: "http://192.168.0.14:9081/nexus"
 nexus_repositories: "{{ nexus }}/content/repositories"
 nexus_public_repository: "{{ nexus_repositories }}/public"
 tcp_mode: "atcp"

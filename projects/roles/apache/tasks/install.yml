@@ -2,10 +2,10 @@
 
 - name: Install required librairies
   apt:
-    pkg: "{{ item.package }}"
+    pkg: "{{ item }}"
     state: present
   with_items: "{{ apache_required_packages }}"
-  
+
 - name : Check apache versions directory exists
   stat:
     path: "{{ apache_versions }}"
@@ -53,7 +53,7 @@
   when: ansible_version.major|int < 2
 
 - name: Compile Apache
-  shell: cd {{ apache_last_version }} && ./configure --prefix=/opt/apache2 --with-mpm=worker --enable-so --enable-cache --enable-cache_disk --enable-socache_shmcb --enable-mod_dir --enable-imagemap --enable-include --enable-log_config --enable-logio --enable-log_debug --enable-proxy --enable-access_compat --enable-mime --enable-rewrite --enable-alias --enable-deflate --enable-expires --enable-headers --enable-status --enable-ssl --enable-setenvif --enable-unique_id --disable-actions --disable-env --disable-authz_dbm --disable-cgi --disable-auth_digest --disable-authnz_ldap --disable-autoindex --disable-asis --disable-cgid --disable-negotiation --disable-userdir --disable-charset-lite
+  shell: cd {{ apache_last_version }} && ./configure --prefix={{ apache_home }} --with-mpm=worker --enable-so --enable-cache --enable-cache_disk --enable-socache_shmcb --enable-mod_dir --enable-imagemap --enable-include --enable-log_config --enable-logio --enable-log_debug --enable-proxy --enable-access_compat --enable-mime --enable-rewrite --enable-alias --enable-deflate --enable-expires --enable-headers --enable-status --enable-ssl --enable-setenvif --enable-unique_id --disable-actions --disable-env --disable-authz_dbm --disable-cgi --disable-auth_digest --disable-authnz_ldap --disable-autoindex --disable-asis --disable-cgid --disable-negotiation --disable-userdir --disable-charset-lite
           
 - name: Execute commands to install Apache.
   shell: cd {{ apache_last_version }} && make && umask 022 && make install && make clean
