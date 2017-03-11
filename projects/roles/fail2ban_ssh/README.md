@@ -10,6 +10,7 @@ Requirements
 
 Role Variables
 --------------
+
 | Name	        | Default Value	| Description|
 | ------------- |:-------------:| ----------:|
 |fail2ban_enabled|True|Enable the fail2ban control on the SSH server.|
