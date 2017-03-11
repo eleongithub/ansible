@@ -22,6 +22,7 @@ Role Variables
 |apache_required_packages|-|List of prerequisite packages to install Apache.|
 
 More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/apache/defaults/main.yml)
+
 Dependencies
 ------------
 
