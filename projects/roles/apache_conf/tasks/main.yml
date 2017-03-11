@@ -8,7 +8,7 @@
     enabled: no
   ignore_errors: true
 
-- name : Remove eventual Apache init script from the system
+- name : Remove eventual Apache control script from the system
   file:
     path: "{{ apache_init_script }}"
     state: absent
@@ -26,7 +26,7 @@
     name: "{{ apache_user_group }}"
     state: present
 
-- name: Create User Apache
+- name: Create User Apache without home and no Shell
   user:
     name: "{{ apache_user }}"
     createhome: no
@@ -44,7 +44,7 @@
     force: yes
   with_items: "{{ apache_conf_files }}"
 
-- name: Copy Apache init script
+- name: Copy Apache control script
   template:
     src: apache.sh.j2
     dest: "{{ apache_init_script }}"

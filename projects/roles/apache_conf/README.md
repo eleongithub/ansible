@@ -1,31 +1,67 @@
-Role Name
+apache_conf
 =========
 
-A brief description of the role goes here.
+apache_conf makes configurations on the Apache server : 
+  - right of the directories (owner, group)
+  - deploy configuration files
+  - enable service to start/stop/reload/restart Apache Server.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
+root_user: root
+root_group: sys
+apache_user: wwwd
+apache_user_group: wwwd
+apache_conf_log_level: warn
+apache_conf_max_clients: 300
+apache_conf_keep_alive: 'On'
+apache_conf_max_keep_alive_requests: 500
+apache_conf_keep_alive_timeout: 15
+apache_conf_files:
+ - { src: 'httpd.conf.j2', dest: '{{ apache_httpd_file }}' }
+ - { src: 'modules.conf.j2', dest: '{{ apache_modules_file }}' }
+ 
+ | Name	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|http_default_port|80|HTTP Port|
+|https_default_port|443|HTTPS Port|
+|apache_home|/opt/apache2|Installation directory for the current version of Apache|
+|apache_logs_dir|/opt/apache2/logs|Directory containing Apache's log files|
+|apache_conf_dir|/opt/apache2/conf|Directory containing Apache's configuration files|
+|apache_modules_file|/opt/apache2/conf/modules.conf|List of the modules|
+|apache_httpd_file|/opt/apache2/conf/httpd.conf|HTTPD configuration file|
+|apache_init_script|/etc/init.d/apache|Script to control Apache server (start/stop/restart/reload)|
+|root_user|root|Owner of the Apache's directories|
+|root_group|sys|Owner's group|
+|apache_user|wwwd|Dedicated user to run the httpd daemon|
+|apache_user_group|wwwd|Dedicated user's group|
+|apache_conf_files|-|List of configuration's files which will be deployed|
+|apache_conf_log_level|warn|Log levels|
+|apache_conf_max_clients|300|Maximum client|
+|apache_conf_keep_alive|On|Keep alive configuration|
+|apache_conf_max_keep_alive_requests|150|Max keep alive requests|
+|apache_conf_keep_alive_timeout|15|Keep alive timeout|
+ 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- apache
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Install apache_conf
+```yaml
+- hosts: all
+  roles:
+    - { role: apache_conf }
+```
 
 License
 -------
@@ -34,5 +70,4 @@ BSD
 
 Author Information
 ------------------
-
-Created in 2016 by Eric LEGBA.
+Eric LEGBA.
