@@ -3,6 +3,6 @@
 
 fail2ban_enabled: True
 sshd_maxretry: 6
-sshd_destination_mail: "ansible@localhost"
+sshd_destination_mail: "root@localhost"
 fail2ban_jail_configuration_file: "/etc/fail2ban/jail.conf"
 sshd_bantime: 600

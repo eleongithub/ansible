@@ -1,7 +1,7 @@
 fail2ban_ssh
 =========
 
-Le rôle fail2ban_ssh ajoute une configuration pour que Fail2Ban surveille les échecs d'authentification sur le serveur SSH.
+fail2ban_ssh adds a configuration so that Fail2Ban monitors authentication failures on the SSH server.
 
 Requirements
 ------------
@@ -10,26 +10,27 @@ Requirements
 
 Role Variables
 --------------
-
-| Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
-| ------------- |:-------------:| ------------------:|:--------:|:-----------|
-|fail2ban_enabled| Oui|true|true|Activer le contrôle fail2ban sur le serveur SSH.|
-|sshd_maxretry|Oui|6|6|Nombre d'authentification en échec pour bannir le client.|
-|sshd_destination_mail|Oui|-|-|Adresse mail de réception des alertes mail.|
-|sshd_bantime|Oui|600 secondes (10 minutes)|600 secondes (10 minutes)|Temps d'exclusion du client.|
+| Name	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|fail2ban_enabled|True|Enable the fail2ban control on the SSH server.|
+|sshd_maxretry|6|Number of authentication failed to ban a client.|
+|sshd_destination_mail|root@localhost|Email address for receiving alerts.|
+|sshd_bantime|600 seconds (10 minutes)|Exclusion time.|
 
 Dependencies
 ------------
 
+- fail2ban
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: fail2ban_ssh }
+Install fail2ban_ssh
+```yaml
+- hosts: servers
+  roles:
+    - { role: fail2ban_ssh }
+```
 
 License
 -------
@@ -39,4 +40,4 @@ BSD
 Author Information
 ------------------
 
-Created in 2016 by Eric LEGBA.
+Eric LEGBA.
