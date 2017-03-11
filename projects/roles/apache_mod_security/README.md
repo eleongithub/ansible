@@ -1,31 +1,51 @@
-Role Name
+apache_mod_security
 =========
 
-A brief description of the role goes here.
+apache_mod_security compiles and adds Mod Security module to Apache server.
+
+More informations about Mod Security ? Look at [here.](https://github.com/SpiderLabs/ModSecurity/wiki)
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Name	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|mod_security_version|2.9.1|Mod security version|
+|apache_home|/opt/apache2|Installation directory for the current version of Apache|
+|apache_logs_dir|/opt/apache2/logs|Directory containing Apache's log files|
+|apache_conf_dir|/opt/apache2/conf|Directory containing Apache's configuration files|
+|mod_security_logs_dir|/opt/apache2/logs/modsecurity|Directory containing mod security's log files|
+|mod_security_conf_dir|/opt/apache2/conf/modsecurity|Directory containing mod security's configuration files|
+|root_user|root|Owner of mod security's directories|
+|root_group|sys|Owner's group|
+|mod_security_tarball_name|modsecurity-2.9.1.tar.gz|Mod security archive tar.gz|
+|mod_security_url|http://xx.xx.xx.xx....|Url to download mod security archive (Repo Nexus).|
+|mod_security_required_packages|-|List of prerequisite packages to install mod security.|
+|mod_security_unzip_dir|/tmp/mod_security|Mod security unzip directory|
+|mod_security_conf_files|-|List of configuration's files which will be deployed|
+
+More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/apache_mod_security/defaults/main.yml) 
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Install apache_mod_security
+```yaml
+- hosts: servers
+  roles:
+    - { role: apache_mod_security }
+```
 
 License
 -------
@@ -35,4 +55,4 @@ BSD
 Author Information
 ------------------
 
-Created in 2016 by Eric LEGBA.
+Eric LEGBA.
