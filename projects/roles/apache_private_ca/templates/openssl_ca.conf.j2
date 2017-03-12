@@ -4,12 +4,12 @@
 default_ca		= CA_default
 
 [ CA_default ]
-dir			= {{ apache_ssl_ca_conf_dir }}		# Where everything is kept
-serial			= $dir/serial
-database		= $dir/index.txt
+dir			= {{ apache_ssl_ca_dir }}		# Where everything is kept
+serial			= {{ apache_ssl_ca_serial }}
+database		= {{ apache_ssl_ca_index }}
 new_certs_dir		= $dir/newcerts
-certificate		= $dir/ca_cert.pem
-private_key		= $dir/ca_key.pem
+certificate		= {{ apache_ssl_ca_cert }}
+private_key		= {{ apache_ssl_ca_key }}
 default_days		= {{ apache_ssl_ca_default_days }}
 default_md		= {{ apache_ssl_ca_md }}
 preserve		= no

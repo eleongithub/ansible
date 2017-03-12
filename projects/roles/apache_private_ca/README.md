@@ -1,31 +1,51 @@
-Role Name
+apache_private_ca
 =========
 
-A brief description of the role goes here.
+Create a private certificat authority for Apache server.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+OpenSSL.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Name	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|root_user|root|Owner of the Apache's directories|
+|root_group|sys|Owner's group|
+|apache_home|/opt/apache2|Installation directory for the current version of Apache|
+|apache_ssl_ca_md|sha256||
+|apache_ssl_ca_dir|/opt/apache2/private_ca||
+|apache_ssl_ca_key|/opt/apache2/private_ca/ca_key.pem||
+|apache_ssl_ca_cert|/opt/apache2/private_ca/ca_cert.pem||
+|apache_ssl_ca_bits|2048|certifcat file is generated on 2048 bits|
+|apache_ssl_ca_default_days|3650 days (10 years)||
+|apache_ssl_ca_country|FR|Country of code certificat authority|
+|apache_ssl_ca_state|Rhone|State of certificat authority|
+|apache_ssl_ca_locality|Lyon|Locality of certificat authority|
+|apache_ssl_ca_organisation|Syscom|Organisation of certificat authority|
+|apache_ssl_ca_organisation_unit|IT|Organisation unit of certificat authority|
+|apache_ssl_ca_name|Authority Company Inc|Name of certificat authority|
+|apache_ssl_ca_subj|.....|All informations of certificat authority|
+
+More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/apache_private_ca/defaults/main.yml)
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Install apache_conf
+```yaml
+- hosts: all
+  roles:
+    - { role: apache_private_ca }
+```
 
 License
 -------
@@ -34,5 +54,4 @@ BSD
 
 Author Information
 ------------------
-
-Created in 2016 by Eric LEGBA.
+Eric LEGBA.
