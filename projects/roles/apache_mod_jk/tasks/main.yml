@@ -11,7 +11,7 @@
     dest: "{{ mod_jk_unzip_dir }}/"
     remote_src: True
   when: ansible_version.major|int >= 2
-  
+
 - name: Download Apache Mod_JK Archive
   get_url:
     url: "{{ mod_jk_url }}"
@@ -23,13 +23,13 @@
     src: "/tmp/{{ mod_jk_tarball_name }}"
     dest: "{{ mod_jk_unzip_dir }}/"
   when: ansible_version.major|int < 2
-  
+
 - name: Delete Apache Mod_JK Archive
   file:
     path: "/tmp/{{ mod_jk_tarball_name }}"
     state: absent
   when: ansible_version.major|int < 2
-  
+
 - name: Configure Mod JK
   shell: cd {{ mod_jk_dir }} && ./configure --with-apr={{ apr_config_file }} --with-apxs={{ apache_home }}/bin/apxs
 

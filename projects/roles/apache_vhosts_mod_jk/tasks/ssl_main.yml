@@ -68,7 +68,7 @@
       -key "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/key.pem"
       -out "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/req.pem"
       -subj "{{ item.value.ssl_subj }}"
-      -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
+      -config "{{ apache_ssl_ca_dir }}/openssl_ca.conf"
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"
 
@@ -78,7 +78,7 @@
       -batch
       -notext
       -out "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/cert.pem"
-      -config "{{ apache_ssl_ca_conf_dir }}/openssl_ca.conf"
+      -config "{{ apache_ssl_ca_dir }}/openssl_ca.conf"
       -infiles "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/req.pem"
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"

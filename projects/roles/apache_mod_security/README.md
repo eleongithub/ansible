@@ -35,7 +35,7 @@ More informations about variables [here.](https://github.com/eleongithub/ansible
 Dependencies
 ------------
 
-None.
+- apache.
 
 Example Playbook
 ----------------

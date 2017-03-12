@@ -1,4 +1,4 @@
-Role Name
+apache_mod_jk
 =========
 
 A brief description of the role goes here.
@@ -6,26 +6,41 @@ A brief description of the role goes here.
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Name	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|http_default_port|80|HTTP Port|
+|mod_jk_version|1.2.41|Mod jk version|
+|apache_home|/opt/apache2|Installation directory for the current version of Apache|
+|apache_modules_dir|/opt/apache2/modules|Apache's modules directory|
+|apache_modules_file|/opt/apache2/conf/modules.conf|List of the modules|
+|root_user|root|Owner of the Apache's directories|
+|root_group|sys|Owner's group|
+|apr_config_file|/usr/bin/apr-1-config|APR configuration file|
+|mod_jk_tarball_name|tomcat-connectors-1.2.41-src.tar.gz|Mod jk archive tar.gz|
+|mod_jk_url|http://xx.xx.xx.xx....|Url to download mod jk archive (Repo Nexus).|
+|mod_security_required_packages|-|List of prerequisite packages to install mod security.|
+|mod_jk_unzip_dir|/tmp/mod_jk|Mod jk unzip directory|
+|mod_jk_dir|/tmp/mod_jk/tomcat-connectors-1.2.41-src/native|Mod jk unzip sub-directory|
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- apache.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Install apache_mod_jk
+```yaml
+- hosts: servers
+  roles:
+    - { role: apache_mod_jk }
+```
 
 License
 -------
@@ -35,4 +50,4 @@ BSD
 Author Information
 ------------------
 
-Created in 2016 by Eric LEGBA.
+Eric LEGBA.
