@@ -1,12 +1,15 @@
 ---
 # defaults file for portsentry
 
+#tcp_mode: "atcp"
+#udp_mode: "audp"
+
 tcp_mode: "tcp"
 udp_mode: "udp"
 portsentry_config_file: "/etc/portsentry/portsentry.conf"
 portsentry_notification_script: "/etc/portsentry/notification.sh"
 portsentry_ignore_file : "/etc/portsentry/portsentry.ignore"
-portsentry_alert_mail: "ansible@localhost"
+portsentry_alert_mail: "root@localhost"
 
 portsentry_files:
  - { src: 'portsentry.ignore.j2', dest: '{{ portsentry_ignore_file }}', mode: '0644' }

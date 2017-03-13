@@ -2,7 +2,7 @@
 # tasks file for portsentry
 
 
-- name: Installing portsentry...
+- name: Installing portsentry
   apt:
     pkg: portsentry
     state: present

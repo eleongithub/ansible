@@ -7,33 +7,36 @@ Ce rôle permet d'automatiser l'installation de Porsentry sur un serveur.
 
 Requirements
 ------------
-
+None.
 
 Role Variables
 --------------
 
-| Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisé	| Description|
-| ------------- |:-------------:| ------------------:|:--------:|:-----------|
-|tcp_mode|Oui|tcp|atcp|Mode de surveillance TCP(tcp, stcp,atcp).|
-|udp_mode|Oui|udp|audp|Mode de surveillance UDP(udp, sudp,audp).|
-|portsentry_config_file|Oui|/etc/default/portsentry|/etc/default/portsentry|Fichier de configuration de porsentry.|
-|portsentry_notification_script|Non|-|/etc/portsentry/notification.sh|Programme Bash qui notifie à l'admin les scans de ports détectés.|
-|portsentry_ignore_file|Oui|/etc/portsentry/portsentry.ignore|/etc/portsentry/portsentry.ignore|Fichier contenant la liste des adresses IP à ignorer en cas de scan.|
-|portsentry_alert_mail|Non|-|-|Adresse mail de l'administrateur système.|
+| Nom	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|tcp_mode|tcp|TCP Monitoring mode (tcp, stcp,atcp).|
+|udp_mode|udp|UDP Monitoring mode (udp, sudp,audp).|
+|portsentry_config_file|/etc/default/portsentry|Porsentry configuration file.|
+|portsentry_notification_script|/etc/portsentry/notification.sh|Bash programs which send alerting mails to the admin.|
+|portsentry_ignore_file|/etc/portsentry/portsentry.ignore|Ignore IP address list.|
+|portsentry_alert_mail|root@localhost|Admin address mail.|
+
+More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/porsentry/defaults/main.yml)
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: portsentry }
+Install portsentry
+```yaml
+- hosts: servers
+  roles:
+    - { role: portsentry }
+```
 
 License
 -------
@@ -43,4 +46,4 @@ BSD
 Author Information
 ------------------
 
-Created in 2016 by Eric LEGBA.
+Eric LEGBA.
