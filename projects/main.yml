@@ -3,19 +3,19 @@
 ###################
 # Security, Monitoring & build essential
 ###################
-#- hosts: all
-  #vars_files:
-   #- "password/password-{{env}}.yml"
-  #become: yes
-  #roles:
-    #- { role: firewall, tags: ['firewall'] }
-    #- { role: fail2ban, tags: ['fail2ban'] }
-    #- { role: fail2ban_ssh, tags: ['fail2ban_ssh'] }
-    #- { role: portsentry, tags: ['portsentry'] }
-    #- { role: monit, tags: ['monit'] }
-    #- { role: monit_sshd, tags: ['monit_sshd'] }
-    #- { role: ntp, tags: ['ntp'] }
-    #- { role: build_essential, tags: ['build_essential'] }
+- hosts: all
+  vars_files:
+   - "password/password-{{env}}.yml"
+  become: yes
+  roles:
+    - { role: firewall, tags: ['firewall'] }
+    - { role: fail2ban, tags: ['fail2ban'] }
+    - { role: fail2ban_ssh, tags: ['fail2ban_ssh'] }
+    - { role: portsentry, tags: ['portsentry'] }
+    - { role: monit, tags: ['monit'] }
+    - { role: monit_sshd, tags: ['monit_sshd'] }
+    - { role: ntp, tags: ['ntp'] }
+    - { role: build_essential, tags: ['build_essential'] }
 
 
 ###################
@@ -56,12 +56,12 @@
   become: yes
   roles:
     - { role: apache, tags: ['apache'] }
-    #- { role: apache_conf, tags: ['apache_conf'] }
-    #- { role: apache_mod_security, tags: ['apache_mod_security'] }
-    #- { role: apache_status, tags: ['apache_status'] }
-    #- { role: apache_mod_jk, tags: ['apache_mod_jk'] }
-    #- { role: apache_private_ca, tags: ['apache_private_ca'] }
-    #- { role: monit_apache, tags: ['monit_apache'] }
+    - { role: apache_conf, tags: ['apache_conf'] }
+    - { role: apache_mod_security, tags: ['apache_mod_security'] }
+    - { role: apache_status, tags: ['apache_status'] }
+    - { role: apache_mod_jk, tags: ['apache_mod_jk'] }
+    - { role: apache_private_ca, tags: ['apache_private_ca'] }
+    - { role: monit_apache, tags: ['monit_apache'] }
 
 ##################
 #Install ProFTP

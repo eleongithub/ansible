@@ -3,8 +3,6 @@ iptables_enabled: True
 nexus: "http://192.168.0.11:9081/nexus"
 nexus_repositories: "{{ nexus }}/content/repositories"
 nexus_public_repository: "{{ nexus_repositories }}/public"
-tcp_mode: "atcp"
-udp_mode: "audp"
 portsentry_config_file: "/etc/default/portsentry"
 
 
