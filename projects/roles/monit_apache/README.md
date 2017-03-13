@@ -1,37 +1,39 @@
-monit-apache
+monit_apache
 =========
 
-monit-apache permet de configurer monit afin de surveiller le serveur Web Apache.
+monit_apache adds configuration to monit Apache web server.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
 
-| Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
-| ------------- |:-------------:| ------------------:|:--------:|:-----------|
-|apache_pid_file| Oui|/var/run/httpd.pid|/opt/apache2/logs/httpd.pid|Fichier PID contenant l'ID du processus httpd.|
-|monit_apache_config_file|Oui|/etc/monit/conf.d/apache.conf|/etc/monit/conf.d/apache.conf|Fichier de configuration du serveur Web Apache à surveiller.|
-|apache_stop_command|Oui|/etc/init.d/apache2 stop|/usr/sbin/service apache stop|La commande pour stopper le serveur Web Apache.|
-|apache_start_command|Oui|/etc/init.d/apache2 start|/usr/sbin/service apache start|La commande pour démarrer le serveur Web Apache.|
+| Name	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|apache_home|/opt/apache2|Installation directory for the current version of Apache|
+|apache_logs_dir|/opt/apache2/logs|Apache's logs directory|
+|apache_pid_file|/opt/apache2/logs/httpd.pid|Apache's PID file|
+|apache_stop_command|/usr/sbin/service apache stop|Stop command|
+|apache_start_command|/usr/sbin/service apache start|Start command|
 
+More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/monit_apache/defaults/main.yml)
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- monit
 
 Example Playbook
 ----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: monit-apache }
+Install monit_apache
+```yaml
+- hosts: all
+  roles:
+    - { role: monit_apache }
+```
 
 License
 -------
@@ -41,4 +43,4 @@ BSD
 Author Information
 ------------------
 
-Created in 2016 by Eric LEGBA.
+Eric LEGBA.
