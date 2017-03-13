@@ -24,8 +24,18 @@
     validate: "/usr/sbin/visudo -cf %s"
 
     
-#Créer les utilisateurs 
+# 1 - Créer les utilisateurs avec leur nom, prenom, homedir,
+- name: Create user
+  user:
+    name:
+    comment:
+    shell: /bin/bash
+    generate_ssh_key: 
+    ssh_key_bits: 
+    
+# 2 - Génrer leurs clés publiques/privés ssh avec mot de passe pour la clé privée
 
+# 3 - ajouter les utilisateurs aux group sudoers
 - name: Create sudoers
   template:
     src: sudoers.d.j2
