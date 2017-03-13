@@ -16,7 +16,6 @@
   file:
     path: "{{ tomcat_versions }}"
     state: directory
-    recurse: yes
   when: not tomcat_versions_dir_exists.stat.exists
 
 - name: Delete the tomcat home link
@@ -32,7 +31,7 @@
 
 - name: Install required librairies
   apt:
-    pkg: "{{item.package}}"
+    pkg: "{{ item }}"
     state: present
   with_items: "{{ tomcat_required_packages }}"
 

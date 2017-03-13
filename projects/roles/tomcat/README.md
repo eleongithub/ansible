@@ -9,6 +9,7 @@ Il vérifie si la version qui doit être installée existe déjà sur le serveur
 Requirements
 ------------
 
+None. 
 
 Role Variables
 --------------
@@ -31,6 +32,7 @@ Role Variables
 Dependencies
 ------------
 
+None.
 
 Example Playbook
 ----------------
@@ -49,4 +51,4 @@ BSD
 Author Information
 ------------------
 
-Created in 2016 by Eric LEGBA.
+Eric LEGBA.
