@@ -31,11 +31,6 @@
       -out {{ proftp_ssl_cert_file }}
       -keyout {{ proftp_ssl_key_file }}
 
-- name: Secure private key file
-  file:
-    path: "{{ proftp_ssl_key_file }}"
-    mode: 0400
-
 - name: Deploy TLS configuration file
   template:
     src: tls.conf.j2

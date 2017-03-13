@@ -1,4 +1,4 @@
-Role Name
+proftp_ssl
 =========
 
 A brief description of the role goes here.
@@ -11,21 +11,35 @@ Any pre-requisites that may not be covered by Ansible itself or the role should 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Name	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|proftp_conf_path|/etc/proftpd/proftpd.conf|ProFTP main configuration file.|
+|proftp_tls_conf_path|/etc/proftpd/tls.conf|ProFTP TLS configuration file.|
+|proftp_tls_log_file|/var/log/proftpd/tls.log|ProFTP TLS log file.|
+|proftp_ssl_cert_file|/etc/proftpd/ssl/ftp.cert.pem|TLS public certificat file.|
+|proftp_ssl_key_file|/etc/proftpd/ssl/ftp.key.pem|TLS private key file.|
+|proftp_ssl_config_file|/etc/proftpd/ssl/openssl_ca.conf|OpenSSL configuration file to generate private key and certificat.|
+|proftp_dns|vhosts1.fr|ProFTP DNS address.|
+|proftp_user|proftpd|ProFTP User.|
+|proftp_user_group|proftpd|ProFTP User group.|
+|proftp_ssl_files|-|List fo ProFTP and TLS files with its rights.|
+
+More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/proftp_ssl/defaults/main.yml)
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- proftp
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+Install portsentry
+```yaml
+- hosts: servers
+  roles:
+    - { role: proftp_ssl }
+```
 
 License
 -------
@@ -35,4 +49,4 @@ BSD
 Author Information
 ------------------
 
-Created in 2016 by Eric LEGBA.
+Eric LEGBA.
