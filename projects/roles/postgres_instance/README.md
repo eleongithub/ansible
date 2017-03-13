@@ -1,30 +1,39 @@
 postgres_instance
 =========
 
-postgres_instance est un rôle qui crée des utilisateurs, des bases de données et des schémas de base de données.
+postgres_instance adds users, databases and schemas to PostgreSQL.
+
+Requirements
+------------
+
+None.
 
 Role Variables
 --------------
 
-| Nom	        | Obligatoire	| Valeur par défaut  | Valeur utilisée	| Description|
-| ------------- |:-------------:| ------------------:|:--------:|:-----------|
-|dbs| Oui|-|-|Liste des utilisateurs, base de données et schémas à créer sur la BDD.|
-|db_apps_password|Oui|-|-|Mot de passe de base de données géré avec ansible-vault (voir fichiers password-{{env}}.yml).|
-|db_apps1_password|Oui|-|-|Mot de passe de base de données géré avec ansible-vault (voir fichiers password-{{env}}.yml).|
+| Name	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|dbs|-|List of users, databases and schemas.|
+|db_apps_password|-|Database password stored by ansible-vault (Look at password-{{env}}.yml).|
+|db_apps1_password|-|Database password stored by ansible-vault (Look at password-{{env}}.yml).|
+
+More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/postgres_instance/defaults/main.yml)
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: postgres_instance }
+Install postgres_instance
+```yaml
+- hosts: servers
+  roles:
+    - { role: postgres_instance }
+```
 
 License
 -------
@@ -34,4 +43,4 @@ BSD
 Author Information
 ------------------
 
-Created in 2016 by Eric LEGBA.
+Eric LEGBA.
