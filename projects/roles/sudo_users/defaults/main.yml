@@ -1,6 +1,6 @@
 ---
 # defaults file for sudo_users
 
-user_name: 'deploy'
+user_name: 'deployment'
 user_comment: 'Technical user for deployment'
 user_key_passphrase: 'passphrase'

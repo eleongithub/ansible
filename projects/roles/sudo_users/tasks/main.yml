@@ -25,14 +25,8 @@
     
 # 1 - Create user (name, first name, homedir, public & private key SSH) on host ansible machine.
 - name: Create user on local machine (Ansible host machine)
-  locatl_action:
-    user:
-      name: "{{ user_name }}"
-      comment: "{{ user_comment }}"
-      shell: /bin/bash
-      generate_ssh_key: yes
-      ssh_key_passphrase: "{{ item.user_key_passphrase }}"
-      ssh_key_bits: 2048
+  local_action: user name={{ user_name }} comment={{ user_comment }} shell=/bin/bash generate_ssh_key=yes ssh_key_bits=2048
+  #ssh_key_passphrase={{ user_key_passphrase }} 
 
 # 2 - Create user on target server without public & private key SSH.
 - name: Create user on servers machine 
@@ -41,20 +35,28 @@
     comment: "{{ user_comment }}"
     shell: /bin/bash
     generate_ssh_key: no
-  with_items: "{{ users }}"
-    
-# 3 - Exporter public ssh key to the target server
+ 
+# 1 - Create user (name, first name, homedir, public & private key SSH) on host ansible machine.
+- name: Create user on local machine (Ansible host machine)
+  local_action: shell cat /home/{{ user_name }}/.ssh/id_rsa.pub 
+  register: user_public_key
+
 - name: Export public keys to servers
-  authorized_key:
-    user: "{{ user_name }}"
+  lineinfile:
+    dest: "/home/{{ user_name }}/.ssh/authorized_keys"
+    create: yes
     state: present
-    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
-  with_items: "{{ users }}"
+    mode: 0600
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    line: '{{ user_public_key.stdout }}'
+    
 
 # 3 - Add user to sudoers group
 - name: Create sudoers
-- lineinfile:
-    path: "/etc/sudoers.d/sudoers.d.{{ user_name }}"
+  lineinfile:
+    dest: "/etc/sudoers.d/sudoers.d.{{ user_name }}"
+    create: yes
     state: present
     mode: 0440
     owner: root

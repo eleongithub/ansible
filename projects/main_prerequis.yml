@@ -1,0 +1,10 @@
+---
+
+###################
+###################
+- hosts: all
+  vars_files:
+   - "password/password-{{env}}.yml"
+  become: yes
+  roles:
+    - { role: sudo_users }
