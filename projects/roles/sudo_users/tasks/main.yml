@@ -1,7 +1,7 @@
 ---
 # tasks file for sudo_users
 
-- name: Install required librairies
+- name: Install sudo package
   apt:
     pkg: sudo
     state: present
@@ -22,33 +22,44 @@
     line: "#includedir /etc/sudoers.d"
     state: present
     validate: "/usr/sbin/visudo -cf %s"
-
     
-# 1 - Créer les utilisateurs avec leur nom, prenom, homedir,
-- name: Create user
+# 1 - Create user (name, first name, homedir, public & private key SSH) on host ansible machine.
+- name: Create user on local machine (Ansible host machine)
+  locatl_action:
+    user:
+      name: "{{ user_name }}"
+      comment: "{{ user_comment }}"
+      shell: /bin/bash
+      generate_ssh_key: yes
+      ssh_key_passphrase: "{{ item.user_key_passphrase }}"
+      ssh_key_bits: 2048
+
+# 2 - Create user on target server without public & private key SSH.
+- name: Create user on servers machine 
   user:
-    name:
-    comment:
+    name: "{{ user_name }}"
+    comment: "{{ user_comment }}"
     shell: /bin/bash
-    generate_ssh_key: 
-    ssh_key_bits: 
+    generate_ssh_key: no
+  with_items: "{{ users }}"
     
-# 2 - Génrer leurs clés publiques/privés ssh avec mot de passe pour la clé privée
+# 3 - Exporter public ssh key to the target server
+- name: Export public keys to servers
+  authorized_key:
+    user: "{{ user_name }}"
+    state: present
+    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+  with_items: "{{ users }}"
 
-# 3 - ajouter les utilisateurs aux group sudoers
+# 3 - Add user to sudoers group
 - name: Create sudoers
-  template:
-    src: sudoers.d.j2
-    dest: "/etc/sudoers.d/{{ sudoers_filename }}"
+- lineinfile:
+    path: "/etc/sudoers.d/sudoers.d.{{ user_name }}"
+    state: present
     mode: 0440
     owner: root
     group: root
-    validate: "/usr/sbin/visudo -cf %s"
-  when: not sudoers_remove
+    line: '{{ user_name }} ALL=(ALL) NOPASSWD: ALL'
+    validate: '/usr/sbin/visudo -cf %s'
 
-- name: Remove sudoers
-  file:
-    path: "/etc/sudoers.d/{{ sudoers_filename }}"
-    state: absent
-  when: sudoers_remove
   

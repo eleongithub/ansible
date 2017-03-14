@@ -16,6 +16,9 @@
   include: iptables.yml
   when: monit_activate_admin_dashboard and iptables_enabled
 
+# TODO Regrouper tous les petits roles de monit dans un role unique monit. Controler l'zactivation d'un monit via un booleen.
+# Appel du role monit pour activer le controle sur un serveur avec le booleen à True.
+
 #- name: Reload monit
   #command: echo "Reload monit..."
   #notify:

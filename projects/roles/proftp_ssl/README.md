@@ -34,7 +34,7 @@ Dependencies
 Example Playbook
 ----------------
 
-Install portsentry
+Install proftp_ssl
 ```yaml
 - hosts: servers
   roles:
