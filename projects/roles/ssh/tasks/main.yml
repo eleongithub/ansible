@@ -44,3 +44,7 @@
     pkg: openssh-server
     state: present
   when: ansible_os_family == "Debian"
+  
+- name: Change the banner
+
+- name: Change the config of SSH
