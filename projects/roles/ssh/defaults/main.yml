@@ -1,2 +1,14 @@
 ---
 # defaults file for ssh
+banner_information : "Linux SSH Server"
+tmout: 900
+histfilesize: 20
+histsize: 20
+motd_file: /etc/motd
+profile_file: /etc/profile
+backup_files:
+ - { src: '/etc/issue', dest: '/etc/issue.original' }
+ - { src: '/etc/issue.net', dest: '/etc/issue.net.original' }
+ - { src: '{{ motd_file }}', dest: '{{ motd_file }}.original' }
+ - { src: '{{ profile_file }}', dest: '{{ profile_file }}.original' }
+
