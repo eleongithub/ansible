@@ -4,8 +4,8 @@
 # First step - Secure environnment
 - name : make a backup for file
   copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "{{ item }}"
+    dest: "{{ item }}.original"
     owner: root
     group: root
     mode: 0644
