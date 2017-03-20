@@ -14,6 +14,8 @@ tomcat_home: /opt/tomcat
 tomcat_versions: "/opt/tomcat_versions"
 tomcat_last_version: "{{ tomcat_versions }}/apache-tomcat-{{ tomcat_version }}"
 tomcat_conf_directory: "{{ tomcat_last_version }}/conf"
+iptables_enabled: False
+network_interface: 'eth0'
 tomcat_conf_files:
  - { src: 'server.xml.j2', dest: '{{ tomcat_conf_directory }}/server.xml' }
  - { src: 'setenv.sh.j2', dest: '{{ tomcat_last_version }}/bin/setenv.sh' }
