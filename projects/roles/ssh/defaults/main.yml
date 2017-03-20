@@ -2,10 +2,20 @@
 # defaults file for ssh
 banner_information : "Linux SSH Server"
 tmout: 900
-histfilesize: 20
 histsize: 20
+histfilesize: 20
 motd_file: /etc/motd
+banner_file: /etc/ssh/ssh_banner
 profile_file: /etc/profile
+sshd_config_port: 22
+sshd_config_file: /etc/ssh/sshd_config
+network_interface: 'eth0'
+iptables_enabled: False
+sshd_config : 
+    - { regexp: '^Port', value: 'Port {{ sshd_config_port }}' }
+    - { regexp: '^Protocol', value: 'Protocol {{ sshd_config_protocol }}' }
+    - { regexp: '^PermitRootLogin', value: 'PermitRootLogin no' }
+    - { regexp: '^PasswordAuthentication', value: 'PasswordAuthentication no' }
 backup_files:
  - { '/etc/issue' }
  - { '/etc/issue.net' }
