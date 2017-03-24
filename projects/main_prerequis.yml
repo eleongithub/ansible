@@ -1,10 +1,21 @@
 ---
 
-###################
-###################
-- hosts: all
+- hosts: localhost
   vars_files:
-   - "password/password-{{env}}.yml"
+   - "password/password-prerequis.yml"
+  become: yes
+  tasks:
+  - name: Create user on local machine (Ansible host machine)
+    local_action: user name=deploy_user comment="Technical user for deployment" shell=/bin/bash generate_ssh_key=yes ssh_key_bits=2048 ssh_key_passphrase={{ deploy_user_ssh_key_passphrase }}
+  
+  - name: Retrieve public key
+    local_action: shell cat /home/deploy_user/.ssh/id_rsa.pub 
+    register: user_public_key
+
+#TODO Get host by envvars write in bash script
+- hosts: serv2
+  vars_files:
+   - "password/password-prerequis.yml"
   become: yes
   roles:
-    - { role: sudo_users }
+    - { role: sudo_users, user_name: "deploy_user", user_password: "{{ deploy_user_password }}", user_public_ssh_key: "{{ hostvars['localhost']['user_public_key']['stdout'] }}" }
