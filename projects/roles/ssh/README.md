@@ -1,31 +1,46 @@
-Role Name
+ssh
 =========
 
-A brief description of the role goes here.
+Install & configure ssh.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Nom	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|banner_information|Linux SSH Server|SSH Banner information.|
+|tmout|900|UDP Monitoring mode (udp, sudp,audp).|
+|histsize|20|Porsentry configuration file.|
+|histfilesize|20|Bash programs which send alerting mails to the admin.|
+|motd_file|/etc/motd|Ignore IP address list.|
+|banner_file|/etc/ssh/ssh_banner|Ignore IP address list.|
+|profile_file|/etc/profile|Ignore IP address list.|
+|sshd_config_port|22|Ignore IP address list.|
+|sshd_config_file|/etc/ssh/sshd_config|Ignore IP address list.|
+|network_interface|eth0|Ignore IP address list.|
+|iptables_enabled|False|Ignore IP address list.|
+|sshd_config|list|Admin address mail.|
+|backup_files|list|Admin address mail.|
+
+More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/ssh/defaults/main.yml)
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
+
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: ssh }
 
 License
 -------
@@ -35,4 +50,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Eric LEGBA.
