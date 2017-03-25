@@ -1,7 +1,0 @@
----
-# handlers file for monit_sshd
-
-- name: Reload monit
-  service:
-    name: monit
-    state: reloaded

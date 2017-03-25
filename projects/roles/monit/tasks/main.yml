@@ -12,14 +12,27 @@
     src: monit.conf.j2
     dest: "{{ monit_config_file }}"
 
+- name: Copy configuration files
+  template:
+    backup: yes
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: "apache.conf.j2", dest: "{{ monit_apache_config_file }}", enabled: "{{ monit_apache_enabled }}" }
+    - { src: "postgresql.conf.j2", dest: "{{ monit_postgres_config_file }}", enabled: "{{ monit_postgres_enabled }}" }
+    - { src: "proftpd.conf.j2", dest: "{{ monit_proftp_config_file }}", enabled: "{{ monit_proftp_enabled }}" }
+    - { src: "sshd.conf.j2", dest: "{{ monit_sshd_config_file }}", enabled: "{{ monit_sshd_enabled }}" }
+    - { src: "tomcat.conf.j2", dest: "{{ monit_tomcat_config_file }}", enabled: "{{ monit_tomcat_enabled }}" }
+  when: "{{ item.enabled }}"
+
 - name : Iptables rules
   include: iptables.yml
   when: monit_activate_admin_dashboard and iptables_enabled
 
-# TODO Regrouper tous les petits roles de monit dans un role unique monit. Controler l'zactivation d'un monit via un booleen.
-# Appel du role monit pour activer le controle sur un serveur avec le booleen à True.
-
-#- name: Reload monit
-  #command: echo "Reload monit..."
-  #notify:
-    #- Reload monit
+- name: Reload monit
+  command: echo "Reload monit..."
+  notify:
+    - Reload monit
