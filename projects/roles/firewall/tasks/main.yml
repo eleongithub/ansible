@@ -29,3 +29,7 @@
     name: firewall
     enabled: yes
     state: started
+
+- name: Test with goss
+  include: goss.yml
+  when: goss_enabled
