@@ -32,4 +32,4 @@
 
 - name: Test with goss
   include: goss.yml
-  when: goss_enabled
+  when: firewall_goss_enabled

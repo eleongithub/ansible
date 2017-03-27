@@ -25,7 +25,7 @@ firewall_output_allowed_ports:
 
 firewall_enabled_logs_input_trafic: True
 firewall_enabled_logs_output_trafic: True
-goss_enabled: True
+firewall_goss_enabled: True
 
 # Common port:
 #   21 - ftp
