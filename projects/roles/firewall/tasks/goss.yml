@@ -6,8 +6,13 @@
       owner: root
       group: root
       mode: 0640
+
 - name: Launch goss test
   goss:
     path: /etc/goss-firewall.yml
     format: json
-    output_file : /etc/goss-firewall.json
+
+- name: Remove goss test
+  file:
+    path: /etc/goss-firewall.yml
+    state: absent
