@@ -27,6 +27,7 @@ Role Variables
 |fail2ban_jail_configuration_file|/etc/fail2ban/jail.conf|Fail2Ban configuration file.|
 |fail2ban_jail_configuration_orig_file|/etc/fail2ban/jail.conf.orig|Fail2Ban's original configuration file.|
 |fail2ban_alert_mail|root@localhost|Email address for receiving alerts.|
+|fail2ban_goss_enabled|False|Enable goss to check fail2ban after installation.|
 |fail2ban_ssh_enabled|False|Enable the fail2ban control on the SSH server.|
 |sshd_maxretry|6|Number of authentication failed to ban a client.|
 |sshd_bantime|600 seconds (10 minutes)|Exclusion time.|

@@ -51,4 +51,4 @@
 
 - name: Test with goss
   include: goss.yml
-  when: goss_enabled
+  when: fail2ban_goss_enabled
