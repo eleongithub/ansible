@@ -16,6 +16,7 @@ Role Variables
 | ------------- |:-------------:| ----------:|
 |tcp_mode|tcp|TCP Monitoring mode (tcp, stcp,atcp).|
 |udp_mode|udp|UDP Monitoring mode (udp, sudp,audp).|
+|porsentry_package|portsentry|Porsentry package.|
 |portsentry_config_file|/etc/default/portsentry|Porsentry configuration file.|
 |portsentry_notification_script|/etc/portsentry/notification.sh|Bash programs which send alerting mails to the admin.|
 |portsentry_ignore_file|/etc/portsentry/portsentry.ignore|Ignore IP address list.|
