@@ -6,4 +6,15 @@ mta_agent: postfix
 fail2ban_init_script: "/etc/init.d/fail2ban"
 fail2ban_jail_configuration_file: "/etc/fail2ban/jail.conf"
 fail2ban_jail_configuration_orig_file: "/etc/fail2ban/jail.conf.orig"
-fail2ban_alert_mail: "ansible@localhost"
+fail2ban_alert_mail: "root@localhost"
+goss_enabled: True
+
+# defaults variables for ssh
+fail2ban_ssh_enabled: False
+sshd_maxretry: 6
+sshd_bantime: 600
+
+# defaults variables for proftp
+fail2ban_proftp_enabled: False
+proftp_maxretry: 6
+proftp_bantime: 600

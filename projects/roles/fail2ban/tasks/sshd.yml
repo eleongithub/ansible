@@ -1,0 +1,20 @@
+---
+
+- name: Insert/Update the block into the jail Configuration file for ssh
+  blockinfile:
+    dest: "{{ fail2ban_jail_configuration_file }}"
+    insertafter: EOF
+    block: |
+        [ssh]
+        enabled = true
+        port = ssh
+        filter = sshd
+        logpath = /var/log/auth.log
+        maxretry = {{ sshd_maxretry }}
+        bantime = {{ sshd_bantime }}
+    state: present
+    marker: '#'
+    owner: root
+    group: root
+    mode: 0644
+  when: fail2ban_ssh_enabled

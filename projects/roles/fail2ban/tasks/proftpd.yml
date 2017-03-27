@@ -1,14 +1,12 @@
 ---
-# tasks file for proftp_fail2ban
 
-- name: Insert/Update the block into the jail Configuration file
+- name: Insert/Update the block into the jail Configuration file for proftp
   blockinfile:
     dest: "{{ fail2ban_jail_configuration_file }}"
-    backup: yes
     insertafter: EOF
     block: |
         [proftpd]
-        enabled = {{ fail2ban_enabled }}
+        enabled = true
         port = ftp,ftp-data,ftps,ftps-data
         filter = proftpd
         logpath = /var/log/proftpd/proftpd.log
@@ -19,8 +17,4 @@
     owner: root
     group: root
     mode: 0644
-
-- name: Restart Fail2ban
-  command: echo "Restart Fail2ban..."
-  notify:
-    - Restart Fail2ban
+  when: fail2ban_proftp_enabled

@@ -31,18 +31,24 @@
     force: yes
     mode: 0644
 
-- name: Remove Required-Start line from fail2ban init script
-  lineinfile:
-    backup: yes
-    dest: "{{ fail2ban_init_script }}"
-    regexp: '^(.*)# Required-Start:(.*)'
-    state: absent
+- name: Include iptables rule
+  include: iptables.yml
   when: iptables_enabled
 
-- name: Modify fail2ban init script to run after firewall script
-  lineinfile:
-    backup: yes
-    dest: "{{ fail2ban_init_script }}"
-    line: '# Required-Start:    $local_fs $remote_fs $firewall'
-    insertafter: '^(.*)# Provides:(.*)'
-  when: iptables_enabled
+- name: Include SSH rule
+  include: sshd.yml
+  when: fail2ban_ssh_enabled
+
+- name: Include ProFTP rule
+  include: proftpd.yml
+  when: fail2ban_proftp_enabled
+
+
+- name: Restart Fail2ban
+  command: echo "Restart Fail2ban..."
+  notify:
+    - Restart Fail2ban
+
+- name: Test with goss
+  include: goss.yml
+  when: goss_enabled
