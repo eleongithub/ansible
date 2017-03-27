@@ -20,6 +20,7 @@ Role Variables
 |portsentry_notification_script|/etc/portsentry/notification.sh|Bash programs which send alerting mails to the admin.|
 |portsentry_ignore_file|/etc/portsentry/portsentry.ignore|Ignore IP address list.|
 |portsentry_alert_mail|root@localhost|Admin address mail.|
+|portsentry_goss_enabled|False|Enable goss to check portsentry after installation.|
 
 More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/porsentry/defaults/main.yml)
 

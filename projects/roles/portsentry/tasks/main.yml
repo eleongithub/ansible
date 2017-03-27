@@ -4,7 +4,7 @@
 
 - name: Installing portsentry
   apt:
-    pkg: portsentry
+    pkg: "{{ porsentry_package }}"
     state: present
 
 - name: Copy porsentry configuration files
@@ -22,3 +22,7 @@
   command: echo "Restart portsentry..."
   notify:
     - Restart portsentry
+
+- name: Test with goss
+  include: goss.yml
+  when: portsentry_goss_enabled
