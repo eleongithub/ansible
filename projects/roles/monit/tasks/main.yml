@@ -8,13 +8,11 @@
 
 - name: Copy configuration file
   template:
-    backup: yes
     src: monit.conf.j2
     dest: "{{ monit_config_file }}"
 
 - name: Copy configuration files
   template:
-    backup: yes
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: root
