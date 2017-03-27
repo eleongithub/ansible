@@ -25,7 +25,6 @@
 - name : Init timeout for unactive user
   blockinfile:
     dest: "{{ profile_file }}"
-    backup: yes
     insertafter: EOF
     block: |
         TMOUT={{ timeout }}
