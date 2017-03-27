@@ -3,7 +3,7 @@
 
 - name: Install monit package
   apt:
-    pkg: monit
+    pkg: "{{monit_package}}"
     state: present
 
 - name: Copy configuration file
@@ -28,9 +28,13 @@
 
 - name : Iptables rules
   include: iptables.yml
-  when: monit_activate_admin_dashboard and iptables_enabled
+  when: monit_activate_admin_dashboard and monit_iptables_enabled
 
 - name: Reload monit
   command: echo "Reload monit..."
   notify:
     - Reload monit
+
+- name: Test with goss
+  include: goss.yml
+  when: monit_goss_enabled

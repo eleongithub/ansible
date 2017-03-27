@@ -2,8 +2,8 @@
 
 - name: Add Iptables Input trafic rule for monit
   command: >
-   /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p tcp --dport {{ monit_admin_dashboard_port }} -j ACCEPT -m comment --comment "TCP - Monit Server Input trafic"
+   /sbin/iptables -t filter -A INPUT -i {{ monit_network_interface }} -p tcp --dport {{ monit_admin_dashboard_port }} -j ACCEPT -m comment --comment "TCP - Monit Server Input trafic"
 
 - name: Add Iptables Output trafic rule for monit
   command: >
-   /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p tcp --dport {{ monit_admin_dashboard_port }} -j ACCEPT -m comment --comment "TCP - Monit Server Output trafic"
+   /sbin/iptables -t filter -A OUTPUT -o {{ monit_network_interface }} -p tcp --dport {{ monit_admin_dashboard_port }} -j ACCEPT -m comment --comment "TCP - Monit Server Output trafic"

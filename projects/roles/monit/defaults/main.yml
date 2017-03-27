@@ -1,6 +1,7 @@
 ---
 # defaults file for monit
 
+monit_package: monit
 monit_daemon: 60
 monit_config_file: "/etc/monit/monitrc"
 monit_send_alert_mail: True
@@ -10,42 +11,44 @@ monit_activate_admin_dashboard: True
 monit_admin_dashboard_port: 2812
 monit_admin_login: "{{ monit_login }}"
 monit_admin_password: "{{ monit_password }}"
-network_interface: 'eth0'
-iptables_enabled: False
+monit_network_interface: 'eth0'
+monit_iptables_enabled: False
+monit_goss_enabled: False
+monit_goss_file: "/etc/monit/goss.yml"
 
 # Defaults value for Apache
 monit_apache_enabled: False
 monit_apache_config_file: "/etc/monit/conf.d/apache.conf"
-apache_home: /opt/apache2
-apache_logs_dir: "{{ apache_home }}/logs"
-apache_pid_file: "{{ apache_logs_dir }}/httpd.pid"
-apache_stop_command: "/usr/sbin/service apache stop"
-apache_start_command: "/usr/sbin/service apache start"
+monit_apache_home: /opt/apache2
+monit_apache_logs_dir: "{{ apache_home }}/logs"
+monit_apache_pid_file: "{{ apache_logs_dir }}/httpd.pid"
+monit_apache_stop_command: "/usr/sbin/service apache stop"
+monit_apache_start_command: "/usr/sbin/service apache start"
 
 # Defaults value for Postgres
 monit_postgres_enabled: False
-postgres_port: 5432
-postgres_version: 9.4
+monit_postgres_port: 5432
+monit_postgres_version: 9.4
 monit_postgres_config_file: "/etc/monit/conf.d/postgresql.conf"
-postgres_stop_command: "/usr/sbin/service postgresql stop"
-postgres_start_command: "/usr/sbin/service postgresql start"
+monit_postgres_stop_command: "/usr/sbin/service postgresql stop"
+monit_postgres_start_command: "/usr/sbin/service postgresql start"
 
 
 # Defaults value for Proftp
 monit_proftp_enabled: False
 monit_proftp_config_file: "/etc/monit/conf.d/proftpd.conf"
-proftp_stop_command: "/usr/sbin/service proftpd stop"
-proftp_start_command: "/usr/sbin/service proftpd start"
+monit_proftp_stop_command: "/usr/sbin/service proftpd stop"
+monit_proftp_start_command: "/usr/sbin/service proftpd start"
 
 # Defaults value for SSHD
 monit_sshd_enabled: False
 monit_sshd_config_file: "/etc/monit/conf.d/sshd.conf"
-sshd_stop_command: "/usr/sbin/service sshd stop"
-sshd_start_command: "/usr/sbin/service sshd start"
+monit_sshd_stop_command: "/usr/sbin/service sshd stop"
+monit_sshd_start_command: "/usr/sbin/service sshd start"
 
 # Defaults value for Tomcat
 monit_tomcat_enabled: False
-tomcat_http_port: 8080
+monit_tomcat_http_port: 8080
 monit_tomcat_config_file: "/etc/monit/conf.d/tomcat.conf"
-tomcat_stop_command: "/usr/sbin/service tomcat stop"
-tomcat_start_command: "/usr/sbin/service tomcat start"
+monit_tomcat_stop_command: "/usr/sbin/service tomcat stop"
+monit_tomcat_start_command: "/usr/sbin/service tomcat start"
