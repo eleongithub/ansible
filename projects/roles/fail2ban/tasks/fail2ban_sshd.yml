@@ -10,8 +10,8 @@
         port = ssh
         filter = sshd
         logpath = /var/log/auth.log
-        maxretry = {{ sshd_maxretry }}
-        bantime = {{ sshd_bantime }}
+        maxretry = {{ fail2ban_sshd_maxretry }}
+        bantime = {{ fail2ban_sshd_bantime }}
     state: present
     marker: '#'
     owner: root

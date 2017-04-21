@@ -10,7 +10,7 @@
   stat:
     path: "{{ fail2ban_jail_configuration_orig_file }}"
   register: fail2ban_conf_orig_file_exists
-  when: iptables_enabled
+  when: fail2ban_iptables_enabled
 
 - name: Copy original fail2ban configuration
   copy:
@@ -33,14 +33,14 @@
 
 - name: Include iptables rule
   include: iptables.yml
-  when: iptables_enabled
+  when: fail2ban_iptables_enabled
 
 - name: Include SSH rule
-  include: sshd.yml
+  include: fail2ban_sshd.yml
   when: fail2ban_ssh_enabled
 
 - name: Include ProFTP rule
-  include: proftpd.yml
+  include: fail2ban_proftpd.yml
   when: fail2ban_proftp_enabled
 
 

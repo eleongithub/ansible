@@ -38,4 +38,4 @@
 - include: download.yml
 
 - name: Install Tomcat native library with SSL
-  shell: cd {{ libtcnative_util_home }} && ./configure --with-apr={{ apr_config_file }} --with-java-home={{ java_home }} --with-ssl=yes --prefix={{ tomcat_last_version }} && make && make install
+  shell: cd {{ tomcat_libtcnative_util_home }} && ./configure --with-apr={{ tomcat_apr_config_file }} --with-java-home={{ tomcat_java_home }} --with-ssl=yes --prefix={{ tomcat_last_version }} && make && make install

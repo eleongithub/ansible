@@ -10,8 +10,8 @@
         port = ftp,ftp-data,ftps,ftps-data
         filter = proftpd
         logpath = /var/log/proftpd/proftpd.log
-        maxretry = {{ proftp_maxretry }}
-        bantime = {{ proftp_bantime }}
+        maxretry = {{ fail2ban_proftp_maxretry }}
+        bantime = {{ fail2ban_proftp_bantime }}
     state: present
     marker: '#'
     owner: root

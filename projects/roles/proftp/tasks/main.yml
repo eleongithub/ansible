@@ -55,3 +55,7 @@
   command: echo "Restart ProFTP service..."
   notify:
     - Restart ProFTP
+
+- name: Test with goss
+  include: goss.yml
+  when: proftp_goss_enabled

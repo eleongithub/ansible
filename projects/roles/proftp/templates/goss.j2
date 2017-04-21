@@ -1,0 +1,36 @@
+---
+
+package:
+  proftpd:
+    installed: true
+
+group:
+  {{ proftp_user_group }}:
+    exists: true
+
+user:
+  {{ proftp_user }}:
+    exists: true
+
+file:
+{{ proftp_modules_conf_path}}:
+exists: true
+owner: "{{ proftp_user }}"
+group: "{{ proftp_user_group }}"
+mode: "0644"
+
+file:
+{{ proftp_conf_path}}:
+exists: true
+owner: "{{ proftp_user }}"
+group: "{{ proftp_user_group }}"
+mode: "0644"
+
+service:
+  proftpd:
+    enabled: true
+    running: true
+
+port:
+  tcp:{{ proftp_default_port }}:
+    listening: true

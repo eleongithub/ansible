@@ -10,43 +10,43 @@
 
 - name : Remove eventual tomcat init script from the system
   file:
-    path: "{{ tomcat_init_script }}"
+    path: "{{ tomcat_conf_init_script }}"
     state: absent
   ignore_errors: true
 
 - name: Create Group Tomcat
   group:
-    name: "{{ tomcat_user_group }}"
+    name: "{{ tomcat_conf_user_group }}"
     state: present
 
 - name: Create User Tomcat
   user:
-    name: "{{ tomcat_user }}"
+    name: "{{ tomcat_conf_user }}"
     createhome: no
-    group: "{{ tomcat_user_group }}"
+    group: "{{ tomcat_conf_user_group }}"
     shell: /bin/bash
     state: present
 
 - name: Change the owner of tomcat versions directory
   file:
-    path: "{{ tomcat_versions }}"
-    owner: "{{ tomcat_user }}"
-    group: "{{ tomcat_user_group }}"
+    path: "{{ tomcat_conf_versions }}"
+    owner: "{{ tomcat_conf_user }}"
+    group: "{{ tomcat_conf_user_group }}"
     recurse: yes
 
 - name: Change the owner of link to the last tomcat directory
   file:
-    src: "{{ tomcat_last_version }}"
-    path: "{{ tomcat_home }}"
-    owner: "{{ tomcat_user }}"
-    group: "{{ tomcat_user_group }}"
+    src: "{{ tomcat_conf_last_version }}"
+    path: "{{ tomcat_conf_home }}"
+    owner: "{{ tomcat_conf_user }}"
+    group: "{{ tomcat_conf_user_group }}"
     state: link
 
 - name: Create the tomcat configuration directory
   file:
     path: "{{ tomcat_conf_directory }}"
-    owner: "{{ tomcat_user }}"
-    group: "{{ tomcat_user_group }}"
+    owner: "{{ tomcat_conf_user }}"
+    group: "{{ tomcat_conf_user_group }}"
     state: directory
     recurse: yes
 
@@ -54,8 +54,8 @@
   template:
     src: "{{item.src}}"
     dest: "{{item.dest}}"
-    owner: "{{ tomcat_user }}"
-    group: "{{ tomcat_user_group }}"
+    owner: "{{ tomcat_conf_user }}"
+    group: "{{ tomcat_conf_user_group }}"
     force: yes
   with_items:
    - "{{ tomcat_conf_files }}"
@@ -63,7 +63,7 @@
 - name: Copy Tomcat init script
   template:
     src: "tomcat.sh.j2"
-    dest: "{{ tomcat_init_script }}"
+    dest: "{{ tomcat_conf_init_script }}"
     owner: root
     group: root
     force: yes
@@ -71,7 +71,7 @@
 
 - name: Add Iptables rule
   include: iptables.yml
-  when: iptables_enabled
+  when: tomcat_conf_iptables_enabled
 
 - name: Enable Tomcat service
   service:

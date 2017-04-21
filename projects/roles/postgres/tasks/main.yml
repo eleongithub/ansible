@@ -1,10 +1,6 @@
 ---
 # tasks file for postgres
 
-- name: Check if postgresql is installed on the system
-  shell: aptitude search {{ postgres_server_pkg }} || echo "Unknown PostgreSQL Server"
-  register: postgresql_exists
-
 - name: Installing PostgreSQL Server...
   apt:
     pkg: "{{ item }}"
@@ -23,9 +19,13 @@
 
 - name: Add Iptables rule
   include: iptables.yml
-  when: iptables_enabled
+  when: postgres_iptables_enabled
 
 - name: Restart PostgreSQL
   command: echo "Restart PostgreSQL"
   notify:
     - Restart PostgreSQL
+
+- name: Test with goss
+  include: goss.yml
+  when: postgres_goss_enabled

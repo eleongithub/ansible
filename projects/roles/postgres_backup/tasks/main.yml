@@ -8,7 +8,7 @@
 
 - name: Create backups directory if not exists
   file:
-    path: "{{ backup_dir }}"
+    path: "{{ postgres_backup_dir }}"
     owner: "root"
     group: "root"
     mode: "0744"
@@ -28,7 +28,7 @@
 - name: Define crontab for postgres backup
   cron:
     name: "Backup Database PostgreSQL"
-    job: "bash {{ postgres_conf_dir }}/pg_backup_rotated.sh"
+    job: "bash {{ postgres_backup_conf_dir }}/pg_backup_rotated.sh"
     minute: "0"
     hour: "0"
     day: "*"

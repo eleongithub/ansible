@@ -1,7 +1,7 @@
 ---
 # defaults file for firewall
 
-network_interface: 'eth0'
+firewall_network_interface: 'eth0'
 firewall_script_files:
  - { src: 'firewall-start-rules.j2', dest: '/etc/firewall-start-rules', mode: '0744' }
  - { src: 'firewall-stop-rules.j2', dest: '/etc/firewall-stop-rules', mode: '0744' }

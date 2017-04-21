@@ -8,28 +8,28 @@
     owner: root
     group: root
     mode: 0644
- with_items : "{{ backup_files }}"
+ with_items : "{{ ssh_backup_files }}"
 
 - name : Init banner file with little information
-  command: echo "{{ banner_information }}" > "{{ item.src }}"
-  with_items:  "{{ backup_files }}"
+  command: echo "{{ ssh_banner_information }}" > "{{ item.src }}"
+  with_items:  "{{ ssh_backup_files }}"
 
 - name : Init motd file with warning message
   copy:
     src: motd
-    dest: "{{ motd_file }}"
+    dest: "{{ ssh_motd_file }}"
     owner: root
     group: root
     mode: 0644
 
 - name : Init timeout for unactive user
   blockinfile:
-    dest: "{{ profile_file }}"
+    dest: "{{ ssh_profile_file }}"
     insertafter: EOF
     block: |
-        TMOUT={{ timeout }}
-        HISTSIZE={{ histsize }}
-        HISTFILESIZE={{ histfilesize }}
+        TMOUT={{ ssh_timeout }}
+        HISTSIZE={{ ssh_histsize }}
+        HISTFILESIZE={{ ssh_histfilesize }}
         export TMOUT HISTSIZE HISTFILESIZE
     owner: root
     group: root
@@ -44,7 +44,7 @@
 - name: Change the banner
   copy:
     src: banner
-    dest: "{{ banner_file }}"
+    dest: "{{ ssh_banner_file }}"
     owner: root
     group: root
     mode: 0644
@@ -58,11 +58,11 @@
     group: root
     mode: 0644
     state: present
-  with_items: "{{ sshd_config }}"
+  with_items: "{{ ssh_config }}"
 
 - name: Add Iptables rules for SSH
   include: iptables.yml
-  when: iptables_enabled
+  when: ssh_iptables_enabled
 
 - name: Restart SSH
   command: echo "Restart SSH"

@@ -1,23 +1,23 @@
 ---
 # defaults file for tomcat_conf
 
-java_home: /opt/java
-tomcat_http_port: 8080
-tomcat_https_port: 8443
-tomcat_shutdown_port: "8005"
-tomcat_mod_jk_port: 8009
-tomcat_shutdown_command: "SHUTDOWNA1B2Z78UJHGJKLMLM"
-tomcat_init_script: /etc/init.d/tomcat
-tomcat_user: tomcat
-tomcat_user_group: tomcat
-tomcat_home: /opt/tomcat
-tomcat_versions: "/opt/tomcat_versions"
-tomcat_last_version: "{{ tomcat_versions }}/apache-tomcat-{{ tomcat_version }}"
+tomcat_conf_java_home: /opt/java
+tomcat_conf_http_port: 8080
+tomcat_conf_https_port: 8443
+tomcat_conf_shutdown_port: "8005"
+tomcat_conf_mod_jk_port: 8009
+tomcat_conf_shutdown_command: "SHUTDOWNA1B2Z78UJHGJKLMLM"
+tomcat_conf_init_script: /etc/init.d/tomcat
+tomcat_conf_user: tomcat
+tomcat_conf_user_group: tomcat
+tomcat_conf_home: /opt/tomcat
+tomcat_conf_versions: "/opt/tomcat_versions"
+tomcat_conf_last_version: "{{ tomcat_versions }}/apache-tomcat-{{ tomcat_version }}"
 tomcat_conf_directory: "{{ tomcat_last_version }}/conf"
-iptables_enabled: False
-network_interface: 'eth0'
+tomcat_conf_iptables_enabled: False
+tomcat_conf_network_interface: 'eth0'
 tomcat_conf_files:
  - { src: 'server.xml.j2', dest: '{{ tomcat_conf_directory }}/server.xml' }
- - { src: 'setenv.sh.j2', dest: '{{ tomcat_last_version }}/bin/setenv.sh' }
+ - { src: 'setenv.sh.j2', dest: '{{ ttomcat_conf_last_version }}/bin/setenv.sh' }
  - { src: 'web.xml.j2', dest: '{{ tomcat_conf_directory }}/web.xml' }
  - { src: 'logging.properties.j2', dest: '{{ tomcat_conf_directory }}/logging.properties' }

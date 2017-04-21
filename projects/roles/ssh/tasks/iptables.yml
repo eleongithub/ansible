@@ -3,8 +3,8 @@
 
 - name: Add Iptables Input trafic rule for SSH
   command: >
-   /sbin/iptables -t filter -A INPUT -i {{ network_interface }} -p tcp --dport {{ sshd_config_port }} -j ACCEPT -m comment --comment "TCP - OpenSSH Server Input trafic"
+   /sbin/iptables -t filter -A INPUT -i {{ ssh_network_interface }} -p tcp --dport {{ ssh_config_port }} -j ACCEPT -m comment --comment "TCP - OpenSSH Server Input trafic"
 
 - name: Add Iptables Output trafic rule for SSH
   command: >
-   /sbin/iptables -t filter -A OUTPUT -o {{ network_interface }} -p tcp --dport {{ sshd_config_port }} -j ACCEPT -m comment --comment "TCP - OpenSSH Server Output trafic"
+   /sbin/iptables -t filter -A OUTPUT -o {{ ssh_etwork_interface }} -p tcp --dport {{ ssh_config_port }} -j ACCEPT -m comment --comment "TCP - OpenSSH Server Output trafic"

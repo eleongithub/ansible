@@ -52,17 +52,17 @@
 - name: Download native library
   get_url:
     url: "{{ tomcat_native_url }}"
-    dest: "/tmp/{{ libtcnative_util_tarball_name }}"
+    dest: "/tmp/{{ tomcat_libtcnative_util_tarball_name }}"
   when: ansible_version.major|int < 2
 
 - name: Decompress Tomcat native library
   unarchive:
-    src: "/tmp/{{ libtcnative_util_tarball_name }}"
+    src: "/tmp/{{ tomcat_libtcnative_util_tarball_name }}"
     dest: "{{ tomcat_last_version }}/bin"
   when: ansible_version.major|int < 2
 
 - name: Delete tomcat native library
   file:
-    path: "/tmp/{{ libtcnative_util_tarball_name }}"
+    path: "/tmp/{{ tomcat_libtcnative_util_tarball_name }}"
     state: absent
   when: ansible_version.major|int < 2
