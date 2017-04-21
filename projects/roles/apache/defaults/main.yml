@@ -7,6 +7,7 @@ apache_home: /opt/apache2
 apache_last_version: "{{ apache_versions }}/httpd-{{ apache_version }}"
 apache_tarball_name: "httpd-{{ apache_version }}.tar.gz"
 apache_url: "{{ nexus_public_repository }}/org/apache/httpd/{{ apache_version }}/{{ apache_tarball_name }}"
+apache_goss_enabled: False
 apache_required_packages:
  - 'perl'
  - 'libpcre3'

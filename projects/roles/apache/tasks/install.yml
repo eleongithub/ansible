@@ -6,16 +6,10 @@
     state: present
   with_items: "{{ apache_required_packages }}"
 
-- name : Check apache versions directory exists
-  stat:
-    path: "{{ apache_versions }}"
-  register: apache_versions_dir_exists
-
 - name: Create apache versions directory
   file:
     path: "{{ apache_versions }}"
     state: directory
-  when: not apache_versions_dir_exists.stat.exists
 
 - name: Delete Apache home directory
   file:
@@ -57,3 +51,7 @@
           
 - name: Execute commands to install Apache.
   shell: cd {{ apache_last_version }} && make && umask 022 && make install && make clean
+
+- name: Test with goss
+  include: goss.yml
+  when: apache_goss_enabled
