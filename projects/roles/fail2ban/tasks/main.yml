@@ -9,7 +9,7 @@
 - name : Check original fail2ban configuration file exists
   stat:
     path: "{{ fail2ban_jail_configuration_orig_file }}"
-  register: fail2ban_conf_orig_file_exists
+  register: conf_orig_file_exists
   when: fail2ban_iptables_enabled
 
 - name: Copy original fail2ban configuration
@@ -20,7 +20,7 @@
     group: root
     force: yes
     mode: 0644
-  when: fail2ban_conf_orig_file_exists is defined and not fail2ban_conf_orig_file_exists.stat.exists
+  when: conf_orig_file_exists is defined and not conf_orig_file_exists.stat.exists
 
 - name: Copy fail2ban configuration file jail.conf
   template:
@@ -36,11 +36,11 @@
   when: fail2ban_iptables_enabled
 
 - name: Include SSH rule
-  include: fail2ban_sshd.yml
+  include: sshd.yml
   when: fail2ban_ssh_enabled
 
 - name: Include ProFTP rule
-  include: fail2ban_proftpd.yml
+  include: proftpd.yml
   when: fail2ban_proftp_enabled
 
 
@@ -48,6 +48,9 @@
   command: echo "Restart Fail2ban..."
   notify:
     - Restart Fail2ban
+
+#https://docs.ansible.com/ansible/meta_module.html
+- meta: flush_handlers
 
 - name: Test with goss
   include: goss.yml
