@@ -31,9 +31,9 @@ Role Variables
 |apache_home|/opt/apache2|Installation directory for the current version of Apache.|
 |apache_last_version|/opt/apache_versions/httpd-2.4.23|Directory containing Apache 2.4.23 sources.|
 |apache_tarball_name|httpd-2.4.23.tar.gz|Apache archive tar.gz.|
-|apache_url|http://xx.xx.xx.xx....|Url to download the apache archive (Private Nexus repository).|
+|apache_url|http://xx.xx.xx.xx|Url to download the apache archive (Private Nexus repository).|
 |apache_required_packages|-|List of prerequisite packages to install Apache.|
-|apache_goss_enabled|False|Enable(True)/Disable(false) [Goss](https://github.com/aelsabbahy/goss) checking after installation.|
+|apache_goss_enabled|False|Enable(True)/Disable(False) [Goss](https://github.com/aelsabbahy/goss) checking after installation.|
 
 More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/apache/defaults/main.yml)
 
