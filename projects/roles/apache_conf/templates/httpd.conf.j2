@@ -28,7 +28,7 @@
 # same ServerRoot for multiple httpd daemons, you will need to change at
 # least PidFile.
 #
-ServerRoot "{{ apache_home }}"
+ServerRoot "{{ apache_conf_home }}"
 
 #
 # Mutex: Allows you to set the mutex mechanism and mutex file directory
@@ -40,11 +40,11 @@ ServerRoot "{{ apache_home }}"
 #
 # Mutex default:logs
 
-Listen {{ http_default_port }}
-Listen {{ https_default_port }}
+Listen {{ apache_conf_http_default_port }}
+Listen {{ apache_conf_https_default_port }}
 
 # Include file which contains all modules that Apache must load at begining
-Include {{ apache_modules_file }}
+Include {{ apache_conf_modules_file }}
 
 ## Configuration : Hiding Banner
 ServerTokens Prod
@@ -67,8 +67,8 @@ LogLevel {{ apache_conf_log_level }}
     LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
     LogFormat "%{Referer}i -> %U" referer
     LogFormat "%{User-agent}i" agent
-    CustomLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/access_%Y%m%d.log 86400" combined
-    ErrorLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/error_%Y%m%d.log 86400"
+    CustomLog "|{{ apache_conf_home }}/bin/rotatelogs {{ apache_conf_logs_dir }}/access_%Y%m%d.log 86400" combined
+    ErrorLog "|{{ apache_conf_home }}/bin/rotatelogs {{ apache_conf_logs_dir }}/error_%Y%m%d.log 86400"
 </IfModule>
 
 <IfModule unixd_module>
@@ -80,8 +80,8 @@ LogLevel {{ apache_conf_log_level }}
 # It is usually good practice to create a dedicated user and group for
 # running httpd, as with most system services.
 #
-User {{ apache_user }}
-Group {{ apache_user_group }}
+User {{ apache_conf_user }}
+Group {{ apache_conf_user_group }}
 
 </IfModule>
 
@@ -159,16 +159,16 @@ Group {{ apache_user_group }}
     # client.  The same rules about trailing "/" apply to ScriptAlias
     # directives as to Alias.
     #
-    ScriptAlias /cgi-bin/ "{{ apache_home }}/cgi-bin/"
+    ScriptAlias /cgi-bin/ "{{ apache_conf_home }}/cgi-bin/"
 
 </IfModule>
 
 
 #
-# "{{ apache_home }}/cgi-bin" should be changed to whatever your ScriptAliased
+# "{{ apache_conf_home }}/cgi-bin" should be changed to whatever your ScriptAliased
 # CGI directory exists, if you have that configured.
 #
-<Directory "{{ apache_home }}/cgi-bin">
+<Directory "{{ apache_conf_home }}/cgi-bin">
     AllowOverride None
     Options None
     Require all granted
@@ -285,5 +285,3 @@ Include conf/extra/proxy-html.conf
 
 # Compression des données
 SetOutputFilter DEFLATE
-
-

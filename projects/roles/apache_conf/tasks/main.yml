@@ -10,27 +10,27 @@
 
 - name : Remove eventual Apache control script from the system
   file:
-    path: "{{ apache_init_script }}"
+    path: "{{ apache_conf_init_script }}"
     state: absent
   ignore_errors: true
 
 - name: Change the right of Apache directory
   file:
-    path: "{{ apache_home }}"
-    owner: "{{ root_user }}"
-    group: "{{ root_group }}"
+    path: "{{ apache_conf_home }}"
+    owner: "{{ apache_conf_root_user }}"
+    group: "{{ apache_conf_root_group }}"
     recurse: yes
 
 - name: Create Group Apache
   group:
-    name: "{{ apache_user_group }}"
+    name: "{{ apache_conf_user_group }}"
     state: present
 
 - name: Create User Apache without home and no Shell
   user:
-    name: "{{ apache_user }}"
+    name: "{{ apache_conf_user }}"
     createhome: no
-    group: "{{ apache_user_group }}"
+    group: "{{ apache_conf_user_group }}"
     shell: /bin/false
     comment: "Web Server"
     state: present
@@ -41,14 +41,12 @@
     dest: "{{item.dest}}"
     owner: "{{root_user}}"
     group: "{{root_group}}"
-    force: yes
   with_items: "{{ apache_conf_files }}"
 
 - name: Copy Apache control script
   template:
     src: apache.sh.j2
-    dest: "{{ apache_init_script }}"
-    force: yes
+    dest: "{{ apache_conf_init_script }}"
     mode: 0755
 
 - name: Enable Apache init script
