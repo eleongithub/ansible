@@ -4,9 +4,9 @@
 #tcp_mode: "atcp"
 #udp_mode: "audp"
 
-porsentry_tcp_mode: "tcp"
-porsentry_udp_mode: "udp"
-porsentry_package: portsentry
+portsentry_tcp_mode: "tcp"
+portsentry_udp_mode: "udp"
+portsentry_package: portsentry
 portsentry_goss_file: "/etc/portsentry/goss.yml"
 portsentry_config_file: "/etc/portsentry/portsentry.conf"
 portsentry_notification_script: "/etc/portsentry/notification.sh"

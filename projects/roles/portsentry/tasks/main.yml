@@ -4,10 +4,10 @@
 
 - name: Installing portsentry
   apt:
-    pkg: "{{ porsentry_package }}"
+    pkg: "{{ portsentry_package }}"
     state: present
 
-- name: Copy porsentry configuration files
+- name: Copy portsentry configuration files
   template:
     src: "{{item.src}}"
     dest: "{{item.dest}}"

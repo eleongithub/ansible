@@ -1,4 +1,4 @@
-porsentry
+portsentry
 =========
 
 les hackers, avant de procéder à des attaques, utilisent des programmes (nmap par exemple) pour scanner les serveurs afin de connaître les ports ouverts.
@@ -14,8 +14,8 @@ Role Variables
 
 | Nom	        | Default Value	| Description|
 | ------------- |:-------------:| ----------:|
-|tcp_mode|tcp|TCP Monitoring mode (tcp, stcp,atcp).|
-|udp_mode|udp|UDP Monitoring mode (udp, sudp,audp).|
+|portsentry_tcp_mode|tcp|TCP Monitoring mode (tcp, stcp,atcp).|
+|portsentry_udp_mode|udp|UDP Monitoring mode (udp, sudp,audp).|
 |porsentry_package|portsentry|Porsentry package.|
 |portsentry_config_file|/etc/default/portsentry|Porsentry configuration file.|
 |portsentry_notification_script|/etc/portsentry/notification.sh|Bash programs which send alerting mails to the admin.|
@@ -23,7 +23,7 @@ Role Variables
 |portsentry_alert_mail|root@localhost|Admin address mail.|
 |portsentry_goss_enabled|False|Enable goss to check portsentry after installation.|
 
-More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/porsentry/defaults/main.yml)
+More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/portsentry/defaults/main.yml)
 
 
 Dependencies

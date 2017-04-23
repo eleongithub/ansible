@@ -35,6 +35,9 @@
   notify:
     - Reload monit
 
+#https://docs.ansible.com/ansible/meta_module.html
+- meta: flush_handlers
+
 - name: Test with goss
   include: goss.yml
   when: monit_goss_enabled

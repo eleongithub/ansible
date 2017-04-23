@@ -7,7 +7,6 @@ package:
 file:
   /etc/firewall-start-rules:
     exists: true
-    # optional attributes
     mode: "0744"
     owner: root
     group: root
@@ -29,7 +28,7 @@ file:
     group: root
     filetype: file
 
-service:
-  firewall:
-    enabled: true
-    running: true
+#service:
+#  firewall:
+#    enabled: true
+#    running: true
