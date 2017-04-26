@@ -47,7 +47,6 @@
     dest: "{{ apache_conf_dir }}/server_status.conf"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
-    force: yes
 
 - name: Add vhost_server_status.conf to HTTPD
   lineinfile:

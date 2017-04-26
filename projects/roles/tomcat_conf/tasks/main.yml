@@ -56,7 +56,6 @@
     dest: "{{item.dest}}"
     owner: "{{ tomcat_conf_user }}"
     group: "{{ tomcat_conf_user_group }}"
-    force: yes
   with_items:
    - "{{ tomcat_conf_files }}"
 
@@ -66,7 +65,6 @@
     dest: "{{ tomcat_conf_init_script }}"
     owner: root
     group: root
-    force: yes
     mode: 0755
 
 - name: Add Iptables rule

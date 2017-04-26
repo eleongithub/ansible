@@ -17,7 +17,6 @@
   template:
     src: "{{item.src}}"
     dest: "{{item.dest}}"
-    force: yes
     owner: root
     group: root
     mode: "{{item.mode}}"

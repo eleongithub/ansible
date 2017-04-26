@@ -20,7 +20,6 @@
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
-    force: yes
     owner: "postgres"
     group: "postgres"
   with_items: "{{ postgres_backup_files }}"

@@ -24,7 +24,6 @@
   template:
     src: openssl.conf.j2
     dest: "{{ open_ssl_cert_config_file }}"
-    force: yes
 
 - name: Generating private key + certificate ...
   command: >
@@ -50,7 +49,6 @@
     dest: "{{item.dest}}"
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user_group }}"
-    force: yes
   with_items:
    - "{{ tomcat_openssl_conf_files }}"
 

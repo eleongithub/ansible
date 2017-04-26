@@ -18,7 +18,6 @@
     dest: "{{ fail2ban_jail_configuration_orig_file }}"
     owner: root
     group: root
-    force: yes
     mode: 0644
   when: conf_orig_file_exists is defined and not conf_orig_file_exists.stat.exists
 
@@ -28,7 +27,6 @@
     dest: "{{ fail2ban_jail_configuration_file }}"
     owner: root
     group: root
-    force: yes
     mode: 0644
 
 - name: Include iptables rule

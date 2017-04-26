@@ -34,7 +34,6 @@
   template:
     src: vhosts_mod_jk.conf.j2
     dest: "{{ apache_vhosts_conf_dir }}/{{ item.key }}_mod_jk.conf"
-    force: yes
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ mod_jk_enable }}"
 

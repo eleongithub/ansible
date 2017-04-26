@@ -48,7 +48,6 @@
     dest: "{{ apache_vhosts_conf_dir }}/{{ item.key }}_mod_proxy.conf"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
-    force: yes
   with_dict: "{{ apache_vhosts_mod_proxy }}"
 
 - name: Install SSL certificates for virtual hosts

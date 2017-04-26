@@ -17,7 +17,6 @@
   template:
     src: openssl.conf.j2
     dest: "{{ proftp_ssl_config_file }}"
-    force: yes
 
 - name: Generate SSL files( Key & certificat).
   command: >
@@ -35,7 +34,6 @@
   template:
     src: tls.conf.j2
     dest: "{{ proftp_tls_conf_path }}"
-    force: yes
 
 - name: Include tls.conf in the proftp configuration
   lineinfile:
@@ -47,7 +45,6 @@
 - name: Define owner, group and right on ProFTP configuration files
   file:
     path: "{{ item.path }}"
-    force: yes
     owner: "{{ proftp_user }}"
     group: "{{ proftp_user_group }}"
     mode: "{{ item.mode }}"

@@ -36,7 +36,6 @@
     dest: "{{item.dest}}"
     owner: "{{ tomcat_user }}"
     group: "{{ tomcat_user_group }}"
-    force: yes
   with_items:
    - "{{ keystore_conf_files }}"
 

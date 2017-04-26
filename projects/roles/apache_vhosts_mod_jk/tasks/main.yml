@@ -44,7 +44,6 @@
     dest: "{{ apache_vhosts_conf_dir }}/{{ item.key }}_mod_jk.conf"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
-    force: yes
   with_dict: "{{ apache_vhosts_mod_jk }}"
 
 - name: Install SSL certificates for virtual hosts
@@ -67,7 +66,6 @@
     dest: "{{ apache_conf_dir }}/workers.properties"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
-    force: yes
   when: count_generate_vhosts_mod_jk.stdout|int > 0
 
 - name: Copy mod_jk.conf file to Apache configuration directory
@@ -76,7 +74,6 @@
     dest: "{{ apache_conf_dir }}/mod_jk.conf"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
-    force: yes
   when: count_generate_vhosts_mod_jk.stdout|int > 0
 
 - name: Add mod_jk.conf to HTTPD

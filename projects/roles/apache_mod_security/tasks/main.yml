@@ -80,7 +80,6 @@
     dest: "{{item.dest}}"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
-    force: yes
   with_items: "{{ mod_security_conf_files }}"
 
 - name: Copy modsecurity_module.conf.j2 into Apache conf directory
@@ -89,7 +88,6 @@
     dest: "{{ apache_conf_dir }}/modsecurity_module.conf"
     owner: "{{ root_user }}"
     group: "{{ root_group }}"
-    force: yes
 
 - name: if unique_id_module was absent, add it(unique_id_module is required for mod_security)
   lineinfile:

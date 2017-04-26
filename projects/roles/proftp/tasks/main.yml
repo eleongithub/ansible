@@ -27,7 +27,6 @@
   template:
     src: proftpd.conf.j2
     dest: "{{ proftp_conf_path }}"
-    force: yes
 
 - name: Define user "proftp" and group "proftp" as the owner of configuration directory
   file:
@@ -39,7 +38,6 @@
 - name: Define owner, group and right on ProFTP configuration files
   file:
     path: "{{ item }}"
-    force: yes
     owner: "{{ proftp_user }}"
     group: "{{ proftp_user_group }}"
     mode: "0644"
