@@ -27,7 +27,7 @@
   roles:
     - { role: postgres, tags: ['postgres'] }
     - { role: postgres_instance, tags: ['postgres_instance'] }
-    #- { role: postgres_backup, tags: ['postgres_backup'] }
+    # - { role: postgres_backup, tags: ['postgres_backup'] }
     - { role: monit, monit_postgres_enabled: True, tags: ['monit_postgresql'] }
 
 # ###################
@@ -65,15 +65,15 @@
 # ##################
 # #Install ProFTP
 # ##################
-- hosts: proftp
-  vars_files:
-   - "password/password-{{env}}.yml"
-  become: yes
-  roles:
-      - { role: proftp, tags: ['proftp'] }
-      - { role: fail2ban, iptables_enabled: True, fail2ban_proftp_enabled: True, fail2ban_goss_enabled: True, tags: ['fail2ban_proftp'] }
-      - { role: proftp_ssl, tags: ['proftp_ssl'] }
-      - { role: monit, monit_goss_enabled: True, monit_proftp_enabled: True, tags: ['monit_proftp'] }
+# - hosts: proftp
+#   vars_files:
+#    - "password/password-{{env}}.yml"
+#   become: yes
+#   roles:
+#       - { role: proftp, tags: ['proftp'] }
+#       - { role: fail2ban, iptables_enabled: True, fail2ban_proftp_enabled: True, fail2ban_goss_enabled: True, tags: ['fail2ban_proftp'] }
+#       - { role: proftp_ssl, tags: ['proftp_ssl'] }
+#       - { role: monit, monit_goss_enabled: True, monit_proftp_enabled: True, tags: ['monit_proftp'] }
 
 
 #===========  Tâche à faire sur Ansible =====================
