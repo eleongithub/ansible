@@ -68,3 +68,10 @@
   command: echo "Restart SSH"
   notify:
     - Restart SSH
+
+- meta: flush_handlers
+  when: ssh_goss_enabled
+
+- name: Test with goss
+  include: goss.yml
+  when: ssh_goss_enabled

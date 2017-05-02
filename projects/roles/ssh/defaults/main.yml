@@ -11,6 +11,7 @@ ssh_config_port: 22
 ssh_config_file: /etc/ssh/sshd_config
 ssh_network_interface: 'eth0'
 ssh_iptables_enabled: False
+ssh_goss_enabled: False
 ssh_config : 
     - { regexp: '^Port', value: 'Port {{ ssh_config_port }}' }
     - { regexp: '^Protocol', value: 'Protocol {{ ssh_config_protocol }}' }
