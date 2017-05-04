@@ -16,7 +16,6 @@ Role Variables
 |postgres_port|5432|Port d'écoute de la base de données.|
 |postgres_iptables_enabled|True|Si `True`, ouverture du port `postgres_port` via iptables.|
 |postgres_goss_enabled|False|Enable goss to check Postgres after installation|
-|postgres_goss_file|False|Enable goss to check Postgres after installation|
 |postgres_network_interface|eth0|Interface réseau sur lequel les règles Iptables seront appliquées.|
 
 Dependencies
