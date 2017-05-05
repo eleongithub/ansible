@@ -11,9 +11,16 @@ proftp_system_log_file: "/var/log/proftpd/proftpd.log"
 proftp_conf_path: "/etc/proftpd/proftpd.conf"
 proftp_modules_conf_path: "/etc/proftpd/modules.conf"
 proftp_goss_enabled: False
-proftp_goss_file: "/etc/proftpd/goss.yml"
 proftp_default_port: 21
 proftp_firwall_ftp_min_passive_port: 5000
 proftp_firwall_ftp_max_passive_port: 5100
 proftp_network_interface: 'eth0'
 proftp_iptables_enabled: False
+proftp_config_directive : 
+    - { regexp: '^ServerName', value: "ServerName       "{{ proftp_server_name }}"" }
+    - { regexp: '^ServerType', value: "ServerType       {{ proftp_type_conf }}" }
+    - { regexp: '^Port', value: "Port       {{ proftp_default_port }}" }
+    - { regexp: '^User', value: "User       {{ proftp_user }}" }
+    - { regexp: '^Group', value: "Group       {{ proftp_user_group }}" }
+    - { regexp: '^TransferLog', value: "TransferLog       {{ proftp_transfert_log_file }}" }
+    - { regexp: '^SystemLog', value: "SystemLog       {{ proftp_system_log_file }}" }

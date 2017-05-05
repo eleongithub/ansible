@@ -1,13 +1,32 @@
 ---
 # tasks file for proftp
 
-- name: Check if ProFTP is installed on the system
-  shell: proftpd --version || echo "Unknown ProFTP Server"
-  register: proftp_version_result
+# TODO -
+# 1 - Delete proftpd.conf.j2 from templates directory. We don't need it anymore
+# 2 - Add more configuration to protect ProFTP (inspiration by BSL)
+# 3 -  Study how to merge the roles proftp & proftp_ssl. I think we have the possibility to do it. 
 
-- name : Install proftp packages
-  include: install.yml
-  when: "('{{ proftp_version }}' not in '{{ proftp_version_result.stdout }}')"
+
+- name: Check if ProFTP is installed on the system
+  shell: proftpd --version
+  register: proftp_version_result
+  ignore_errors: True
+
+# TODO : THis code is necessary ? Delete it ??
+# - name: Purge ProFTPd Server package if present
+#   apt:
+#     pkg: "{{ item }}"
+#     state: absent
+#     purge: yes
+#   with_items:
+#     - "proftpd"
+#     - "proftpd-basic"
+
+- name: Install ProFTPd Server.
+  apt:
+    pkg: proftpd
+    state: present
+  when: ((proftp_version_result|failed) or (proftp_version_result.stdout.find('{{ proftp_version }}') != -1))
 
 - name: Create Group proftp
   group:
@@ -23,10 +42,13 @@
     comment: "ProFTD Server User"
     state: present
 
-- name: Deploy ProFTP configuration file
-  template:
-    src: proftpd.conf.j2
-    dest: "{{ proftp_conf_path }}"
+- name: Add Configuration to ProFTP
+  lineinfile: 
+    dest: "{{ proftp_conf_path }}" 
+    regexp: "{{ item.regexp }}" 
+    line: "{{ item.value }}"
+    state: present
+  with_items: "{{ proftp_config_directive }}"
 
 - name: Define user "proftp" and group "proftp" as the owner of configuration directory
   file:
@@ -50,9 +72,12 @@
   when: iptables_enabled
   
 - name: Restart ProFTP
-  command: echo "Restart ProFTP service..."
+  command: echo "Restart ProFTP service"
   notify:
     - Restart ProFTP
+
+- meta: flush_handlers
+  when: proftp_goss_enabled
 
 - name: Test with goss
   include: goss.yml
