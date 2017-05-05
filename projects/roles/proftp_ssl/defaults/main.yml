@@ -7,6 +7,7 @@ proftp_tls_log_file: "/var/log/proftpd/tls.log"
 proftp_ssl_conf_dir: "/etc/proftpd/ssl"
 proftp_ssl_cert_file: "{{ proftp_ssl_conf_dir }}/ftp.cert.pem"
 proftp_ssl_key_file: "{{ proftp_ssl_conf_dir }}/ftp.key.pem"
+proftp_ssl_goss_enabled: False
 proftp_dns: "vhosts1.fr"
 proftp_ssl_subj: "/C=\"FR\"/ST=\"Rhone\"/L=\"Lyon\"/O=\"Syscom\"/OU=\"IT\"/CN={{ proftp_dns }}"
 proftp_ssl_config_file: "{{ proftp_ssl_conf_dir }}/openssl_ca.conf"

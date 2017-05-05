@@ -1,7 +1,11 @@
 ---
 # tasks file for proftp_ssl
 
-- name: Installing openssl...
+# TODO 1 - Separe clearly creation of SSL Key to the role proftp tls
+# TODO 2 - Add more configuration to protect ProFTP (inspiration by BSL)
+# TODO 3 -  Study how to merge the roles proftp & proftp_ssl. I think we have the possibility to do it.
+
+- name: Install openssl
   apt:
     pkg: openssl
     state: present
@@ -54,3 +58,10 @@
   command: echo "Restart ProFTP service..."
   notify:
     - Restart ProFTP
+
+- meta: flush_handlers
+  when: proftp_ssl_goss_enabled
+
+- name: Test with goss
+  include: goss.yml
+  when: proftp_ssl_goss_enabled

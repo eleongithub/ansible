@@ -23,6 +23,7 @@ Role Variables
 |proftp_user|proftpd|ProFTP User.|
 |proftp_user_group|proftpd|ProFTP User group.|
 |proftp_ssl_files|-|List fo ProFTP and TLS files with its rights.|
+|proftp_ssl_goss_enabled|False|Enable/Dicable goss to check proftp after installation.|
 
 More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/proftp_ssl/defaults/main.yml)
 

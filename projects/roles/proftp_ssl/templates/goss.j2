@@ -1,0 +1,25 @@
+---
+
+file:
+{{ proftp_ssl_conf_dir}}:
+exists: true
+
+file:
+{{ proftp_conf_path}}:
+exists: true
+
+file:
+{{ proftp_tls_conf_path}}:
+exists: true
+
+service:
+  proftpd:
+    enabled: true
+    running: true
+
+port:
+  tcp:{{ proftp_default_port }}:
+    listening: true
+
+
+
