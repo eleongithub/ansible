@@ -5,7 +5,7 @@ package:
     installed: true
 
 group:
-  {{ proftp_user_group }}:
+  {{ proftp_group }}:
     exists: true
 
 user:
@@ -13,21 +13,22 @@ user:
     exists: true
 
 file:
-{{ proftp_modules_conf_path}}:
-exists: true
-owner: "{{ proftp_user }}"
-group: "{{ proftp_user_group }}"
-mode: "0644"
+  {{ proftp_modules_conf_path}}:
+    exists: true
+    owner: "{{ proftp_user }}"
+    group: "{{ proftp_group }}"
+    mode: "0644"
 
 file:
-{{ proftp_conf_path}}:
-exists: true
-owner: "{{ proftp_user }}"
-group: "{{ proftp_user_group }}"
-mode: "0644"
+  {{ proftp_conf_path}}:
+    exists: true
+    owner: "{{ proftp_user }}"
+    group: "{{ proftp_group }}"
+    mode: "0644"
 
 service:
   proftpd:
+    # required attributes
     enabled: true
     running: true
 

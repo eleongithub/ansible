@@ -12,14 +12,14 @@ UseIPv6				on
 # If set on you can experience a longer connection delay in many cases.
 IdentLookups			off
 
-ServerName			"{{ proftp_server_name }}"
+# Hide ProFTP version
+ServerIdent			on "{{ proftp_server_name }}"
 ServerType			{{ proftp_type_conf }}
 DeferWelcome			off
 
 DefaultServer			on
 ShowSymlinks			off
-# Hide ProFTP version
-ServerIdent 			off
+
 
 # Use this to jail all users in their homes 
 DefaultRoot			~
@@ -31,13 +31,16 @@ Port				{{ proftp_default_port }}
 # In some cases you have to specify passive ports range to by-pass
 # firewall limitations. Ephemeral ports can be used for that, but
 # feel free to use a more narrow range.
-PassivePorts                  {{ firwall_ftp_min_passive_port }} {{ firwall_ftp_max_passive_port }}
+PassivePorts                  {{ proftp_firwall_ftp_min_passive_port }} {{ proftp_firwall_ftp_max_passive_port }}
 
 # If your host was NATted, this option is useful in order to
 # allow passive tranfers to work. You have to use your public
 # address and opening the passive ports used on your firewall as well.
 # MasqueradeAddress		1.2.3.4
 
+# ProFTPd lira le ficier /etc/ftpusers et interdira les connexions des utilisateurs qui s'y trouvent.
+# Cette adirective est ajoutée de façon explicite. Implicitement, elle a la valeur 'on' (http://www.proftpd.org/docs/directives/linked/config_ref_UseFtpUsers.html)
+UseFtpUsers                     on
 
 
 # To prevent DoS attacks, set the maximum number of child processes
@@ -50,7 +53,7 @@ MaxInstances			30
 
 # Set the user and group that the server normally runs at.
 User				{{ proftp_user }}
-Group				{{ proftp_user_group }}
+Group				{{ proftp_group }}
 
 # Umask 022 is a good standard umask to prevent new files and dirs
 # (second parm) from being group and world writable.
@@ -63,6 +66,10 @@ AllowOverwrite			on
 TransferLog 			{{ proftp_transfert_log_file }}
 SystemLog   			{{ proftp_system_log_file }}
 
+# Chemin et format des logs (valeurs par defaut pour installation proftpd standard)
+LogFormat                       normal {{ proftp_instance_log_format }}  # Suggested value
+ExtendedLog                     {{ proftp_system_log_file }} ALL normal
+ServerLog                       {{ proftp_system_log_file }}
 
 <IfModule mod_ctrls_admin.c>
 AdminControlsEngine off

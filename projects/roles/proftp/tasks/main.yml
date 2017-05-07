@@ -1,10 +1,9 @@
 ---
 # tasks file for proftp
 
-# TODO -
-# 1 - Delete proftpd.conf.j2 from templates directory. We don't need it anymore
-# 2 - Add more configuration to protect ProFTP (inspiration by BSL)
-# 3 -  Study how to merge the roles proftp & proftp_ssl. I think we have the possibility to do it. 
+# TODO
+# 1 - Add more configuration to protect ProFTP (inspiration by BSL)
+# 2 -  Study how to merge the roles proftp & proftp_ssl. I think we have the possibility to do it. 
 
 
 - name: Check if ProFTP is installed on the system
@@ -12,56 +11,46 @@
   register: proftp_version_result
   ignore_errors: True
 
-# TODO : THis code is necessary ? Delete it ??
-# - name: Purge ProFTPd Server package if present
-#   apt:
-#     pkg: "{{ item }}"
-#     state: absent
-#     purge: yes
-#   with_items:
-#     - "proftpd"
-#     - "proftpd-basic"
-
 - name: Install ProFTPd Server.
   apt:
-    pkg: proftpd
+    pkg: "{{ item }}"
     state: present
+  with_items:
+    - "proftpd"
+    - "proftpd-basic"
   when: ((proftp_version_result|failed) or (proftp_version_result.stdout.find('{{ proftp_version }}') != -1))
 
 - name: Create Group proftp
   group:
-    name: "{{ proftp_user_group }}"
+    name: "{{ proftp_group }}"
     state: present
 
 - name: Create proftp user
   user:
     name: "{{ proftp_user }}"
     createhome: no
-    group: "{{ proftp_user_group }}"
+    group: "{{ proftp_group }}"
     shell: /bin/false
     comment: "ProFTD Server User"
     state: present
 
-- name: Add Configuration to ProFTP
-  lineinfile: 
-    dest: "{{ proftp_conf_path }}" 
-    regexp: "{{ item.regexp }}" 
-    line: "{{ item.value }}"
-    state: present
-  with_items: "{{ proftp_config_directive }}"
+- name: Deploy ProFTP configuration file
+  template:
+    src: proftpd.conf.j2
+    dest: "{{ proftp_conf_path }}"
 
 - name: Define user "proftp" and group "proftp" as the owner of configuration directory
   file:
     path: /etc/proftpd
     owner: "{{ proftp_user }}"
-    group: "{{ proftp_user_group }}"
+    group: "{{ proftp_group }}"
     recurse: yes
 
 - name: Define owner, group and right on ProFTP configuration files
   file:
     path: "{{ item }}"
     owner: "{{ proftp_user }}"
-    group: "{{ proftp_user_group }}"
+    group: "{{ proftp_group }}"
     mode: "0644"
   with_items: 
     - "{{ proftp_modules_conf_path }}"
@@ -69,7 +58,7 @@
 
 - name: Add Iptables rules for ProFTP
   include: iptables.yml
-  when: iptables_enabled
+  when: proftp_iptables_enabled
   
 - name: Restart ProFTP
   command: echo "Restart ProFTP service"
