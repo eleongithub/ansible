@@ -2,20 +2,17 @@
 
 package:
   {{ postgres_server_pkg }}:
+    # required attributes
     installed: true
 
 package:
   {{ postgres_client_pkg }}:
+    # required attributes
     installed: true
-
-{% for item in postgres_conf_files %}
-file:
-{{ item.dest }}:
-exists: true
-{% endfor %} 
-
+    
 service:
-  postgresl:
+  postgresql:
+    # required attributes
     enabled: true
     running: true
 
