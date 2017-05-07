@@ -17,3 +17,16 @@ proftp_network_interface: 'eth0'
 proftp_instance_log_format: "%t %a %h %U %A %r %s %f %b %T"
 proftp_iptables_enabled: False
 proftp_goss_enabled: False
+
+
+
+proftp_tls_enabled: False
+proftp_tls_protocol: "TLSv1 SSLv3"
+proftp_tls_conf_path: "/etc/proftpd/tls.conf"
+proftp_tls_log_file: "/var/log/proftpd/tls.log"
+proftp_tls_cert_file: "/etc/proftpd/ssl/ftp.cert.pem"
+proftp_tls_key_file: "/etc/proftpd/ssl/ftp.key.pem"
+proftp_tls_files:
+ - { path: "{{ proftp_tls_conf_path }}", mode: "0644" }
+ - { path: "{{ proftp_tls_cert_file }}", mode: "0644" }
+ - { path: "{{ proftp_tls_key_file }}", mode: "0400" }

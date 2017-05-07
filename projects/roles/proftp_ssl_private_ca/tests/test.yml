@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - proftp_ssl
+    - proftp_ssl_private_ca

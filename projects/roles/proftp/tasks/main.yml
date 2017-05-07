@@ -3,8 +3,6 @@
 
 # TODO
 # 1 - Add more configuration to protect ProFTP (inspiration by BSL)
-# 2 -  Study how to merge the roles proftp & proftp_ssl. I think we have the possibility to do it. 
-
 
 - name: Check if ProFTP is installed on the system
   shell: proftpd --version
@@ -55,6 +53,15 @@
   with_items: 
     - "{{ proftp_modules_conf_path }}"
     - "{{ proftp_conf_path }}"
+
+- name: Define owner, group and right on ProFTP TLS configuration files
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ proftp_user }}"
+    group: "{{ proftp_group }}"
+    mode: "{{ item.mode }}"
+  with_items: "{{ proftp_tls_files }}"
+  when: proftp_tls_enabled
 
 - name: Add Iptables rules for ProFTP
   include: iptables.yml

@@ -12,20 +12,6 @@ user:
   {{ proftp_user }}:
     exists: true
 
-file:
-  {{ proftp_modules_conf_path}}:
-    exists: true
-    owner: "{{ proftp_user }}"
-    group: "{{ proftp_group }}"
-    mode: "0644"
-
-file:
-  {{ proftp_conf_path}}:
-    exists: true
-    owner: "{{ proftp_user }}"
-    group: "{{ proftp_group }}"
-    mode: "0644"
-
 service:
   proftpd:
     # required attributes

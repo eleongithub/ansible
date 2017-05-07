@@ -1,7 +1,0 @@
----
-# handlers file for proftp_ssl
-
-- name: Restart ProFTP
-  service:
-    name: proftpd
-    state: restarted

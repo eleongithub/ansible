@@ -75,6 +75,24 @@ ServerLog                       {{ proftp_system_log_file }}
 AdminControlsEngine off
 </IfModule>
 
+# Include SSL configuration files
+{% if proftp_tls_enabled %}
+<IfModule mod_tls.c>
+TLSEngine                       on
+# TLSProtocol : Versions SSL
+TLSProtocol                     {{ proftp_tls_protocol }}
+TLSLog                          {{ proftp_tls_log_file }}
+# Are clients required to use FTP over TLS when talking to this server?
+TLSRequired                     on
+# Authenticate clients that want to use FTP over TLS?
+TLSVerifyClient                 off
+TLSOptions 			NoCertRequest NoSessionReuseRequired
+TLSRSACertificateFile           {{ proftp_tls_cert_file }}
+TLSRSACertificateKeyFile        {{ proftp_tls_key_file }}
+</IfModule>
+{% endif %}
+
+
 #
 # Alternative authentication frameworks
 #
@@ -88,3 +106,4 @@ AdminControlsEngine off
 
 # Include other custom configuration files
 Include /etc/proftpd/conf.d/
+

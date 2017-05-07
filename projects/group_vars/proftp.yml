@@ -1,1 +1,9 @@
 ---
+
+proftp_tls_enabled: True
+proftp_iptables_enabled: True
+iptables_enabled: True
+fail2ban_proftp_enabled: True
+fail2ban_goss_enabled: True
+ monit_goss_enabled: True
+ monit_proftp_enabled: True
