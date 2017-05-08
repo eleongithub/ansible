@@ -10,17 +10,17 @@
 ### END INIT INFO
  
 # Define JAVA_HOME
-export JAVA_HOME="{{ java_home }}"
+export JAVA_HOME="{{ tomcat_conf_java_home }}"
  
 
 # Define CATALINA_HOME. It is the location of the bin files of Tomcat  
-export CATALINA_HOME="{{ tomcat_home }}"
+export CATALINA_HOME="{{ tomcat_conf_home }}"
  
 # Define CATALINA_BASE. It is the location of the configuration files of this instance of Tomcat
-export CATALINA_BASE="{{ tomcat_home }}"
+export CATALINA_BASE="{{ tomcat_conf_home }}"
  
 # TOMCAT_USER is the default user of tomcat
-export TOMCAT_USER="{{ tomcat_user }}"
+export TOMCAT_USER="{{ tomcat_conf_user }}"
  
 # TOMCAT_USAGE is the message if this script is called without any options
 TOMCAT_USAGE="Usage: $0 {\e[00;32mstart\e[00m|\e[00;31mstop\e[00m|\e[00;32mstatus\e[00m|\e[00;31mrestart\e[00m}"

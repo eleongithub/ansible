@@ -8,22 +8,16 @@
     enabled: no
   ignore_errors: true
 
-- name : Remove eventual tomcat init script from the system
-  file:
-    path: "{{ tomcat_conf_init_script }}"
-    state: absent
-  ignore_errors: true
-
 - name: Create Group Tomcat
   group:
-    name: "{{ tomcat_conf_user_group }}"
+    name: "{{ tomcat_conf_group }}"
     state: present
 
 - name: Create User Tomcat
   user:
     name: "{{ tomcat_conf_user }}"
     createhome: no
-    group: "{{ tomcat_conf_user_group }}"
+    group: "{{ tomcat_conf_group }}"
     shell: /bin/bash
     state: present
 
@@ -31,7 +25,7 @@
   file:
     path: "{{ tomcat_conf_versions }}"
     owner: "{{ tomcat_conf_user }}"
-    group: "{{ tomcat_conf_user_group }}"
+    group: "{{ tomcat_conf_group }}"
     recurse: yes
 
 - name: Change the owner of link to the last tomcat directory
@@ -39,25 +33,28 @@
     src: "{{ tomcat_conf_last_version }}"
     path: "{{ tomcat_conf_home }}"
     owner: "{{ tomcat_conf_user }}"
-    group: "{{ tomcat_conf_user_group }}"
+    group: "{{ tomcat_conf_group }}"
     state: link
 
 - name: Create the tomcat configuration directory
   file:
     path: "{{ tomcat_conf_directory }}"
     owner: "{{ tomcat_conf_user }}"
-    group: "{{ tomcat_conf_user_group }}"
+    group: "{{ tomcat_conf_group }}"
     state: directory
     recurse: yes
 
 - name: Deploy configuration Tomcat files
   template:
-    src: "{{item.src}}"
-    dest: "{{item.dest}}"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: "{{ tomcat_conf_user }}"
-    group: "{{ tomcat_conf_user_group }}"
+    group: "{{ tomcat_conf_group }}"
   with_items:
    - "{{ tomcat_conf_files }}"
+
+- name: Apply OWASP rule to secure Tomcat
+  include: owasp.yml
 
 - name: Copy Tomcat init script
   template:
@@ -77,6 +74,6 @@
     enabled: yes
 
 - name: Restart tomcat
-  command: echo "Restart Tomcat service..."
+  command: echo "Restart Tomcat service"
   notify:
     - Restart tomcat

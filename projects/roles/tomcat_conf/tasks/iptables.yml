@@ -1,8 +1,16 @@
 ---
 
-- name: Add Iptables Input trafic rule for Tomcat
+- name: Add Iptables Input trafic rule for Tomcat HTTP port
   command: >
-   /sbin/iptables -t filter -A INPUT -i {{ tomcat_conf_network_interface }} -p tcp --dport {{ tomcat_conf_http_port }} -j ACCEPT -m comment --comment "TCP - Tomcat Server Input trafic"
+   /sbin/iptables -t filter -A INPUT -i {{ tomcat_conf_network_interface }} -p tcp --dport {{ tomcat_conf_http_port }} -j ACCEPT -m comment --comment "TCP - Tomcat Server HTTP Input trafic"
+
+- name: Add Iptables Input trafic rule for Tomcat Shutdown port
+  command: >
+   /sbin/iptables -t filter -A INPUT -i {{ tomcat_conf_shutdown_port }} -p tcp --dport {{ tomcat_conf_shutdown_port }} -j ACCEPT -m comment --comment "TCP - Tomcat Server Shutdown port"
+
+- name: Add Iptables Input trafic rule for Tomcat Mod JK port
+  command: >
+   /sbin/iptables -t filter -A INPUT -i {{ tomcat_conf_mod_jk_port }} -p tcp --dport {{ tomcat_conf_mod_jk_port }} -j ACCEPT -m comment --comment "TCP - Tomcat Server Mod JK port"
 
 - name: Add Iptables Output trafic rule for Tomcat
   command: >
