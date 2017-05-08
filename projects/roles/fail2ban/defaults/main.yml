@@ -8,7 +8,6 @@ fail2ban_jail_configuration_file: "/etc/fail2ban/jail.conf"
 fail2ban_jail_configuration_orig_file: "/etc/fail2ban/jail.conf.orig"
 fail2ban_alert_mail: "root@localhost"
 fail2ban_goss_enabled: False
-fail2ban_goss_file: "/etc/fail2ban/goss.yml"
 
 # defaults variables for ssh
 fail2ban_ssh_enabled: False

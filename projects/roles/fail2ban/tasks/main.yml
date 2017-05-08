@@ -49,6 +49,7 @@
 
 #https://docs.ansible.com/ansible/meta_module.html
 - meta: flush_handlers
+  when: fail2ban_goss_enabled
 
 - name: Test with goss
   include: goss.yml
