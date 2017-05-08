@@ -1,1 +1,5 @@
 ---
+
+postgres_iptables_enabled: True
+postgres_goss_enabled: True
+monit_postgres_enabled: True

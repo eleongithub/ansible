@@ -10,11 +10,6 @@ postgres_version: 9.4
 postgres_conf_dir: "/etc/postgresql/{{postgres_version}}/main"
 postgres_server_pkg: "postgresql-{{postgres_version}}"
 postgres_client_pkg: "postgresql-client-{{postgres_version}}"
-postgres_config_file: "{{ postgres_conf_dir }}/postgresql.conf"
-postgres_pg_hba_file: "{{ postgres_conf_dir }}/pg_hba.conf"
-postgres_config_directives : 
-    - { regexp: "^listen_addresses", value: "listen_addresses = '{{ postgres_listen_addresses }}'" }
-    - { regexp: "^port", value: 'port = {{ postgres_port }}' }
-    - { regexp: "^log_min_duration_statement", value: "log_min_duration_statement = -1" }
-postgres_pg_hba_directives : 
-    - { regexp: "^local   all             postgres", value: "local   all             postgres                                trust" }
+-postgres_conf_files:
+  - { src: "postgresql.conf.j2", dest: "{{ postgres_conf_dir }}/postgresql.conf" }
+  - { src: "pg_hba.conf.j2", dest: "{{ postgres_conf_dir }}/pg_hba.conf" }

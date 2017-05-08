@@ -9,21 +9,12 @@
     - "{{ postgres_server_pkg }}"
     - "{{ postgres_client_pkg }}"
 
-- name: Change the config of pg_hba.conf
-  lineinfile: 
-    dest: "{{ postgres_pg_hba_file }}" 
-    regexp: "{{ item.regexp }}" 
-    line: "{{ item.value }}"
-    state: present
-  with_items: "{{ postgres_pg_hba_directives }}"
-
-- name: Change the config of postgresql.conf
-  lineinfile: 
-    dest: "{{ postgres_config_file }}" 
-    regexp: "{{ item.regexp }}" 
-    line: "{{ item.value }}"
-    state: present
-  with_items: "{{ postgres_config_directives }}"
+- name: Deploy configurations files
+  template:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+  with_items:
+    - "{{ postgres_conf_files }}"
 
 - name: Add Iptables rule
   include: iptables.yml
