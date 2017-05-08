@@ -1,2 +1,2 @@
 ---
-network_interface: 'eth0'
+firewall_network_interface: 'eth0'

@@ -1,11 +1,15 @@
 ---       
 iptables_enabled: True
-nexus: "http://192.168.0.13:9081/nexus"
+nexus: "http://192.168.1.97:9081/nexus"
 nexus_repositories: "{{ nexus }}/content/repositories"
 nexus_public_repository: "{{ nexus_repositories }}/public"
 portsentry_config_file: "/etc/default/portsentry"
 
-
+monit_goss_enabled: True
+monit_sshd_enabled: True
+fail2ban_ssh_enabled: True
+fail2ban_goss_enabled: True
+portsentry_goss_enabled: True
 
 #OS_FAMILY = dict(
 #RedHat = 'RedHat', Fedora = 'RedHat', CentOS = 'RedHat', Scientific = 'RedHat',

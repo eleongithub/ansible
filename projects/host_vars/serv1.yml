@@ -1,2 +1,2 @@
 ---
-network_interface: 'wlan0'
+firewall_network_interface: 'wlan0'
