@@ -2,7 +2,7 @@
 # tasks file for tomcat
 
 - name: Check if tomcat is installed on the system
-  shell: cat "{{ tomcat_home }}/RELEASE-NOTES"|grep "Apache Tomcat Version"
+  shell: cat "{{ tomcat_home }}/RELEASE-NOTES"
   register: tomcat_version_result
   ignore_errors: True
 

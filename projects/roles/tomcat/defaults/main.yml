@@ -14,8 +14,8 @@ tomcat_versions: "/opt/tomcat_versions"
 tomcat_last_version: "{{ tomcat_versions }}/apache-tomcat-{{ tomcat_version }}"
 tomcat_home: "/opt/tomcat"
 tomcat_required_packages:
- - 'libapr1'
- - 'libapr1-dev'
- - 'libaprutil1'
- - 'libaprutil1-dev'
- - 'libssl-dev'
+ - "libapr1"
+ - "libapr1-dev"
+ - "libaprutil1"
+ - "libaprutil1-dev"
+ - "libssl-dev"

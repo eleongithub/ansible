@@ -18,7 +18,7 @@
    - "{{ portsentry_files }}"
 
 - name: Restart portsentry
-  command: echo "Restart portsentry..."
+  command: echo "Restart portsentry"
   notify:
     - Restart portsentry
 
