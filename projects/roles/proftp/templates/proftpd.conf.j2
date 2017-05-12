@@ -12,11 +12,15 @@ UseIPv6				on
 # If set on you can experience a longer connection delay in many cases.
 IdentLookups			off
 
+{% if profp_hide_server_version %}
 # Hide ProFTP version
 ServerIdent			on "{{ proftp_server_name }}"
+{% else %}
+ServerName         "{{ proftp_server_name }}" 
+{% endif %}
+
 ServerType			{{ proftp_type_conf }}
 DeferWelcome			off
-
 DefaultServer			on
 ShowSymlinks			off
 
@@ -38,10 +42,11 @@ PassivePorts                  {{ proftp_firwall_ftp_min_passive_port }} {{ proft
 # address and opening the passive ports used on your firewall as well.
 # MasqueradeAddress		1.2.3.4
 
+{% if proftp_limit_user %}
 # ProFTPd lira le ficier /etc/ftpusers et interdira les connexions des utilisateurs qui s'y trouvent.
 # Cette adirective est ajoutée de façon explicite. Implicitement, elle a la valeur 'on' (http://www.proftpd.org/docs/directives/linked/config_ref_UseFtpUsers.html)
 UseFtpUsers                     on
-
+{% endif %}
 
 # To prevent DoS attacks, set the maximum number of child processes
 # to 30.  If you need to allow more than 30 concurrent connections
@@ -55,9 +60,18 @@ MaxInstances			30
 User				{{ proftp_user }}
 Group				{{ proftp_group }}
 
+# TimeoutLogin : TimeOut(en seconde) de login.
+TimeoutLogin                        60
+
+# TimeoutIdle : TimeOut(en seconde) d'inactivité.
+TimeoutIdle                         1200
+
+# RootLogin: Interdire l'authentification avec le compte root.
+RootLogin                           off
+
 # Umask 022 is a good standard umask to prevent new files and dirs
 # (second parm) from being group and world writable.
-Umask                           022
+Umask                           {{ proftp_umask }}
 # Normally, we want files to be overwriteable.
 AllowOverwrite			on
 

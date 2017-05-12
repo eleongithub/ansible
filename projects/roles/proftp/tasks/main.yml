@@ -1,9 +1,6 @@
 ---
 # tasks file for proftp
 
-# TODO
-# 1 - Add more configuration to protect ProFTP (inspiration by BSL)
-
 - name: Check if ProFTP is installed on the system
   shell: proftpd --version
   register: proftp_version_result
@@ -53,6 +50,38 @@
   with_items: 
     - "{{ proftp_modules_conf_path }}"
     - "{{ proftp_conf_path }}"
+
+- name: Initialize /etc/ftpusers to limit access to ProFTPd Server. 
+  shell: cat /etc/passwd|awk -F":" "{print $ 1}" > /etc/ftpusers
+  when: proftp_limit_user
+
+- name: Delete from /etc/ftpusers users authorized to access to ProFTPd Server.
+  lineinfile:
+    dest: /etc/ftpusers
+    line: "{{ item }}"
+    state: absent
+  with_items: "{{ proftp_authorized_users }}"
+  when: proftp_limit_user and proftp_authorized_users != None
+  
+- name: Copy logrotate configuration
+  template:
+    src: proftpd.j2
+    dest: /etc/logrotate.d/proftpd
+    mode: 0644
+    owner: root
+    group: root
+  when: proftp_enable_logrorate
+
+- name: Define crontab to execute logrotate every day at 00H00
+  cron:
+    name: "Logrotate ProFTPd"
+    job: "logroate /etc/logrotate.d/proftpd"
+    minute: "0"
+    hour: "0"
+    day: "*"
+    month: "*"
+    state: present
+  when: proftp_enable_logrorate
 
 - name: Define owner, group and right on ProFTP TLS configuration files
   file:

@@ -1,0 +1,14 @@
+{{ proftp_transfert_log_file }}
+{{ proftp_system_log_file }}
+{% if proftp_tls_enabled %}
+{{ proftp_tls_log_file }}
+{% endif %}
+{
+	daily
+	rotate 180
+	compress
+	delaycompress
+	missingok
+	notifempty
+	create 644 root root
+}
