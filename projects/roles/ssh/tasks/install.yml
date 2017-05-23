@@ -1,6 +1,11 @@
 ---
 # tasks file for ssh
 
+- name: Delete obsolete packages - Telnet, RSH and RLOGIN
+  include: obsolete_packages.yml
+  when: ssh_delete_obsolete_packages
+  
+
 - name : make a backup for file
   copy:
     src: "{{ item }}"

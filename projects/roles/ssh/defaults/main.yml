@@ -1,5 +1,6 @@
 ---
 # defaults file for ssh
+ssh_delete_obsolete_packages: False
 ssh_banner_information : "Linux SSH Server"
 ssh_tmout: 900
 ssh_histsize: 20
@@ -14,7 +15,7 @@ ssh_iptables_enabled: False
 ssh_goss_enabled: False
 ssh_config : 
     - { regexp: '^Port', value: 'Port {{ ssh_config_port }}' }
-    - { regexp: '^Protocol', value: 'Protocol {{ ssh_config_protocol }}' }
+    - { regexp: '^Protocol', value: 'Protocol 2' }
     - { regexp: '^PermitRootLogin', value: 'PermitRootLogin no' }
     - { regexp: '^PasswordAuthentication', value: 'PasswordAuthentication no' }
 ssh_backup_files:
