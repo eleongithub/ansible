@@ -13,11 +13,20 @@ ssh_config_file: /etc/ssh/sshd_config
 ssh_network_interface: 'eth0'
 ssh_iptables_enabled: False
 ssh_goss_enabled: False
+ssh_version: 6.3
+ssh_version_support_etm: 6.3
+ssh_macs_etm: "MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha1"
+ssh_macs_old: "MACs hmac-sha1"
 ssh_config : 
-    - { regexp: '^Port', value: 'Port {{ ssh_config_port }}' }
-    - { regexp: '^Protocol', value: 'Protocol 2' }
-    - { regexp: '^PermitRootLogin', value: 'PermitRootLogin no' }
-    - { regexp: '^PasswordAuthentication', value: 'PasswordAuthentication no' }
+    - { regexp: "^Port", value: "Port {{ ssh_config_port }}" }
+    - { regexp: "^Protocol", value: "Protocol 2" }
+    - { regexp: "^PermitRootLogin", value: "PermitRootLogin no" }
+    - { regexp: "^PasswordAuthentication", value: "PasswordAuthentication no" }
+    - { regexp: "^#StrictModes", value: "StrictModes yes" }
+    - { regexp: "^Ciphers", value: "Ciphers aes256-ctr,aes192-ctr, aes128-ctr" }
+    - { regexp: "^PermitUserEnvironment", value: "PermitUserEnvironment no" }
+    - { regexp: "^AllowTcpForwarding", value: "AllowTcpForwarding no" }
+    - { regexp: "^X11Forwarding", value: "X11Forwarding no" }
 ssh_backup_files:
  - { '/etc/issue' }
  - { '/etc/issue.net' }
