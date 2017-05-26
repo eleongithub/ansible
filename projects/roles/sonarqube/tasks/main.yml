@@ -32,3 +32,43 @@
     path: "/tmp/{{ sonarqube_archive_name }}"
     state: absent
   when: ansible_version.major|int < 2
+
+- name: Init database for sonarqube
+  include: database.yml
+  when: sonarqube_postgres_database_enabled
+
+- name: Change the config of sonar web port
+  lineinfile: 
+    dest: "{{ sonarqube_home }}/conf/sonar.properties" 
+    regexp: "^#sonar.web.port=" 
+    line: "sonar.web.port={{ sonarqube_web_port }}"
+    state: present
+
+- name: Add Iptables rules for sonarqube
+  include: iptables.yml
+  when: sonarqube_iptables_enabled
+  
+- name: Create link to sonarqube init script shell
+  file:
+    src: "{{ sonarqube_home }}/bin/linux-x86-64/sonar.sh"
+    path: "/usr/bin/sonar"
+    state: link
+
+- name: Copy init script shell
+  copy:
+    src: "sonar.sh"
+    path: "/etc/init.d/sonar"
+    owner: root
+    group: root
+    mode: 0755
+    state: link
+
+- name: Enable sonarqube service
+  service:
+    name: sonar
+    enabled: yes
+
+- name: Restart sonarqube
+  command: echo "Restart sonarqube service"
+  notify:
+    - Restart sonarqube

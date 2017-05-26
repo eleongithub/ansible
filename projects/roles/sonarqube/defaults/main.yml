@@ -1,18 +1,21 @@
 ---
 # defaults file for sonarqube
 
-gradle_version: "3.0"
-gradle_archive_name: "gradle-{{ gradle_version }}-all.zip"
-gradle_download_archive_url: ""
-gradle_install_directory: "/opt/gradle"
-gradle_home: "{{ gradle_install_dir }}/gradle-{{ gradle_version }}"
-
 sonarqube_version: "6.3.1" 
-sonarqube_archive_name: "sonarqube-{{ sonarqube_version }}.zip"
 sonarqube_install_directory: "/opt/sonar"
+sonarqube_archive_name: "sonarqube-{{ sonarqube_version }}.zip"
 sonarqube_home: "{{ sonarqube_install_directory }}/sonarqube-{{ sonarqube_version }}"
 sonarqube_download_archive_url: ""
-sonarqube_jdbc_username: 
-sonarqube_jdbc_password: 
-sonarqube_jdbc_url:
+sonarqube_postgres_database_enabled: False
+sonarqube_postgres_host: localhost
+sonarqube_postgres_username: sonar
+sonarqube_postgres_password: sonar
+sonarqube_postgres_database: sonar
+sonarqube_postgres_jdbc_url: "jdbc:postgresql://{{ sonarqube_postgres_host }}/{{ sonarqube_postgres_database }}"
+sonarqube_postgres_config : 
+    - { regexp: "^#sonar.jdbc.username=", value: "sonar.jdbc.username={{ sonarqube_postgres_username }}" }
+    - { regexp: "^#sonar.jdbc.password=", value: "sonar.jdbc.password={{ sonarqube_postgres_password }}" }
+    - { regexp: "^#sonar.jdbc.url=", value: "sonar.jdbc.url={{ sonarqube_postgres_jdbc_url }}" }
 sonarqube_web_port: 9000
+sonarqube_iptables_enabled: False
+sonarqube_network_interface: 'eth0'

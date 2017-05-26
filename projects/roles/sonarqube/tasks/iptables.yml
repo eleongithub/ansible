@@ -1,0 +1,5 @@
+---
+
+- name: Add Iptables Input trafic rule for sonarqube
+  command: >
+   /sbin/iptables -t filter -A INPUT -i {{ sonarqube_network_interface }} -p tcp --dport {{ sonarqube_web_port }} -j ACCEPT -m comment --comment "TCP - Sonarqube Input trafic"

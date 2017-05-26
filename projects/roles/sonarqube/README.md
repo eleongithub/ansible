@@ -1,22 +1,41 @@
 Role Name
 =========
 
-A brief description of the role goes here.
+sonarqube.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Name	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|sonarqube_version|6.3.1|SonarQube version.|
+|sonarqube_install_directory|/opt/sonar|SonarQube installation directory.|
+|sonarqube_archive_name|sonarqube-6.3.1.zip|SonarQube archive name.|
+|sonarqube_download_archive_url|-| URL where download SonarQube archive.|
+|sonarqube_home|/opt/sonar/sonarqube-6.3.1|SonarQube home directory.|
+|sonarqube_postgres_database_enabled|False|Enable/Disable SonarQube to store its datas into postgres database.|
+|sonarqube_postgres_host|localst|postgres database address.|
+|sonarqube_postgres_username|sonar|Postgres database username.|
+|sonarqube_postgres_password|sonar|Pstgres database password.|
+|sonarqube_postgres_database|sonar|Postgres database where sonar will store his datas.|
+|sonarqube_postgres_jdbc_url|jdbc:postgresql://localhost/sonar|Postgres database URL.|
+|sonarqube_postgres_config|-|Postgres database config.|
+|sonarqube_web_port|9000|SonarQube web port.|
+|sonarqube_iptables_enabled|False|If `True`, open `sonarqube_web_port` by iptables.|
+|sonarqube_network_interface|eth0|Netwaork interface where iptables rule will be apply..|
+
+More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/sonarqube/defaults/main.yml)
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+none.
 
 Example Playbook
 ----------------
@@ -35,4 +54,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Eric LEGBA.

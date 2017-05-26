@@ -1,2 +1,7 @@
 ---
 # handlers file for sonarqube
+
+- name: Restart sonarqube
+  service:
+    name: sonar
+    state: restarted
