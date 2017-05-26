@@ -29,10 +29,10 @@ Example Playbook
 ----------------
 
 Install maven
-```yaml
-- hosts: all
-  roles:
-    - { role: maven }
+
+    - hosts: servers
+      roles:
+         - { role: maven }
 
 License
 -------

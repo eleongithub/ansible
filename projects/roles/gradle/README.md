@@ -30,10 +30,10 @@ Example Playbook
 ----------------
 
 Install gradle
-```yaml
-- hosts: all
-  roles:
-    - { role: gradle }
+
+    - hosts: all
+      roles:
+        - { role: gradle }
 
 License
 -------
