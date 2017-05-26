@@ -21,13 +21,13 @@
     dest: "/tmp/{{ gradle_archive_name }}"
   when: ansible_version.major|int < 2
 
-- name: Decompress Apache archive
+- name: Decompress gradle archive
   unarchive:
     src: "/tmp/{{ gradle_archive_name }}"
     dest: "{{ gradle_dir }}/"
   when: ansible_version.major|int < 2
 
-- name: Delete Apache archive
+- name: Delete gradle archive
   file:
     path: "/tmp/{{ gradle_archive_name }}"
     state: absent
