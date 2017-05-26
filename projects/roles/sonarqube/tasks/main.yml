@@ -1,0 +1,34 @@
+---
+# tasks file for sonarqube
+
+- name: Create sonarqube install directory
+  file:
+    path: "{{ sonarqube_install_directory }}"
+    state: directory
+    owner: root
+    group: root
+
+- name: Download, decompress and delete sonarqube archive
+  unarchive:
+    src: "{{ sonarqube_download_archive_url }}"
+    dest: "{{ sonarqube_install_directory }}/"
+    remote_src: True
+  when: ansible_version.major|int >= 2
+
+- name: Download sonarqube archive
+  get_url:
+    url: "{{ sonarqube_download_archive_url }}"
+    dest: "/tmp/{{ sonarqube_archive_name }}"
+  when: ansible_version.major|int < 2
+
+- name: Decompress sonarqube archive
+  unarchive:
+    src: "/tmp/{{ sonarqube_archive_name }}"
+    dest: "{{ sonarqube_install_directory }}/"
+  when: ansible_version.major|int < 2
+
+- name: Delete sonarqube archive
+  file:
+    path: "/tmp/{{ sonarqube_archive_name }}"
+    state: absent
+  when: ansible_version.major|int < 2
