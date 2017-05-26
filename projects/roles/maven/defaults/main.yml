@@ -1,0 +1,8 @@
+---
+# defaults file for maven
+
+maven_version: "3.3.9"
+maven_archive_name: "apache-maven-{{ maven_version }}-bin.tar.gz"
+maven_install_directory: "/opt/maven"
+maven_home: "{{maven_install_directory}}/apache-maven-{{ maven_version }}"
+maven_download_archive_url: ""

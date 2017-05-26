@@ -1,0 +1,7 @@
+---
+# defaults file for gradle
+gradle_version: "3.0"
+gradle_archive_name: "gradle-{{ gradle_version }}-all.zip"
+gradle_download_archive_url: ""
+gradle_install_directory: "/opt/gradle"
+gradle_home: "{{ gradle_install_dir }}/gradle-{{ gradle_version }}"
