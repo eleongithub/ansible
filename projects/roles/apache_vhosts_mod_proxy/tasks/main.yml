@@ -51,7 +51,7 @@
   with_dict: "{{ apache_vhosts_mod_proxy }}"
 
 - name: Install SSL certificates for virtual hosts
-  include: ssl_main.yml
+  include: ssl.yml
 
 - name: Count generate virtual hosts
   shell: ls -l {{ apache_vhosts_conf_dir }}|grep "mod_proxy.conf"|wc -l

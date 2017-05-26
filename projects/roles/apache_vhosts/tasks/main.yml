@@ -38,7 +38,7 @@
   when: "{{ mod_jk_enable }}"
 
 - name: Install SSL certificates for virtual hosts
-  include: ssl_main.yml
+  include: ssl.yml
 
 - name: Count generate virtual hosts
   find:

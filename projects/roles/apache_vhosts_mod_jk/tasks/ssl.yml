@@ -25,8 +25,8 @@
   when: "{{ item.value.use_https }}"
 
 - name: Copy Script shell script which will read passphrase.txt (mod_jk)
-  template:
-    src: passphrase.sh.j2
+  copy:
+    src: passphrase.sh
     dest: "{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.sh"
   with_dict: "{{ apache_vhosts_mod_jk }}"
   when: "{{ item.value.use_https }}"

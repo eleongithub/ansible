@@ -47,7 +47,7 @@
   with_dict: "{{ apache_vhosts_mod_jk }}"
 
 - name: Install SSL certificates for virtual hosts
-  include: ssl_main.yml
+  include: ssl.yml
 
 - name: Count generate virtual hosts
   shell: ls -l {{ apache_vhosts_conf_dir }}|grep "mod_jk.conf"|wc -l
@@ -84,6 +84,6 @@
   when: count_generate_vhosts_mod_jk.stdout|int > 0
 
 - name: Restart Apache
-  command: echo "Restart Apache..."
+  command: echo "Restart Apache"
   notify:
     - Restart Apache
