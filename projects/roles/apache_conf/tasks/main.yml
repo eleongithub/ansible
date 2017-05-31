@@ -49,6 +49,10 @@
     dest: "{{ apache_conf_init_script }}"
     mode: 0755
 
+- name : Iptables rules
+  include: iptables.yml
+  when: apache_conf_iptables_enabled
+
 - name: Enable Apache init script
   service:
     name: apache

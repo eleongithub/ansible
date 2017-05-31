@@ -18,6 +18,8 @@ apache_conf_max_clients: 300
 apache_conf_keep_alive: 'On'
 apache_conf_max_keep_alive_requests: 500
 apache_conf_keep_alive_timeout: 15
+apache_conf_network_interface: "eth0"
+apache_conf_iptables_enabled: False
 apache_conf_files:
  - { src: 'httpd.conf.j2', dest: '{{ apache_conf_httpd_file }}' }
  - { src: 'modules.conf.j2', dest: '{{ apache_conf_modules_file }}' }
