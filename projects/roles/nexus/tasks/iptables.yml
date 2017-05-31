@@ -6,7 +6,7 @@
     action: insert
     chain: INPUT
     protocol: tcp
-    # ctstate: NEW,ESTABLISHED
+    ctstate: NEW,ESTABLISHED
     match: tcp
     in_interface: "{{ nexus_network_interface }}"
     destination_port: "{{ nexus_port }}"
