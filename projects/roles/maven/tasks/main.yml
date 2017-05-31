@@ -1,12 +1,6 @@
 ---
 # tasks file for maven
 
-maven_version: "3.3.9"
-maven_archive_name: "apache-maven-{{ maven_version }}-bin.tar.gz"
-maven_install_directory: "/opt/maven"
-maven_home: "{{ maven_install_directory }}/apache-maven-{{ maven_version }}"
-maven_download_archive_url: ""
-
 - name: Create maven directory
   file:
     path: "{{ maven_install_directory }}"
@@ -30,7 +24,7 @@ maven_download_archive_url: ""
 - name: Decompress maven archive
   unarchive:
     src: "/tmp/{{ maven_archive_name }}"
-    dest: "{{ maven_dir }}/"
+    dest: "{{ maven_install_directory }}/"
   when: ansible_version.major|int < 2
 
 - name: Delete maven archive
@@ -45,7 +39,7 @@ maven_download_archive_url: ""
     insertafter: EOF
     block: |
       # Maven Home
-      M2_HOME="{{ maven_dir }}/{{ maven_home }}"
+      M2_HOME="{{ maven_home }}"
       export M2_HOME
       # Update PATH
       PATH=$PATH:"$M2_HOME/bin"
@@ -53,5 +47,5 @@ maven_download_archive_url: ""
     state: present
 
 - name: Relaod environments variables
-  command: >
-    source /etc/profile
+  shell: . /etc/profile
+

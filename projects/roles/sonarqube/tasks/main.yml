@@ -44,10 +44,6 @@
     line: "sonar.web.port={{ sonarqube_web_port }}"
     state: present
 
-- name: Add Iptables rules for sonarqube
-  include: iptables.yml
-  when: sonarqube_iptables_enabled
-  
 - name: Create link to sonarqube init script shell
   file:
     src: "{{ sonarqube_home }}/bin/linux-x86-64/sonar.sh"
@@ -61,7 +57,10 @@
     owner: root
     group: root
     mode: 0755
-    state: link
+
+- name: Add Iptables rules for sonarqube
+  include: iptables.yml
+  when: sonarqube_iptables_enabled
 
 - name: Enable sonarqube service
   service:

@@ -1,2 +1,77 @@
 ---
 # tasks file for nexus
+
+- name: Create Nexus group
+  group:
+    name: "{{ nexus_group }}"
+    state: present
+
+- name: Create Nexus user
+  user:
+    name: "{{ nexus_user }}"
+    group: "{{ nexus_group }}"
+    password: "{{ nexus_user_password }}"
+    shell: "/bin/bash"
+
+# - name: Download, decompress and delete Nexus archive
+#   unarchive:
+#     src: "{{ nexus_download_archive_url }}"
+#     dest: "{{ nexus_install_directory }}/"
+#     remote_src: True
+#   when: ansible_version.major|int >= 2
+
+# - name: Download Nexus archive
+#   get_url:
+#     url: "{{ nexus_download_archive_url }}"
+#     dest: "/tmp/{{ nexus_archive_name }}"
+#   when: ansible_version.major|int < 2
+
+# - name: Decompress Nexus archive
+#   unarchive:
+#     src: "/tmp/{{ nexus_archive_name }}"
+#     dest: "{{ nexus_install_directory }}/"
+#   when: ansible_version.major|int < 2
+
+# - name: Delete Nexus archive
+#   file:
+#     path: "/tmp/{{ nexus_archive_name }}"
+#     state: absent
+#   when: ansible_version.major|int < 2
+
+- name: Set owner and group of Nexus nexus_install_directory
+  file:
+    path: "{{ nexus_install_directory }}"
+    owner: "{{ nexus_user }}"
+    group: "{{ nexus_group }}"
+    recurse: yes
+
+- name: Cop properties file & init script shell of Nexus
+  template: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ nexus_user }}"
+    group: "{{ nexus_group }}"
+  with_items: "{{ nexus_files }}"
+
+- name: Create link to Nexus init script shell
+  file:
+    src: "{{ nexus_home }}/bin/nexus"
+    path: "/usr/bin/nexus"
+    state: link
+
+- name: Copy init script shell
+  copy:
+    src: "nexus.sh"
+    dest: "/etc/init.d/nexus"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Add Iptables rules for Nexus
+  include: iptables.yml
+  when: nexus_iptables_enabled
+
+- name: Enable Nexus service
+  service:
+    name: nexus
+    enabled: yes
