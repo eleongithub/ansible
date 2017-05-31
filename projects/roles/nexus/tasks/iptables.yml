@@ -1,7 +1,6 @@
 ---
 
 - name: Add Iptables Input trafic rule for Nexus
-  become: true
   iptables:
     action: insert
     chain: INPUT

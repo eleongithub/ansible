@@ -1,17 +1,47 @@
 ---
 
 - name: Add Iptables Input trafic rule for Tomcat HTTP port
-  command: >
-   /sbin/iptables -t filter -A INPUT -i {{ tomcat_conf_network_interface }} -p tcp --dport {{ tomcat_conf_http_port }} -j ACCEPT -m comment --comment "TCP - Tomcat Server HTTP Input trafic"
+  iptables:
+    action: insert
+    chain: INPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED
+    in_interface: "{{ tomcat_conf_network_interface }}"
+    destination_port: "{{ tomcat_conf_http_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - Tomcat Server HTTP Input trafic"
+
+- name: Add Iptables Output trafic rule for Tomcat HTTP port
+  iptables:
+    action: insert
+    chain: OUTPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED
+    out_interface: "{{ tomcat_conf_network_interface }}"
+    source_port: "{{ tomcat_conf_http_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - Tomcat Server HTTP Output trafic"
 
 - name: Add Iptables Input trafic rule for Tomcat Shutdown port
-  command: >
-   /sbin/iptables -t filter -A INPUT -i {{ tomcat_conf_shutdown_port }} -p tcp --dport {{ tomcat_conf_shutdown_port }} -j ACCEPT -m comment --comment "TCP - Tomcat Server Shutdown port"
+  iptables:
+    action: insert
+    chain: INPUT
+    protocol: tcp
+    in_interface: "{{ tomcat_conf_network_interface }}"
+    destination_port: "{{ tomcat_conf_shutdown_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - Tomcat Server Shutdown port"
 
 - name: Add Iptables Input trafic rule for Tomcat Mod JK port
-  command: >
-   /sbin/iptables -t filter -A INPUT -i {{ tomcat_conf_mod_jk_port }} -p tcp --dport {{ tomcat_conf_mod_jk_port }} -j ACCEPT -m comment --comment "TCP - Tomcat Server Mod JK port"
-
-- name: Add Iptables Output trafic rule for Tomcat
-  command: >
-   /sbin/iptables -t filter -A OUTPUT -o {{ tomcat_conf_network_interface }} -p tcp --dport {{ tomcat_conf_http_port }} -j ACCEPT -m comment --comment "TCP - Tomcat Server Output trafic"
+  iptables:
+    action: insert
+    chain: INPUT
+    protocol: tcp
+    in_interface: "{{ tomcat_conf_network_interface }}"
+    destination_port: "{{ tomcat_conf_mod_jk_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - Tomcat Server Mod JK port"

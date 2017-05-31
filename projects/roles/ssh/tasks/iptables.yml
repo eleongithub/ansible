@@ -2,9 +2,25 @@
 # tasks file for iptable on ssh
 
 - name: Add Iptables Input trafic rule for SSH
-  command: >
-   /sbin/iptables -t filter -A INPUT -i {{ ssh_network_interface }} -p tcp --dport {{ ssh_config_port }} -j ACCEPT -m comment --comment "TCP - OpenSSH Server Input trafic"
+  iptables:
+    action: insert
+    chain: INPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED
+    in_interface: "{{ ssh_network_interface }}"
+    destination_port: "{{ ssh_config_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - OpenSSH Server Input trafic"
 
 - name: Add Iptables Output trafic rule for SSH
-  command: >
-   /sbin/iptables -t filter -A OUTPUT -o {{ ssh_etwork_interface }} -p tcp --dport {{ ssh_config_port }} -j ACCEPT -m comment --comment "TCP - OpenSSH Server Output trafic"
+  iptables:
+    action: insert
+    chain: OUTPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED
+    out_interface: "{{ ssh_network_interface }}"
+    source_port: "{{ ssh_config_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - OpenSSH Server Output trafic"
