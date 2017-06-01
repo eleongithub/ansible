@@ -1,0 +1,20 @@
+---
+# tasks file for jenkins_master
+
+-name: Include install.yml
+ include: install.yml
+
+-name: Include settings.yml
+ include: settings.yml
+
+-name: Include plugins.yml
+ include: plugins.yml
+
+-name: Include iptables rules
+ include: iptables.yml
+ when: jenkins_master_iptables_enabled
+
+- name: Restart Jenkins
+  command: echo "Restart Jenkins"
+  notify:
+    - Restart Jenkins

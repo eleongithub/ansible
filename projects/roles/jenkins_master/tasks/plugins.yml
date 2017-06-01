@@ -1,0 +1,17 @@
+---
+# tasks file for jenkins_master
+
+- name: Retrieve Jenkins admin initial password.
+  command: cat {{ jenkins_master_initial_admin_password_file }}
+  register: admin_initial_password
+
+- name: Install Jenkins plugins.
+  jenkins_plugin:
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+    params:
+      url_username: admin
+      url_password: admin_initial_password.stdout
+    url: "http://localhost:{{ jenkins_master_port }}"
+  with_items: "{{ jenkins_master_plugins }}"
+  notify: Restart Jenkins

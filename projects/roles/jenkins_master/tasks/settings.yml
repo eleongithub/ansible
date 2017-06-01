@@ -1,0 +1,28 @@
+---
+# tasks file for jenkins_master
+
+# TODO : who is the owner-group of jenkins_master_config_file ? Specify it here !!!
+- name: Setting Jenkins default port
+  lineinfile: 
+    dest: "{{ jenkins_master_config_file }}" 
+    regexp: "^HTTP_PORT=" 
+    line: "HTTP_PORT={{ jenkins_master_port }}"
+    state: present
+
+- name: Setting Jenkins not run setup wizard
+  lineinfile: 
+    dest: "{{ jenkins_master_config_file }}" 
+    regexp: "^JAVA_ARGS=" 
+    line: "JAVA_ARGS={{ jenkins_master_options }}"
+    state: present
+
+- name: Start jenkins.
+  service: 
+    name: jenkins
+    state: started
+    enabled: yes
+
+- name: Delete Jenkins security init scripts after first starting.
+  file:
+    path: "{{ jenkins_master_jenkins_home }}/init.groovy.d/basic-security.groovy"
+    state: absent
