@@ -1,3 +1,12 @@
 ---
 
 # Jenkins master playbook
+- hosts: jenkins
+#   vars_files:
+#   - "password/password-{{env}}.yml"
+  become: yes
+  roles:
+    - { role: firewall, tags: ['firewall'] }
+    - { role: git, tags: ['git'] }
+    - { role: jdk, tags: ['jdk'] }
+    - { role: jenkins_master, tags: ['jenkins_master'] }

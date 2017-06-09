@@ -1,3 +1,13 @@
 ---
 
 # Jenkins slave playbook
+- hosts: slave
+#   vars_files:
+#   - "password/password-{{env}}.yml"
+  become: yes
+  roles:
+    - { role: firewall, tags: ['firewall'] }
+    - { role: git, tags: ['git'] }
+    - { role: jdk, tags: ['jdk'] }
+    - { role: maven, tags: ['maven'] }
+    - { role: gradle, tags: ['gradle'] }
