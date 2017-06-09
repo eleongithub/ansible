@@ -1,0 +1,14 @@
+---
+# tasks file for git
+
+- name: Install git on Debian system
+  apt:
+    pkg: git
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install git on Debian system
+  yum:
+    name: git
+    state: present
+  when: ansible_os_family == "RedHat"
