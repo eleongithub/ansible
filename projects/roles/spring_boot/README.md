@@ -1,31 +1,44 @@
-Role Name
+spring_boot
 =========
 
-A brief description of the role goes here.
+Install Spring Boot application.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Name	        | Default Value	| Description|
+| ------------- |:-------------:| ----------:|
+|spring_boot_user|springboot|Spring Boot user.|
+|spring_boot_group|springboot|Spring Boot group.|
+|spring_boot_main_directory|/opt/springboot|Spring Boot main directory|
+|spring_boot_conf_directory|/opt/springboot/conf|Configuration directory.|
+|spring_boot_logs_directory|/opt/springboot/logs|Logs directory.|
+|spring_boot_nexus_url|-|Nexus API URL where download Spring Boot application.|
+|spring_boot_apps_repository|-|Maven - Spring Boot application Nexus Repository.|
+|spring_boot_apps_groupid|-|Maven - Spring Boot application Group Id.|
+|spring_boot_apps_artifactid|-|Maven - Spring Boot application Artifact Id.|
+|spring_boot_apps_version|-|Maven - Spring Boot application version.|
+|spring_boot_apps_package|jar|Maven - Spring Boot application type package.|
+|spring_boot_apps_conf_files|-|Spring Boot application - List of configurations file.|
+|spring_boot_port|9000|Spring Boot application web port.|
+|sonarqube_iptables_enabled|False|If `True`, open `spring_boot_port` by iptables.|
+|sonarqube_networspring_boot_network_interfacek_interface|eth0|Netwaork interface where iptables rule will be apply.|
 
 Dependencies
 ------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: spring_boot }
 
 License
 -------
@@ -35,4 +48,4 @@ BSD
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Eric LEGBA.
