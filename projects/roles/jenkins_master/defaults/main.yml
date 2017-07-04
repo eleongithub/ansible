@@ -9,6 +9,7 @@ jenkins_master_port: 9090
 jenkins_master_network_interface: "eth0"
 jenkins_master_iptables_enabled: False
 jenkins_master_options: "-Djenkins.install.runSetupWizard=false"
+# https://updates.jenkins-ci.org/download/plugins/ : Get liste of Jenkins plugins
 jenkins_master_plugins:
     - { name: ace-editor, version: '1.1' }
     - { name: ansicolor, version: '0.4.2'
