@@ -30,6 +30,7 @@
     recurse: yes
   with_items: 
     - "{{ spring_boot_main_directory }}"
+    - "{{ spring_boot_jar_directory }}"
     - "{{ spring_boot_conf_directory }}"
     - "{{ spring_boot_logs_directory }}"
 
