@@ -46,26 +46,21 @@ stop() {
   pid=$(springboot_pid)
   if [ -n "$pid" ]
   then
-    echo -e "\e[00;31mStoping Spring Boot\e[00m"
+    echo -e "\e[00;31mStopping Spring Boot\e[00m"
     # Kill Spring Boot process
     kill -SIGTERM $pid >> $SPRING_BOOT_LOG_START_STOP 2>&1
-    let kwait=$SHUTDOWN_WAIT
-    count=0;
-    until [ `ps -p $pid | grep -c $pid` = '0' ] || [ $count -gt $kwait ]
+    nb_process=$(ps faxww | grep -v awk | grep -v grep | awk '/vcqjv.jar/{print $1}'|wc -l)
+    if [ $nb_process -gt 0 ]
+    then
+    for pid_process in $pid
     do
-      echo -n -e "\n\e[00;31mwaiting for processes to exit\e[00m";
-      sleep 1
-      let count=$count+1;
+      kill -9 $pid_process 2>&1 > /dev/null
     done
- 
-    if [ $count -gt $kwait ]; then
-      echo -n -e "\n\e[00;31mkilling processes which didn't stop after $SHUTDOWN_WAIT seconds\e[00m"
-      kill -9 $pid
     fi
   else
     echo -e "\e[00;31mSpring Boot is not running\e[00m"
   fi
- 
+
   return 0
 }
 
