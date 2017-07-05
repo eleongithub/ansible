@@ -4,6 +4,7 @@ spring_boot_user: springboot
 spring_boot_group: springboot
 spring_boot_main_directory: /opt/springboot
 spring_boot_conf_directory: "{{ spring_boot_main_directory }}/conf"
+spring_boot_jar_directory: "{{ spring_boot_main_directory }}/jar"
 spring_boot_logs_directory: "{{ spring_boot_main_directory }}/logs"
 spring_boot_nexus_url: ""
 spring_boot_apps_repository: ""
