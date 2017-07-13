@@ -8,6 +8,8 @@ worker.{{ worker.name }}.host={{ worker.host }}
 worker.{{ worker.name }}.type=ajp13
 worker.{{ worker.name }}.ping_mode=A
 worker.{{ worker.name }}.lbfactor=1
+# utilisation de keepalive pour éviter les coupures de connections inactives par le firewall entre Apache et Tomcat
+worker.{{ worker.name }}.socket_keepalive=1
 {% endfor %}
 {% endfor %}
 
