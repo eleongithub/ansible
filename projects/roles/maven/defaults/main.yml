@@ -5,4 +5,7 @@ maven_version: "3.5.0"
 maven_archive_name: "apache-maven-{{ maven_version }}-bin.tar.gz"
 maven_install_directory: "/opt/maven"
 maven_home: "{{maven_install_directory}}/apache-maven-{{ maven_version }}"
-maven_download_archive_url: "http://apache.crihan.fr/dist/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz"
+maven_download_archive_url: "http://apache.crihan.fr/dist/maven/maven-3/3.5.0/binaries/apache-maven-{{maven_version}}-bin.tar.gz"
+
+maven_settings_servers:
+ - { id: "nexus", username: "deployment", password: "admin123" }
