@@ -9,8 +9,8 @@ monit_mail_server: localhost
 monit_mail_address: root@localhost
 monit_activate_admin_dashboard: True
 monit_admin_dashboard_port: 2812
-monit_admin_login: "{{ monit_login }}"
-monit_admin_password: "{{ monit_password }}"
+monit_admin_login: "{{ vault_monit_login }}"
+monit_admin_password: "{{ vault_monit_password }}"
 monit_network_interface: 'eth0'
 monit_iptables_enabled: False
 monit_goss_enabled: False

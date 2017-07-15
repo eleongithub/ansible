@@ -25,9 +25,9 @@
       -keyalg RSA
       -alias {{ keystore_alias }}
       -dname "{{ keystore_subj }}"
-      -keypass {{ keystore_password }}
+      -keypass {{ vault_keystore_password }}
       -keystore {{ keystore_file }}
-      -storepass {{ keystore_password }}
+      -storepass {{ vault_keystore_password }}
       -validity 3650
 
 - name: Deploy configuration files for Tomcat with openssl

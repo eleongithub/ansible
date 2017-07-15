@@ -110,8 +110,8 @@ attributes		= req_attributes
 x509_extensions	= v3_ca	# The extentions to add to the self signed cert
 
 # Passwords for private keys if not present they will be prompted for
-input_password = {{ ssl_cert_password }}
-output_password = {{ ssl_cert_password }}
+input_password = {{ vault_ssl_cert_password }}
+output_password = {{ vault_ssl_cert_password }}
 
 # This sets a mask for permitted string types. There are several options. 
 # default: PrintableString, T61String, BMPString.
