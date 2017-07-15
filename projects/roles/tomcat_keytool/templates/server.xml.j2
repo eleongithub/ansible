@@ -81,7 +81,7 @@
            port="{{ tomcat_https_port }}" maxThreads="200"
            scheme="https" secure="true" SSLEnabled="true"
            keystoreFile="{{ keystore_file }}"
-           keystorePass="{{ keystore_password }}"
+           keystorePass="{{ vault_keystore_password }}"
            keyAlias="{{ keystore_alias }}" 
            SSLProtocol="{{ ssl_protocol }}"/>
     

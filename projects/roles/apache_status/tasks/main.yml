@@ -38,7 +38,7 @@
     group: "{{ root_group }}"
 
 - name: Provide Authentication file
-  command: "{{ apache_home }}/bin/htpasswd -csb {{ apache_vhosts_dir }}/{{ mod_status_server_name }}/.htpasswd {{ mod_status_authentication_login }} {{ mod_status_authentication_passowrd }}"
+  command: "{{ apache_home }}/bin/htpasswd -csb {{ apache_vhosts_dir }}/{{ mod_status_server_name }}/.htpasswd {{ vault_mod_status_authentication_login }} {{ vault_mod_status_authentication_passowrd }}"
   when: mod_status_enable_authentication
 
 - name: Copy server status configuration file to Apache configuration directory
