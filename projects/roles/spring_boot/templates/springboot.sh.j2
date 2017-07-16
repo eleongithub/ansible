@@ -49,7 +49,7 @@ stop() {
     echo -e "\e[00;31mStopping Spring Boot\e[00m"
     # Kill Spring Boot process
     kill -SIGTERM $pid >> $SPRING_BOOT_LOG_START_STOP 2>&1
-    nb_process=$(ps faxww | grep -v awk | grep -v grep | awk '/vcqjv.jar/{print $1}'|wc -l)
+    nb_process=$(ps faxww | grep -v awk | grep -v grep | awk '/{{spring_boot_apps_artifactid}}/{print $1}'|wc -l)
     if [ $nb_process -gt 0 ]
     then
     for pid_process in $pid
