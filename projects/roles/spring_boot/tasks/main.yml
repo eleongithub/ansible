@@ -41,10 +41,9 @@
     owner: {{ spring_boot_user }}
     group: {{ spring_boot_group }}
     mod: "0750"
-  with_items: "{{ spring_boot_apps_conf_files }}""
+  with_items: "{{ spring_boot_apps_conf_files }}"
     
 - name: Download Spring Boot application jar
-  become: true
   get_url:
     url: "{{ spring_boot_nexus_url }}?r={{ spring_boot_apps_repository }}&g={{ spring_boot_apps_groupid }}&a={{ spring_boot_apps_artifactid }}&v={{ spring_boot_apps_version }}&p={{ spring_boot_apps_package }}"
     dest: "{{ spring_boot_main_directory }}/"
@@ -64,8 +63,12 @@
   include: iptables.yml
   when: spring_boot_iptables_enabled
 
-- name: Enable & start Spring Boot service
+- name: Enable Spring Boot service
   service:
     name: springboot
     enabled: yes
+
+- name: Start Spring Boot service
+  service:
+    name: springboot
     state: started
