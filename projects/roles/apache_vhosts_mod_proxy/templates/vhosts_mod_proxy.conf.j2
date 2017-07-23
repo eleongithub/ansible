@@ -43,6 +43,7 @@ Mutex file:{{ apache_vhosts_dir }}/{{ item.key }}/mutex
   
  
   ProxyPass / http://{{ item.value.host }}:{{ item.value.port }}/{{ item.value.webapps }}/
+  ProxyPassReverse / http://{{ item.value.host }}:{{ item.value.port }}/{{ item.value.webapps }}/
   # Le proxy (donc Tomcat) ne dessert pas les ressources statiques
   #ProxyPass /{{ item.value.webapps }}/images !
 	
