@@ -5,6 +5,14 @@ nexus_repositories: "{{ nexus }}/content/repositories"
 nexus_public_repository: "{{ nexus_repositories }}/public"
 portsentry_config_file: "/etc/default/portsentry"
 
+jdk_java_version: 1.8.0_131
+jdk_java_home: "{{ jdk_versions }}/jdk{{ jdk_java_version }}"
+jdk_tarball_name_32: jdk-8u131-linux-i586.tar.gz
+jdk_tarball_name_64: jdk-8u131-linux-x64.tar.gz
+jdk_32_url: "{{ nexus }}/content/repositories/releases/jdk-8u131-linux-i586.tar.gz"
+jdk_64_url: "{{ nexus }}/content/repositories/releases/jdk-8u131-linux-x64.tar.gz"
+
+
 monit_goss_enabled: True
 monit_sshd_enabled: True
 fail2ban_ssh_enabled: True
