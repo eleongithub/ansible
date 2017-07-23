@@ -1,6 +1,5 @@
 ---
 # tasks file for firewall
-
 - name: Stop firewall script and disable it.
   service:
     name: firewall
@@ -23,12 +22,12 @@
   with_items:
    - "{{ firewall_script_files }}"
 
-- name: Enable firewall
+- name: Enable firewall service
   service:
     name: firewall
     enabled: yes
 
-- name: Start firewall
+- name: Start firewall service
   service:
     name: firewall
     state: started

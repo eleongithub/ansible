@@ -1,11 +1,10 @@
 firewall
 =========
-
 Iptables is a command-line tool that allows you to configure Netfilter,
 Linux kernel module that provides firewalls, Internet network sharing and network traffic history.
 Firewall is a bash program which uses the Iptables command that:
 - opens ports used on most servers (HTTP-80, HTTPS-443, SSH-22, etc.)
-- maintains other closed ports.
+- maintains other ports closed.
 
 Requirements
 ------------
@@ -24,8 +23,6 @@ Role Variables
 |firewall_output_allowed_ports|-|Output open ports.|
 |firewall_enabled_logs_input_trafic|True|Enable log input trafic|
 |firewall_enabled_logs_output_trafic|True|Enable log output trafic|
-
-More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/firewall/defaults/main.yml)
 
 Dependencies
 ------------

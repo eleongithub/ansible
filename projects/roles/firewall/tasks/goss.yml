@@ -7,10 +7,11 @@
       group: root
       mode: 0640
 
-- name: Launch goss test
-  goss:
-    path: /etc/goss-firewall.yml
-    format: json
+#TODO
+#- name: Launch goss test
+#  goss:
+#    path: /etc/goss-firewall.yml
+#    format: json
 
 - name: Remove goss test
   file:

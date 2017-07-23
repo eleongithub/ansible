@@ -1,6 +1,8 @@
 ---       
 iptables_enabled: True
-nexus: "http://192.168.1.97:9081/nexus"
+nexus_port: "9081"
+firewall_nexus_port: "{{ nexus_port }}"
+nexus: "http://192.168.1.97:{{ nexus_port }}/nexus"
 nexus_repositories: "{{ nexus }}/content/repositories"
 nexus_public_repository: "{{ nexus_repositories }}/public"
 portsentry_config_file: "/etc/default/portsentry"

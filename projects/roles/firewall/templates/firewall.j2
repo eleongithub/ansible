@@ -5,8 +5,8 @@
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: start/stop/restart/status firewall at boot
-# Description:       start/stop/restart/status firewall at boot
+# Short-Description: start/stop/restart/status iptables at boot
+# Description:       start/stop/restart/status iptables at boot
 ### END INIT INFO
 # By: Eric LEGBA
 
@@ -15,15 +15,15 @@ IPTABLES_SAVE=/sbin/iptables-save
 # Script to start/stop/restart/status iptables rules
 case "$1" in
   start)
-    echo "Starting Firewall."
+    echo "Starting Iptables Firewall."
     . /etc/firewall-start-rules
     ;;
   stop)
-    echo "Stopping Firewall."
+    echo "Stopping Iptables Firewall."
     . /etc/firewall-stop-rules
     ;;
   restart)
-    echo "Restarting firewall."
+    echo "Restarting Iptables Firewall."
     . /etc/firewall-start-rules
     ;;
   status)
