@@ -14,7 +14,6 @@ Requirements
 Role Variables
 --------------
 
-
 | Name	        | Default Value	| Description|
 | ------------- |:-------------:| ----------:|
 |firewall_network_interface|eth0|Network interface.|
