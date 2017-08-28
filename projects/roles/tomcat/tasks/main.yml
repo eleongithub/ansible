@@ -7,4 +7,4 @@
   ignore_errors: True
 
 - include: install.yml
-  when: ((tomcat_version_result|failed) or (tomcat_version_result.stdout.find('{{ tomcat_version }}') != -1))
+  when: ((tomcat_version_result|failed) or (tomcat_version_result.stdout.find('{{ tomcat_version }}') == -1))
