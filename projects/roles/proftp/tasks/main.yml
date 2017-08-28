@@ -13,7 +13,7 @@
   with_items:
     - "proftpd"
     - "proftpd-basic"
-  when: ((proftp_version_result|failed) or (proftp_version_result.stdout.find('{{ proftp_version }}') != -1))
+  when: ((proftp_version_result|failed) or (proftp_version_result.stdout.find('{{ proftp_version }}') == -1))
 
 - name: Create Group proftp
   group:
