@@ -13,4 +13,4 @@
   ignore_errors: true
 
 - include: install.yml
-  when: ((apache_version_result|failed) or (apache_version_result.stdout.find('{{ apache_version }}') != -1))
+  when: ((apache_version_result|failed) or (apache_version_result.stdout.find('{{ apache_version }}') == -1))
