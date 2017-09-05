@@ -18,25 +18,6 @@
     src: "{{ nexus_download_archive_url }}"
     dest: "{{ nexus_install_directory }}/"
     remote_src: True
-  when: ansible_version.major|int >= 2
-
-- name: Download Nexus archive
-  get_url:
-    url: "{{ nexus_download_archive_url }}"
-    dest: "/tmp/{{ nexus_archive_name }}"
-  when: ansible_version.major|int < 2
-
-- name: Decompress Nexus archive
-  unarchive:
-    src: "/tmp/{{ nexus_archive_name }}"
-    dest: "{{ nexus_install_directory }}/"
-  when: ansible_version.major|int < 2
-
-- name: Delete Nexus archive
-  file:
-    path: "/tmp/{{ nexus_archive_name }}"
-    state: absent
-  when: ansible_version.major|int < 2
 
 - name: Set owner and group of Nexus nexus_install_directory
   file:
