@@ -26,25 +26,6 @@
     src: "{{ apache_url }}"
     dest: "{{ apache_versions }}/"
     remote_src: True
-  when: ansible_version.major|int >= 2
-  
-- name: Download Apache Archive
-  get_url:
-    url: "{{ apache_url }}"
-    dest: "/tmp/{{ apache_tarball_name }}"
-  when: ansible_version.major|int < 2
-
-- name: Decompress Apache archive
-  unarchive:
-    src: "/tmp/{{ apache_tarball_name }}"
-    dest: "{{ apache_versions }}/"
-  when: ansible_version.major|int < 2
-
-- name: Delete Apache archive
-  file:
-    path: "/tmp/{{ apache_tarball_name }}"
-    state: absent
-  when: ansible_version.major|int < 2
 
 - name: Compile Apache
   shell: cd {{ apache_last_version }} && ./configure --prefix={{ apache_home }} --with-mpm=worker --enable-so --enable-cache --enable-cache_disk --enable-socache_shmcb --enable-mod_dir --enable-imagemap --enable-include --enable-log_config --enable-logio --enable-log_debug --enable-proxy --enable-access_compat --enable-mime --enable-rewrite --enable-alias --enable-deflate --enable-expires --enable-headers --enable-status --enable-ssl --enable-setenvif --enable-unique_id --disable-actions --disable-env --disable-authz_dbm --disable-cgi --disable-auth_digest --disable-authnz_ldap --disable-autoindex --disable-asis --disable-cgid --disable-negotiation --disable-userdir --disable-charset-lite
