@@ -3,7 +3,7 @@
 root_user: root
 root_group: sys
 apache_home: /opt/apache2
-apache_logs_dir: "{{ apache_home }}/logs"
+apache_logs_dir: "/var/log/apache2"
 apache_conf_dir: "{{ apache_home }}/conf"
 apache_modules_dir: "{{ apache_home }}/modules"
 apache_modules_file: "{{ apache_conf_dir }}/modules.conf"

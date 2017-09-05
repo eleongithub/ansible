@@ -17,7 +17,7 @@ Role Variables
 | ------------- |:-------------:| ----------:|
 |mod_security_version|2.9.1|Mod security version|
 |apache_home|/opt/apache2|Installation directory for the current version of Apache|
-|apache_logs_dir|/opt/apache2/logs|Directory containing Apache's log files|
+|apache_logs_dir|/var/log/apache2|Directory containing Apache's log files|
 |apache_conf_dir|/opt/apache2/conf|Directory containing Apache's configuration files|
 |mod_security_logs_dir|/opt/apache2/logs/modsecurity|Directory containing mod security's log files|
 |mod_security_conf_dir|/opt/apache2/conf/modsecurity|Directory containing mod security's configuration files|
