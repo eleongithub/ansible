@@ -7,14 +7,13 @@
     state: directory
     owner: root
     group: root
+    recurse: yes
 
 - name: Download, decompress and delete maven archive
   unarchive:
     src: "{{ maven_download_archive_url }}"
     dest: "{{ maven_install_directory }}/"
     remote_src: True
-  when: ansible_version.major|int >= 2
-  
 
 - name: Check if settings backup file exist
   stat:
@@ -31,7 +30,7 @@
   template:
     src: "settings.xml.j2"
     dest: "{{ maven_home }}/conf/settings.xml"
-  when: not maven_settings_backup.stat.exists
+
 
 - name: Add/Update environments variables
   blockinfile:
