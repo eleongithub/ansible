@@ -13,26 +13,6 @@
     src: "{{ tomcat_url }}"
     dest: "{{ tomcat_versions }}/"
     remote_src: True
-  when: ansible_version.major|int >= 2
-
-# Download, decompress and delete en 3 tâches si ansible_version.major|int < 2
-- name: Download tomcat Archive    
-  get_url:
-    url: "{{ tomcat_url }}"
-    dest: "/tmp/{{ tomcat_tarball_name }}"
-  when: ansible_version.major|int < 2
-
-- name: Decompress tomcat archive
-  unarchive:
-    src: "/tmp/{{ tomcat_tarball_name }}"
-    dest: "{{ tomcat_versions }}/"
-  when: ansible_version.major|int < 2
-
-- name: Delete tomcat archive
-  file:
-    path: "/tmp/{{ tomcat_tarball_name }}"
-    state: absent
-  when: ansible_version.major|int < 2
 
   
 # Download, decompress and delete en 1 tâche si ansible_version.major|int >= 2
@@ -46,23 +26,3 @@
     src: "{{ tomcat_native_url }}"
     dest: "{{ tomcat_last_version }}/bin"
     remote_src: True
-  when: ansible_version.major|int >= 2
-  
-# Download, decompress and delete en 3 tâches si ansible_version.major|int < 2
-- name: Download native library
-  get_url:
-    url: "{{ tomcat_native_url }}"
-    dest: "/tmp/{{ tomcat_libtcnative_util_tarball_name }}"
-  when: ansible_version.major|int < 2
-
-- name: Decompress Tomcat native library
-  unarchive:
-    src: "/tmp/{{ tomcat_libtcnative_util_tarball_name }}"
-    dest: "{{ tomcat_last_version }}/bin"
-  when: ansible_version.major|int < 2
-
-- name: Delete tomcat native library
-  file:
-    path: "/tmp/{{ tomcat_libtcnative_util_tarball_name }}"
-    state: absent
-  when: ansible_version.major|int < 2
