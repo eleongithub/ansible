@@ -7,31 +7,13 @@
     state: directory
     owner: root
     group: root
+    recurse: yes
 
 - name: Download, decompress and delete gradle archive
   unarchive:
     src: "{{ gradle_download_archive_url }}"
     dest: "{{ gradle_install_directory }}/"
     remote_src: True
-  when: ansible_version.major|int >= 2
-  
-- name: Download gradle archive
-  get_url:
-    url: "{{ gradle_download_archive_url }}"
-    dest: "/tmp/{{ gradle_archive_name }}"
-  when: ansible_version.major|int < 2
-
-- name: Decompress gradle archive
-  unarchive:
-    src: "/tmp/{{ gradle_archive_name }}"
-    dest: "{{ gradle_dir }}/"
-  when: ansible_version.major|int < 2
-
-- name: Delete gradle archive
-  file:
-    path: "/tmp/{{ gradle_archive_name }}"
-    state: absent
-  when: ansible_version.major|int < 2
 
 - name: Add/Update environments variables
   blockinfile:
