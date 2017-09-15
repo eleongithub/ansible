@@ -13,6 +13,8 @@
   unarchive:
     src: "{{ sonarqube_download_archive_url }}"
     dest: "{{ sonarqube_install_directory }}/"
+    owner: root
+    group: root
     remote_src: True
 
 - name: Init database for sonarqube
@@ -30,6 +32,8 @@
   file:
     src: "{{ sonarqube_home }}/bin/linux-x86-64/sonar.sh"
     path: "/usr/bin/sonar"
+    owner: root
+    group: root
     state: link
 
 - name: Copy init script shell
