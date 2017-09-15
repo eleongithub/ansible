@@ -47,7 +47,7 @@
     mode: 0644
     validate: 'source %s'
 
-- name: Install sudo package
+- name: Install openssh-server package
   apt:
     pkg: openssh-server
     state: present
