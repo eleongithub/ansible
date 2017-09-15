@@ -31,7 +31,7 @@
   when: monit_activate_admin_dashboard and monit_iptables_enabled
 
 - name: Reload monit
-  command: echo "Reload monit..."
+  command: echo "Reload monit"
   notify:
     - Reload monit
 
