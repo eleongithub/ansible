@@ -1,7 +1,7 @@
 Role Name
 =========
 
-Maven.
+Installation de Maven.
 
 Requirements
 ------------
@@ -10,15 +10,15 @@ None.
 
 Role Variables
 --------------
+
 | Name	        | Default Value	| Description|
 | ------------- |:-------------:| ----------:|
-|maven_version|3.3.9|Maven version.|
-|maven_archive_name|maven-3.3.9-bin.tar.gz|Maven archive name.|
-|maven_download_archive_url|| URL where download archive name.|
-|maven_install_directory|/opt/maven|Maven installation directory.|
-|maven_home|/opt/maven/apache-maven-3.3.9|Maven home directory.|
-
-More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/maven/defaults/main.yml)
+|maven_version|3.5.0|Version de maven à installer|
+|maven_archive_name|maven-3.5.0-bin.tar.gz|Fichier .tar.gz  de maven|
+|maven_download_archive_url|-| URL de téléchargement de maven|
+|maven_install_directory|/opt/maven|Répertoire contenant  les versions de maven|
+|maven_home|/opt/maven/apache-maven-3.3.9|Chemin absolu de maven|
+|maven_home|-|Credentials de connexion ajoutés au fichiers settings.xml|
 
 Dependencies
 ------------
