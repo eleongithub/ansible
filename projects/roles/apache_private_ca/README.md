@@ -28,9 +28,7 @@ Role Variables
 |apache_ssl_ca_organisation|Syscom|Organisation of certificat authority|
 |apache_ssl_ca_organisation_unit|IT|Organisation unit of certificat authority|
 |apache_ssl_ca_name|Authority Company Inc|Name of certificat authority|
-|apache_ssl_ca_subj|.....|All informations of certificat authority|
-
-More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/apache_private_ca/defaults/main.yml)
+|apache_ssl_ca_subj|-|All informations of certificat authority|
 
 Dependencies
 ------------
