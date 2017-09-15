@@ -4,7 +4,7 @@
 apache_conf_http_default_port: 80
 apache_conf_https_default_port: 443
 apache_conf_home: /opt/apache2
-apache_conf_logs_dir: "{{ apache_home }}/logs"
+apache_conf_logs_dir: "/var/log/apache2"
 apache_conf_dir: "{{ apache_home }}/conf"
 apache_conf_modules_file: "{{ apache_conf_dir }}/modules.conf"
 apache_conf_httpd_file: "{{ apache_conf_dir }}/httpd.conf"

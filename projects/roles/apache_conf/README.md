@@ -19,7 +19,7 @@ Role Variables
 |apache_conf_http_default_port|80|HTTP Port|
 |apache_conf_https_default_port|443|HTTPS Port|
 |apache_conf_home|/opt/apache2|Installation directory for the current version of Apache|
-|apache_conf_logs_dir|/opt/apache2/logs|Directory containing Apache's log files|
+|apache_conf_logs_dir|/var/log/apache2|Directory containing Apache's log files|
 |apache_conf_dir|/opt/apache2/conf|Directory containing Apache's configuration files|
 |apache_conf_modules_file|/opt/apache2/conf/modules.conf|List of the modules|
 |apache_conf_httpd_file|/opt/apache2/conf/httpd.conf|HTTPD configuration file|
