@@ -24,12 +24,10 @@ Role Variables
 |root_user|root|Owner of mod security's directories|
 |root_group|sys|Owner's group|
 |mod_security_tarball_name|modsecurity-2.9.1.tar.gz|Mod security archive tar.gz|
-|mod_security_url|http://xx.xx.xx.xx....|Url to download mod security archive (Repo Nexus).|
+|mod_security_url|http://xx.xx.xx.xx....|Url to download mod security archive (Private Repo Nexus).|
 |mod_security_required_packages|-|List of prerequisite packages to install mod security.|
 |mod_security_unzip_dir|/tmp/mod_security|Mod security unzip directory|
 |mod_security_conf_files|-|List of configuration's files which will be deployed|
-
-More informations about variables [here.](https://github.com/eleongithub/ansible/blob/it_1/projects/roles/apache_mod_security/defaults/main.yml) 
 
 
 Dependencies
