@@ -1,0 +1,107 @@
+---
+# tasks file for ssh
+
+# https://www.ssi.gouv.fr/uploads/2014/01/NT_OpenSSH.pdf. Rule R2 & R3
+- name: Delete obsolete packages (Telnet, Rsh and Rlogin)
+  apt:
+    pkg: "{{ item }}""
+    state: absent
+  whith_items :
+    - "telnet"
+    - "rshd"
+    - "rlogin"
+  when: ssh_delete_obsolete_packages
+
+- name : make a backup for file
+  copy:
+    src: "{{ item }}"
+    dest: "{{ item }}.original"
+    owner: root
+    group: root
+    mode: 0644
+ with_items : "{{ ssh_backup_files }}"
+
+- name : Init banner file with little information
+  command: echo "{{ ssh_banner_information }}" > "{{ item.src }}"
+  with_items:  "{{ ssh_backup_files }}"
+
+- name : Init motd file with warning message
+  copy:
+    src: motd
+    dest: "{{ ssh_motd_file }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name : Init timeout for unactive user
+  blockinfile:
+    dest: "{{ ssh_profile_file }}"
+    insertafter: EOF
+    block: |
+        TMOUT={{ ssh_timeout }}
+        HISTSIZE={{ ssh_histsize }}
+        HISTFILESIZE={{ ssh_histfilesize }}
+        export TMOUT HISTSIZE HISTFILESIZE
+    owner: root
+    group: root
+    mode: 0644
+    validate: 'source %s'
+
+- name: Install openssh-server package
+  apt:
+    pkg: openssh-server
+    state: present
+
+- name: Change the banner
+  copy:
+    src: banner
+    dest: "{{ ssh_banner_file }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Change the config of SSH
+  lineinfile: 
+    dest: /etc/ssh/sshd_config 
+    regexp: "{{ item.regexp }}" 
+    line: "{{ item.value }}"
+    owner: root
+    group: root
+    mode: 0644
+    state: present
+  with_items: "{{ ssh_config }}"
+  
+# https://www.ssi.gouv.fr/uploads/2014/01/NT_OpenSSH.pdf. Rule R15
+- name: Add ETM encrypt for SSH version >=6.3
+  lineinfile: 
+    dest: /etc/ssh/sshd_config 
+    line: "{{ ssh_macs_etm }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: ssh_version >= ssh_version_support_etm
+
+- name: Add hmac-sha1 for SSH version < 6.3
+  lineinfile: 
+    dest: /etc/ssh/sshd_config 
+    line: "{{ ssh_macs_old }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: ssh_version < ssh_version_support_etm
+
+- name: Add Iptables rules for SSH
+  include: iptables.yml
+  when: ssh_iptables_enabled
+
+- name: Restart SSH
+  command: echo "Restart SSH"
+  notify:
+    - Restart SSH
+
+- meta: flush_handlers
+  when: ssh_goss_enabled
+
+- name: Test with goss
+  include: goss.yml
+  when: ssh_goss_enabled

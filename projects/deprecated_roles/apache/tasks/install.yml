@@ -1,0 +1,38 @@
+---
+
+- name: Install required librairies
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  with_items: "{{ apache_required_packages }}"
+
+- name: Create apache versions directory
+  file:
+    path: "{{ apache_versions }}"
+    state: directory
+
+- name: Delete Apache home directory
+  file:
+    path: "{{ apache_home }}"
+    state: absent
+
+- name: Create Apache home directory
+  file:
+    path: "{{ apache_home }}"
+    state: directory
+
+- name: Download, decompress and delete Apache Archive
+  unarchive:
+    src: "{{ apache_url }}"
+    dest: "{{ apache_versions }}/"
+    remote_src: True
+
+- name: Compile Apache
+  shell: cd {{ apache_last_version }} && ./configure --prefix={{ apache_home }} --with-mpm=worker --enable-so --enable-cache --enable-cache_disk --enable-socache_shmcb --enable-mod_dir --enable-imagemap --enable-include --enable-log_config --enable-logio --enable-log_debug --enable-proxy --enable-access_compat --enable-mime --enable-rewrite --enable-alias --enable-deflate --enable-expires --enable-headers --enable-status --enable-ssl --enable-setenvif --enable-unique_id --disable-actions --disable-env --disable-authz_dbm --disable-cgi --disable-auth_digest --disable-authnz_ldap --disable-autoindex --disable-asis --disable-cgid --disable-negotiation --disable-userdir --disable-charset-lite
+          
+- name: Execute commands to install Apache.
+  shell: cd {{ apache_last_version }} && make && umask 022 && make install && make clean
+
+- name: Test with goss
+  include: goss.yml
+  when: apache_goss_enabled

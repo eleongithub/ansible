@@ -1,0 +1,25 @@
+---
+
+- name: Add Iptables Input trafic rule for NTP
+  iptables:
+    action: insert
+    chain: INPUT
+    protocol: udp
+    ctstate: NEW,ESTABLISHED
+    in_interface: "{{ network_interface }}"
+    destination_port: 123
+    jump: ACCEPT
+    state: present
+    comment: "UDP - NTP Server Input trafic"
+
+- name: Add Iptables Output trafic rule for NTP
+  iptables:
+    action: insert
+    chain: OUTPUT
+    protocol: udp
+    ctstate: NEW,ESTABLISHED
+    out_interface: "{{ network_interface }}"
+    source_port: 123
+    jump: ACCEPT
+    state: present
+    comment: "UDP - NTP Server Output trafic"

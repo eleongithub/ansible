@@ -1,0 +1,67 @@
+---
+# tasks file for pgbackrest
+
+# http://www.pgbackrest.org/user-guide.html#installation
+
+- name: Install required library
+  apt:
+    pkg: {{ pgbackrest_required_library }}
+    state: present
+
+- name: Remove old version of pgbackrest
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items: "{{ pgbackrest_old_version_file }}"
+  ignore_errors: true
+
+- name: Download pgbackrest archive
+  unarchive:
+    src: "{{ pgbackrest_download_archive_url }}"
+    dest: "/opt/"
+    remote_src: True
+  when: ansible_version.major|int >= 2
+  
+- name: Download pgbackrest Archive
+  get_url:
+    url: "{{ pgbackrest_download_archive_url }}"
+    dest: "/tmp/{{ pgbackrest_archive_name }}"
+  when: ansible_version.major|int < 2
+
+- name: Decompress pgbackrest archive
+  unarchive:
+    src: "/tmp/{{ pgbackrest_archive_name }}"
+    dest: "/opt/"
+  when: ansible_version.major|int < 2
+
+- name: Delete pgbackrest archive
+  file:
+    path: "/tmp/{{ pgbackrest_archive_name }}"
+    state: absent
+  when: ansible_version.major|int < 2
+
+- name: Copy pgbackrest directory into perl5 directory
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items: "{{ pgbackrest_files }}"
+    
+- name: Set file mode
+  shell: find /usr/share/perl5/pgBackRest -type f -exec chmod 644 {} +
+  
+- name: Set directory mode
+  shell: find /usr/share/perl5/pgBackRest -type d -exec chmod 755 {} +
+
+- name: Set mode for pgbackrest command
+  file:
+    path: /usr/bin/pgbackrest
+    mode: 0755
+    recurse: yes
+
+- name: Create log directory for pgbackrest
+  file:
+    path: /var/log/pgbackrest
+    mode: 0770
+    recurse: yes
+    owner: postgres
+    group: postgres

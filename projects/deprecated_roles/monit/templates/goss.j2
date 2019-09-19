@@ -1,0 +1,16 @@
+---
+
+package:
+  {{ monit_package }}:
+    installed: true
+
+{% if monit_activate_admin_dashboard %}
+port:
+  tcp:{{ monit_admin_dashboard_port }}:
+    listening: true
+{% endif %} 
+
+service:
+  monit:
+    enabled: true
+    running: true

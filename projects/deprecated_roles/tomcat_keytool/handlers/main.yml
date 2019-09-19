@@ -1,0 +1,6 @@
+---
+# handlers file for tomcat_keytool
+- name: Restart tomcat
+  service:
+    name: tomcat
+    state: restarted

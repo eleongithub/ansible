@@ -1,0 +1,23 @@
+---
+
+package:
+  proftpd:
+    installed: true
+
+group:
+  {{ proftp_group }}:
+    exists: true
+
+user:
+  {{ proftp_user }}:
+    exists: true
+
+service:
+  proftpd:
+    # required attributes
+    enabled: true
+    running: true
+
+port:
+  tcp:{{ proftp_default_port }}:
+    listening: true

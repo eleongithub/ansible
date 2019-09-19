@@ -1,0 +1,32 @@
+---
+# tasks file for gradle
+
+- name: Create gradle install directory
+  file:
+    path: "{{ gradle_install_directory }}"
+    state: directory
+    owner: root
+    group: root
+    recurse: yes
+
+- name: Download, decompress and delete gradle archive
+  unarchive:
+    src: "{{ gradle_download_archive_url }}"
+    dest: "{{ gradle_install_directory }}/"
+    remote_src: True
+
+- name: Add/Update environments variables
+  blockinfile:
+    dest: "/etc/profile"
+    insertafter: EOF
+    block: |
+      # Gradle Home
+      GRADLE_HOME="{{ gradle_home }}"
+      export GRADLE_HOME
+      # Update PATH
+      PATH=$PATH:"$GRADLE_HOME/bin"
+      export PATH
+    state: present
+
+- name: Relaod environments variables
+  shell: . /etc/profile

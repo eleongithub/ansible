@@ -1,0 +1,41 @@
+---
+# tasks file for apache_mod_jk
+- name: Create Mod JK directory
+  file:
+    path: "{{ mod_jk_unzip_dir }}"
+    state: directory
+
+- name: Download, decompress and delete Mod_JK Archive
+  unarchive:
+    src: "{{ mod_jk_url }}"
+    dest: "{{ mod_jk_unzip_dir }}/"
+    remote_src: True
+
+- name: Configure Mod JK
+  shell: cd {{ mod_jk_dir }} && ./configure --with-apr={{ apr_config_file }} --with-apxs={{ apache_home }}/bin/apxs
+
+- name: Make & Make install Mod JK
+  shell: cd {{ mod_jk_dir }} && make && make install
+
+- name: Copy Mod JK library
+  copy:
+    src: "{{ mod_jk_dir }}/apache-2.0/mod_jk.so"
+    dest: "{{ apache_modules_dir }}/"
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
+
+- name: Add Mod JK to the list of Apache's modules
+  lineinfile:
+    dest: "{{ apache_modules_file }}"
+    insertafter: EOF
+    line: 'LoadModule jk_module {{ apache_modules_dir }}/mod_jk.so'
+
+- name: Delete Mod JK install directory
+  file:
+    path: "{{ mod_jk_unzip_dir }}"
+    state: absent
+
+- name: Restart Apache
+  command: echo "Restart Apache..."
+  notify:
+    - Restart Apache

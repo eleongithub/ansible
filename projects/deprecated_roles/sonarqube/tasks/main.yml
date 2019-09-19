@@ -1,0 +1,59 @@
+---
+# tasks file for sonarqube
+
+- name: Create sonarqube install directory
+  file:
+    path: "{{ sonarqube_install_directory }}"
+    state: directory
+    owner: root
+    group: root
+    recurse: yes
+
+- name: Download, decompress and delete sonarqube archive
+  unarchive:
+    src: "{{ sonarqube_download_archive_url }}"
+    dest: "{{ sonarqube_install_directory }}/"
+    owner: root
+    group: root
+    remote_src: True
+
+- name: Init database for sonarqube
+  include: database.yml
+  when: sonarqube_postgres_database_enabled
+
+- name: Change the config of sonar web port
+  lineinfile: 
+    dest: "{{ sonarqube_home }}/conf/sonar.properties" 
+    regexp: "^#sonar.web.port=" 
+    line: "sonar.web.port={{ sonarqube_web_port }}"
+    state: present
+
+- name: Create link to sonarqube init script shell
+  file:
+    src: "{{ sonarqube_home }}/bin/linux-x86-64/sonar.sh"
+    path: "/usr/bin/sonar"
+    owner: root
+    group: root
+    state: link
+
+- name: Copy init script shell
+  copy:
+    src: "sonar.sh"
+    path: "/etc/init.d/sonar"
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Add Iptables rules for sonarqube
+  include: iptables.yml
+  when: sonarqube_iptables_enabled
+
+- name: Enable sonarqube service
+  service:
+    name: sonar
+    enabled: yes
+
+- name: Restart sonarqube
+  command: echo "Restart sonarqube service"
+  notify:
+    - Restart sonarqube

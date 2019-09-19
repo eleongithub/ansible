@@ -1,0 +1,18 @@
+---
+# tasks file for jenkins_master
+
+- name: Add Jenkins repository key.
+  apt_key:
+    url: "{{ jenkins_master_repository_key }}"
+    state: present
+
+- name: Add Jenkins repository.
+  apt_repository:
+    repo: "{{ jenkins_master_repository_list }}"
+    state: present
+    update_cache: yes
+
+- name: install Jenkins.
+  apt:
+    name: jenkins
+    state: present

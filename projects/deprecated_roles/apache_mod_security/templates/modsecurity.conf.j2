@@ -1,0 +1,78 @@
+# modsecurity.conf
+# Configuration of module mod_security2.so
+
+# -- Directive SecRuleEngine -------------------
+  # Description: Configures the rules engine.
+  # Syntax: SecRuleEngine On|Off|DetectionOnly
+  # Example Usage: SecRuleEngine On
+  # Scope: Any
+  # Default: Off
+  # The possible values are:
+  #  On: process rules
+  #  Off: do not process rules
+  #  DetectionOnly: process rules but never executes any disruptive actions (block, deny, drop, allow, proxy and redirect)
+SecRuleEngine DetectionOnly
+# ----------------------------------------------
+
+# -- Request body handling ---------------------
+# Allow ModSecurity to access request bodies. If you don't, ModSecurity
+# won't be able to see any POST parameters, which opens a large security
+# hole for attackers to exploit.
+#
+SecRequestBodyAccess On
+
+
+# Enable XML request body parser.
+# Initiate XML Processor in case of xml content-type
+#
+#SecRule REQUEST_HEADERS:Content-Type "(?:text|application)/xml" \
+     "id:'200000',phase:1,t:none,t:lowercase,pass,nolog,ctl:requestBodyProcessor=XML"
+
+# Enable JSON request body parser.
+# Initiate JSON Processor in case of JSON content-type; change accordingly
+# if your application does not use 'application/json'
+#
+#SecRule REQUEST_HEADERS:Content-Type "application/json" \
+     "id:'200001',phase:1,t:none,t:lowercase,pass,nolog,ctl:requestBodyProcessor=JSON"
+# ---------------------------------------------
+
+
+# -- Directive SecAuditEngine ------------------
+  #Description: Configures the audit logging engine.
+  #Syntax: SecAuditEngine RelevantOnly
+  #Default: Off
+  #The SecAuditEngine directive is used to configure the audit engine, which logs complete transactions. 
+  #ModSecurity is currently able to log most, but not all transactions. 
+  #Transactions involving errors (e.g., 400 and 404 transactions) use a different execution path, 
+  #which ModSecurity does not support.
+  #The possible values for the audit log engine are as follows:
+    #On: log all transactions
+    #Off: do not log any transactions
+    #RelevantOnly: only the log transactions that have triggered a warning or an error, 
+    #or have a status code that is considered to be relevant (as determined by the SecAuditLogRelevantStatus directive)
+SecAuditEngine RelevantOnly
+
+# Log file for mod_security
+SecAuditLog {{ mod_security_logs_dir }}/modsec-audit.log
+
+# Debug Log file
+SecDebugLog {{ mod_security_logs_dir }}/modsec-debug.log
+
+# Debug level :
+#   0 : Nothing
+#   1 : significent events
+SecDebugLogLevel 1
+SecAuditLogRelevantStatus ^(?:5|4(?!04))
+# ------------------------------------------------
+
+# Default action : deny with status HTTP 403 and log
+#SecDefaultAction "phase:2,deny,log,status:403"
+
+# Activation du filtrage des payloads POST (en plus des GET)
+#SecFilterScanPOST On
+ 
+# Don't accept transfer encodings we know we don't handle
+# (and you don't need it anyway)
+#SecRule HTTP_Transfer-Encoding "!^$"
+
+# End

@@ -1,0 +1,20 @@
+---
+# defaults file for spring_boot
+spring_boot_user: springboot
+spring_boot_group: springboot
+spring_boot_main_directory: /opt/springboot
+spring_boot_conf_directory: "{{ spring_boot_main_directory }}/conf"
+spring_boot_jar_directory: "{{ spring_boot_main_directory }}/jar"
+spring_boot_logs_directory: "{{ spring_boot_main_directory }}/logs"
+spring_boot_nexus_url: ""
+spring_boot_apps_repository: ""
+spring_boot_apps_groupid: ""
+spring_boot_apps_artifactid: ""
+spring_boot_apps_version: ""
+spring_boot_apps_package: "jar"
+spring_boot_jar_name: ""
+spring_boot_apps_conf_files: 
+    -{ src: "application.properties.j2", dest: "{{ spring_boot_conf_directory }}/application.properties" }
+spring_boot_port: 9000
+spring_boot_iptables_enabled: False
+spring_boot_network_interface: "eth0"

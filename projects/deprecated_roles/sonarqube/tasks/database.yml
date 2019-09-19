@@ -1,0 +1,23 @@
+---
+# tasks to create database for sonarqube
+
+- name: Create user postgres for sonarqube
+  postgres_user:
+    user: "{{ sonarqube_postgres_username }}"
+    password: "{{ sonarqube_postgres_password }}"
+    roles: "CREATEROLE"
+    state: present
+
+- name: Create postgres database for sonarqube
+  postgres_db:
+    name: "{{ sonarqube_postgres_database }}"
+    owner: "{{ {{ sonarqube_postgres_username }} }}"
+    state: present
+
+- name: Change the config of sonar to apply postgres datas
+  lineinfile: 
+    dest: "{{ sonarqube_home }}/conf/sonar.properties" 
+    regexp: "{{ item.regexp }}" 
+    line: "{{ item.value }}"
+    state: present
+  with_items: "{{ sonarqube_postgres_config }}"

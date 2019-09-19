@@ -1,0 +1,28 @@
+---
+
+#To know about more ansible_version, look at http://docs.ansible.com/ansible/playbooks_variables.html#ansible-version
+
+# Download, decompress and delete en 1 tâche si ansible_version.major|int >= 2
+# TODO
+# ??? : Le téléchargement se fait par défaut dans /tmp
+# Si le fichier est trop gros et /tmp est plus petit, il y aura des soucis.
+# Question : Doit-on créer un gros répertoire spécialement pour les téléchargements ?
+# Comment indiquer à Ansible de poser les fichiers téléchargés dans ce répertoire spécial ?
+- name: Download, decompress and delete tomcat Archive
+  unarchive:
+    src: "{{ tomcat_url }}"
+    dest: "{{ tomcat_versions }}/"
+    remote_src: True
+
+  
+# Download, decompress and delete en 1 tâche si ansible_version.major|int >= 2
+# TODO
+# ??? : Le téléchargement se fait par défaut dans /tmp
+# Si le fichier est trop gros et /tmp est plus petit, il y aura des soucis.
+# Question : Doit-on créer un gros répertoire spécialement pour les téléchargements ?
+# Comment indiquer à Ansible de poser les fichiers téléchargés dans ce répertoire spécial ?
+- name: Download, decompress and delete Tomcat native library
+  unarchive:
+    src: "{{ tomcat_native_url }}"
+    dest: "{{ tomcat_last_version }}/bin"
+    remote_src: True

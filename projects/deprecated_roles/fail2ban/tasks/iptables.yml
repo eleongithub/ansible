@@ -1,0 +1,13 @@
+---
+
+- name: Remove Required-Start line from fail2ban init script
+  lineinfile:
+    dest: "{{ fail2ban_init_script }}"
+    regexp: '^(.*)# Required-Start:(.*)'
+    state: absent
+
+- name: Modify fail2ban init script to run after firewall script
+  lineinfile:
+    dest: "{{ fail2ban_init_script }}"
+    line: '# Required-Start:    $local_fs $remote_fs $firewall'
+    insertafter: '^(.*)# Provides:(.*)'

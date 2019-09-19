@@ -1,0 +1,41 @@
+---
+
+- name: Stop eventual tomcat server running
+  service:
+    name: tomcat
+    state: stopped
+    enabled: no
+  ignore_errors: true
+
+- name : Check tomcat versions directory exists
+  stat:
+    path: "{{ tomcat_versions }}"
+  register: tomcat_versions_dir_exists
+
+- name: Create tomcat versions directory
+  file:
+    path: "{{ tomcat_versions }}"
+    state: directory
+  when: not tomcat_versions_dir_exists.stat.exists
+
+- name: Delete the tomcat home link
+  file:
+    dest: "{{ tomcat_home }}"
+    state: absent
+
+- name: Delete the last version directory
+  file:
+    dest: "{{ tomcat_last_version }}"
+    state: absent
+  ignore_errors: true
+
+- name: Install required librairies
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  with_items: "{{ tomcat_required_packages }}"
+
+- include: download.yml
+
+- name: Install Tomcat native library with SSL
+  shell: cd {{ tomcat_libtcnative_util_home }} && ./configure --with-apr={{ tomcat_apr_config_file }} --with-java-home={{ tomcat_java_home }} --with-ssl=yes --prefix={{ tomcat_last_version }} && make && make install

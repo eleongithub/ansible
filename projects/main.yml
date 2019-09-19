@@ -1,0 +1,81 @@
+---
+
+###################
+# Security, Monitoring & build essential
+###################
+- hosts: all
+  vars_files:
+   - "password/password-{{env}}.yml"
+  become: yes
+  roles:
+    # - { role: firewall, tags: ['firewall'] }
+    # - { role: fail2ban, iptables_enabled: True, fail2ban_ssh_enabled: True, fail2ban_goss_enabled: True, tags: ['fail2ban'] }
+    # - { role: portsentry, portsentry_goss_enabled: True, tags: ['portsentry'] }
+    # - { role: monit, monit_goss_enabled: True, tags: ['monit'] }
+    # - { role: monit, monit_goss_enabled: True, monit_sshd_enabled: True, tags: ['monit_sshd'] }
+    # - { role: ntp, tags: ['ntp'] }
+    # - { role: build_essential, tags: ['build_essential'] }
+
+# ###################
+# # Data Base
+# ###################
+# - hosts: dbserver
+#   vars_files:
+#    - "password/password-{{env}}.yml"
+#   become: yes
+#   roles:
+#     - { role: postgres, postgres_iptables_enabled: True, postgres_goss_enabled: True, tags: ['postgres'] }
+    # - { role: postgres_instance, tags: ['postgres_instance'] }
+    # # - { role: postgres_backup, tags: ['postgres_backup'] }
+    # - { role: monit, monit_postgres_enabled: True, tags: ['monit_postgresql'] }
+
+# ###################
+# # Install Tomcat
+# ###################
+# - hosts: tomcat
+#   vars_files:
+#    - "password/password-{{env}}.yml"
+#   become: yes
+#   roles:
+#     - { role: jdk, tags: ['jdk'] }
+#     - { role: tomcat, tags: ['tomcat'] }
+#     - { role: tomcat_conf, tags: ['tomcat_conf'] }
+#     - { role: tomcat_owasp, tags: ['tomcat_owasp'] }
+#     - { role: monit, monit_tomcat_enabled: True, tags: ['monit_tomcat'] }
+
+
+# ###################
+# # Install Apache
+# ###################
+# - hosts: apache
+#   gather_facts: yes
+#   vars_files:
+#    - "password/password-{{env}}.yml"
+#   become: yes
+#   roles:
+#     - { role: apache, tags: ['apache'] }
+#     - { role: apache_conf, tags: ['apache_conf'] }
+#     - { role: apache_mod_security, tags: ['apache_mod_security'] }
+#     - { role: apache_status, tags: ['apache_status'] }
+#     - { role: apache_mod_jk, tags: ['apache_mod_jk'] }
+#     - { role: apache_private_ca, tags: ['apache_private_ca'] }
+#     - { role: monit, monit_apache_enabled: True, tags: ['monit_apache'] }
+
+# ##################
+# #Install ProFTP
+# ##################
+- hosts: proftp
+  vars_files:
+   - "password/password-{{env}}.yml"
+  become: yes
+  roles:
+      - { role: proftp, proftp_iptables_enabled: True, proftp_goss_enabled: True, tags: ['proftp'] }
+#       - { role: fail2ban, iptables_enabled: True, fail2ban_proftp_enabled: True, fail2ban_goss_enabled: True, tags: ['fail2ban_proftp'] }
+#       - { role: proftp_ssl, tags: ['proftp_ssl'] }
+#       - { role: monit, monit_goss_enabled: True, monit_proftp_enabled: True, tags: ['monit_proftp'] }
+
+#===========  Tâche à faire sur Ansible =====================
+ ##TODO Roles
+  #- apache_fail2ban
+  #- Postfix
+  #- HAProxy

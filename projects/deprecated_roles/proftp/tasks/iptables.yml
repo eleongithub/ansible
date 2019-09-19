@@ -1,0 +1,51 @@
+---
+# This playbook contains iptables rules for ProFTP.
+
+- name: Add Iptables Input trafic rule for ProFTP
+  iptables:
+    action: insert
+    chain: INPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED
+    in_interface: "{{ proftp_network_interface }}"
+    destination_port: "{{ proftp_default_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - ProFTP Server Input trafic"
+
+- name: Add Iptables Output trafic rule for ProFTP
+  iptables:
+    action: insert
+    chain: OUTPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED
+    out_interface: "{{ proftp_network_interface }}"
+    source_port: {{ proftp_default_port }}
+    jump: ACCEPT
+    state: present
+    comment: "TCP - Monit Server Output trafic"
+
+
+- name: Add Iptables Input trafic rule for ProFTP passive ports
+  iptables:
+    action: insert
+    chain: INPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED
+    in_interface: "{{ proftp_network_interface }}"
+    destination_port: "{{ proftp_firwall_ftp_min_passive_port }}:{{ proftp_firwall_ftp_max_passive_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - ProFTP Server Input trafic - Passive ports"
+
+- name: Add Iptables Output trafic rule for ProFTP passive ports
+  iptables:
+    action: insert
+    chain: OUTPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED
+    out_interface: "{{ proftp_network_interface }}"
+    source_port: "{{ proftp_firwall_ftp_min_passive_port }}:{{ proftp_firwall_ftp_max_passive_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - ProFTP Server Output trafic - Passive ports"

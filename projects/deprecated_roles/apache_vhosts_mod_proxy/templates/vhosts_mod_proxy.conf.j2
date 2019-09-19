@@ -1,0 +1,160 @@
+# Mutex Mecanism. Look at support on https://httpd.apache.org/docs/2.4/fr/mod/core.html#mutex
+Mutex file:{{ apache_vhosts_dir }}/{{ item.key }}/mutex
+{% if item.value.use_https %}
+<IfModule ssl_module>
+  SSLRandomSeed startup file:/dev/urandom 1024
+  SSLRandomSeed connect file:/dev/urandom 1024
+  SSLSessionCache shmcb:{{ apache_logs_dir }}/{{ item.key }}/ssl_scache(512000)
+  SSLSessionCacheTimeout 1200
+</IfModule>
+{% endif %} 
+
+
+<VirtualHost *:{{ http_default_port }}>
+  ServerName {{ item.value.serverName }}
+  {% if item.value.use_https %}
+  Redirect permanent / https://{{ item.value.serverName }}  
+  {% else %}
+  
+  # ServerAdmin: Your address, where problems with the server should be
+  # e-mailed.  This address appears on some server-generated pages, such
+  # as error documents.  e.g. admin@your-domain.com
+  #
+  ServerAdmin {{ apache_server_admin }}
+  
+  # ServerName gives the name and port that the server uses to identify itself.
+  # This can often be determined automatically, but we recommend you specify
+  # it explicitly to prevent problems during startup.
+  #
+  # If your host doesn't have a registered DNS name, enter its IP address here.
+  #
+  ServerName {{ item.value.serverName }}
+  ServerAlias {{ item.value.serverAlias }}
+
+  ProxyRequests On
+  ProxyPreserveHost On
+  
+  DocumentRoot "{{ apache_vhosts_dir }}/{{ item.key }}"
+  <Directory "{{ apache_vhosts_dir }}/{{ item.key }}">
+    Options None
+    AllowOverride None
+    Require all granted
+  </Directory>
+  
+ 
+  ProxyPass / http://{{ item.value.host }}:{{ item.value.port }}/{{ item.value.webapps }}/
+  ProxyPassReverse / http://{{ item.value.host }}:{{ item.value.port }}/{{ item.value.webapps }}/
+  # Le proxy (donc Tomcat) ne dessert pas les ressources statiques
+  #ProxyPass /{{ item.value.webapps }}/images !
+	
+  # TODO : rework here with explication
+  ProxyTimeout 7200
+  
+  # Apache dessert les ressources statiques (une regexp permettant d'enlever le jsessionid)
+  #AliasMatch /{{ item.value.webapps }}/images/(.*\.[^;]*)(;jsessionid=.*)?$ /opt/tomcat/webapps/{{ item.value.webapps }}/images/$1
+  
+  # autorisation total sur les repertoires pour Apache
+  #<Directory /opt/tomcat/webapps/{{ item.value.webapps }}/images>
+  #  Required all granted
+  #</Directory>
+ 
+
+  # Customizable error responses come in three flavors:
+  # 1) plain text 2) local redirects 3) external redirects
+  #
+  # Some examples:
+  #ErrorDocument 500 "The server made a boo boo."
+  #ErrorDocument 404 /missing.html
+  #ErrorDocument 404 "/cgi-bin/missing_handler.pl"
+  #ErrorDocument 402 http://www.example.com/subscription_info.html
+
+  LogLevel {{ apache_conf_log_level }}
+  <IfModule log_config_module>
+      LogFormat "%h %l %u %t \"%r\" %>s %b" common
+      LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+      LogFormat "%{Referer}i -> %U" referer
+      LogFormat "%{User-agent}i" agent
+      CustomLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.key }}/access_%Y%m%d.log 86400" combined
+      ErrorLog  "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.key }}/error_%Y%m%d.log 86400"
+  </IfModule>
+  {% endif %}
+</VirtualHost>
+
+{% if item.value.use_https %}
+<VirtualHost *:{{ https_default_port }}>
+  
+  # ServerAdmin: Your address, where problems with the server should be
+  # e-mailed.  This address appears on some server-generated pages, such
+  # as error documents.  e.g. admin@your-domain.com
+  ServerAdmin {{ apache_server_admin }}
+  
+  # ServerName gives the name and port that the server uses to identify itself.
+  # This can often be determined automatically, but we recommend you specify
+  # it explicitly to prevent problems during startup.
+  # If your host doesn't have a registered DNS name, enter its IP address here.
+ 
+  ServerName {{ item.value.serverName }}
+  ServerAlias {{ item.value.serverAlias }}
+  
+  
+  SSLEngine on
+  SSLCertificateFile		"{{ apache_vhosts_dir }}/{{ item.key }}/ssl/cert.pem"
+  SSLCertificateKeyFile		"{{ apache_vhosts_dir }}/{{ item.key }}/ssl/key.pem"
+  
+  # CA certificate files location
+  # SSLCACertificateFile		{{ apache_ssl_ca_cert }}
+  
+  # Support only for SSLv3.0 and TLSv1.0
+  # all = "+SSLv3 +TLSv1 +TLSv1.1 +TLSv1.2" à partir de la version 1.0.1 d'OpenSSL
+  SSLProtocol             all 
+   
+  DocumentRoot "{{ apache_vhosts_dir }}/{{ item.key }}"
+  <Directory "{{ apache_vhosts_dir }}/{{ item.key }}">
+    Options None
+    AllowOverride None
+    Require all granted
+  </Directory>
+ 
+  ProxyRequests On
+  ProxyPreserveHost On
+  ProxyPass / http://{{ item.value.host }}:{{ item.value.port }}/{{ item.value.webapps }}/
+  # Le proxy (donc Tomcat) ne dessert pas les ressources statiques
+  #ProxyPass /{{ item.value.webapps }}/images !
+	
+  # TODO : rework here with explication
+  ProxyTimeout 7200
+  
+  # Apache dessert les ressources statiques (une regexp permettant d'enlever le jsessionid)
+  #AliasMatch /{{ item.value.webapps }}/images/(.*\.[^;]*)(;jsessionid=.*)?$ /opt/tomcat/webapps/{{ item.value.webapps }}/images/$1
+  
+  # autorisation total sur les repertoires pour Apache
+  #<Directory /opt/tomcat/webapps/{{ item.value.webapps }}/images>
+  #  Required all granted
+  #</Directory>
+ 
+  
+  # Customizable error responses come in three flavors:
+  # 1) plain text 2) local redirects 3) external redirects
+  #
+  # Some examples:
+  #ErrorDocument 500 "The server made a boo boo."
+  #ErrorDocument 404 /missing.html
+  #ErrorDocument 404 "/cgi-bin/missing_handler.pl"
+  #ErrorDocument 402 http://www.example.com/subscription_info.html
+
+  LogLevel {{ apache_conf_log_level }}
+  <IfModule log_config_module>
+    LogFormat "%h %l %u %t \"%r\" %>s %b" common
+    LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+    LogFormat "%{Referer}i -> %U" referer
+    LogFormat "%{User-agent}i" agent
+    # Custom Log format for SSL request
+    LogFormat "%t %h %{HTTPS}x %{SSL_PROTOCOL}x %{SSL_CIPHER}x \%{SSL_CIPHER_USEKEYSIZE}x %{SSL_CLIENT_VERIFY}x \"%r\" %b" ssl_log
+    CustomLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.key }}/access_%Y%m%d.log 86400" combined
+    CustomLog "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.key }}/ssl_request_%Y%m%d.log 86400" ssl_log
+    ErrorLog  "|{{ apache_home }}/bin/rotatelogs {{ apache_logs_dir }}/{{ item.key }}/error_%Y%m%d.log 86400"
+  </IfModule>
+</VirtualHost>
+# Key protection Passphrase at startup
+SSLPassPhraseDialog		exec:{{ apache_vhosts_dir }}/{{ item.key }}/ssl/passphrase.sh
+{% endif %}

@@ -1,0 +1,47 @@
+---
+
+- name: Add Iptables Input trafic rule for Tomcat HTTP port
+  iptables:
+    action: insert
+    chain: INPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED
+    in_interface: "{{ tomcat_conf_network_interface }}"
+    destination_port: "{{ tomcat_conf_http_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - Tomcat Server HTTP Input trafic"
+
+- name: Add Iptables Output trafic rule for Tomcat HTTP port
+  iptables:
+    action: insert
+    chain: OUTPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED
+    out_interface: "{{ tomcat_conf_network_interface }}"
+    source_port: "{{ tomcat_conf_http_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - Tomcat Server HTTP Output trafic"
+
+- name: Add Iptables Input trafic rule for Tomcat Shutdown port
+  iptables:
+    action: insert
+    chain: INPUT
+    protocol: tcp
+    in_interface: "{{ tomcat_conf_network_interface }}"
+    destination_port: "{{ tomcat_conf_shutdown_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - Tomcat Server Shutdown port"
+
+- name: Add Iptables Input trafic rule for Tomcat Mod JK port
+  iptables:
+    action: insert
+    chain: INPUT
+    protocol: tcp
+    in_interface: "{{ tomcat_conf_network_interface }}"
+    destination_port: "{{ tomcat_conf_mod_jk_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - Tomcat Server Mod JK port"

@@ -1,0 +1,18 @@
+---
+# defaults file for pgbackrest
+
+pgbackrest_version: 1.18
+pgbackrest_archive_name: "{{ pgbackrest_version }}.tar.gz"
+pgbackrest_download_archive_url: "https://github.com/pgbackrest/pgbackrest/archive/release/{{ pgbackrest_archive_name }}"
+pgbackrest_required_library: libdbd-pg-perl
+pgbackrest_files:
+    - { src: "/opt/pgbackrest-release-{{ pgbackrest_version }}/lib/pgBackRest", dest: "/usr/share/perl5/" }
+    - { src: "/opt/pgbackrest-release-{{ pgbackrest_version }}/bin/pgbackrest", dest: "/usr/bin/pgbackrest" }
+pgbackrest_old_version_file:
+    - "/usr/bin/pgbackrest"
+    - "/usr/bin/pg_backrest"
+    - "/usr/lib/perl5/BackRest"
+    - "/usr/share/perl5/BackRest"
+    - "/usr/lib/perl5/pgBackRest"
+    - "/usr/share/perl5/pgBackRest"
+

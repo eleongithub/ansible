@@ -1,0 +1,64 @@
+---
+# tasks file for apache_conf
+
+- name: Stop Apache server script and disable it.
+  service:
+    name: apache
+    state: stopped
+    enabled: no
+  ignore_errors: true
+
+- name : Remove eventual Apache control script from the system
+  file:
+    path: "{{ apache_conf_init_script }}"
+    state: absent
+  ignore_errors: true
+
+- name: Change the right of Apache directory
+  file:
+    path: "{{ apache_conf_home }}"
+    owner: "{{ apache_conf_root_user }}"
+    group: "{{ apache_conf_root_group }}"
+    recurse: yes
+
+- name: Create Group Apache
+  group:
+    name: "{{ apache_conf_user_group }}"
+    state: present
+
+- name: Create User Apache without home and no Shell
+  user:
+    name: "{{ apache_conf_user }}"
+    createhome: no
+    group: "{{ apache_conf_user_group }}"
+    shell: /bin/false
+    comment: "Web Server"
+    state: present
+
+- name: Deploy configuration file for Apache
+  template:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    owner: "{{root_user}}"
+    group: "{{root_group}}"
+  with_items: "{{ apache_conf_files }}"
+
+- name: Copy Apache control script
+  template:
+    src: apache.sh.j2
+    dest: "{{ apache_conf_init_script }}"
+    mode: 0755
+
+- name : Iptables rules
+  include: iptables.yml
+  when: apache_conf_iptables_enabled
+
+- name: Enable Apache init script
+  service:
+    name: apache
+    enabled: yes
+
+- name: Restart Apache
+  command: echo "Restart Apache"
+  notify:
+    - Restart Apache

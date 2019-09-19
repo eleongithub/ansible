@@ -1,0 +1,50 @@
+---
+# defaults file for proftp
+
+proftp_version: "1.3.5"
+proftp_user: "proftpd"
+proftp_group: "proftpd"
+
+profp_hide_server_version: False
+proftp_server_name: "Syscom FTP Server"
+proftp_type_conf: "standalone"
+
+
+proftp_transfert_log_file: "/var/log/proftpd/xferlog"
+proftp_system_log_file: "/var/log/proftpd/proftpd.log"
+proftp_conf_path: "/etc/proftpd/proftpd.conf"
+proftp_modules_conf_path: "/etc/proftpd/modules.conf"
+proftp_default_port: 21
+# Par defaut, l'umask est 022. 
+# Pour renforcer la securite, il est conseillé de l'initialiser à 027
+proftp_umask: "022"
+proftp_firwall_ftp_min_passive_port: 5000
+proftp_firwall_ftp_max_passive_port: 5100
+proftp_network_interface: 'eth0'
+proftp_instance_log_format: "%t %a %h %U %A %r %s %f %b %T"
+proftp_iptables_enabled: False
+proftp_goss_enabled: False
+
+
+# Variable booléenne pour activer/désactiver l'utilisation du fichier /etc/ftpusers.
+# Dans le fichier /etc/ftpusers, on trouve la liste des utilisateurs qui ne sont pas habilités à se connecter au serveur ProFTP
+# http://docs.oracle.com/cd/E19253-01/816-4555/wuftp-44a/index.html
+# http://manpagesfr.free.fr/man/man5/ftpusers.5.html
+proftp_limit_user: False
+# Liste des utilisateurs autorisés à se connectés au serveur proFTP. À compléter
+proftp_authorized_users: 
+    -""
+
+# Activer logrotate sur les fichier log de ProFTP
+proftp_enable_logrorate: False
+
+proftp_tls_enabled: False
+proftp_tls_protocol: "TLSv1 SSLv3"
+proftp_tls_conf_path: "/etc/proftpd/tls.conf"
+proftp_tls_log_file: "/var/log/proftpd/tls.log"
+proftp_tls_cert_file: "/etc/proftpd/ssl/ftp.cert.pem"
+proftp_tls_key_file: "/etc/proftpd/ssl/ftp.key.pem"
+proftp_tls_files:
+ - { path: "{{ proftp_tls_conf_path }}", mode: "0644" }
+ - { path: "{{ proftp_tls_cert_file }}", mode: "0644" }
+ - { path: "{{ proftp_tls_key_file }}", mode: "0400" }

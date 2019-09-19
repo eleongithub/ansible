@@ -1,0 +1,18 @@
+---
+- name: Copy goss tests file
+  template:
+      src: goss.j2
+      dest: "{{ monit_goss_file }}"
+      owner: root
+      group: root
+      mode: 0640
+
+- name: Launch goss test
+  goss:
+    path: "{{ monit_goss_file }}"
+    format: json
+
+- name: Remove goss test
+  file:
+    path: "{{ monit_goss_file }}"
+    state: absent

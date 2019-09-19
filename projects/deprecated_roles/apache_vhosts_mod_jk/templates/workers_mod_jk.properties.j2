@@ -1,0 +1,22 @@
+workers.java_home={{ java_home }}
+worker.list=loadbalancer
+
+{% for key, value in apache_vhosts_mod_jk.iteritems() %}
+{% for worker in value.workers %}
+worker.{{ worker.name }}.port={{ worker.port }}
+worker.{{ worker.name }}.host={{ worker.host }}
+worker.{{ worker.name }}.type=ajp13
+worker.{{ worker.name }}.ping_mode=A
+worker.{{ worker.name }}.lbfactor=1
+# utilisation de keepalive pour éviter les coupures de connections inactives par le firewall entre Apache et Tomcat
+worker.{{ worker.name }}.socket_keepalive=1
+{% endfor %}
+{% endfor %}
+
+# Load-balancing behavior
+worker.loadbalancer.type=lb
+
+worker.loadbalancer.balance_workers={% for key, value in apache_vhosts_mod_jk.iteritems() %}{% for worker in value.workers %}{{ worker.name }}{% if not loop.last %},{% endif %}{% endfor %}{% endfor %}
+
+
+worker.loadbalancer.sticky_session=1

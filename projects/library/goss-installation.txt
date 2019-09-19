@@ -1,0 +1,8 @@
+Goss is available on https://github.com/aelsabbahy/goss
+
+1°) Install goss
+	a-) As super-user root: 
+	curl -L https://github.com/aelsabbahy/goss/releases/download/v0.3.1/goss-linux-amd64 -o /usr/local/bin/goss
+	chmod +rx /usr/local/bin/goss
+	
+	b-) Copy goss.py (https://github.com/indusbox/goss-ansible/blob/master/goss.py) into projects library directory.

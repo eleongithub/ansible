@@ -1,0 +1,60 @@
+---
+# tasks file for apache_status
+
+- name: Find Mod Status library in modules directory
+  find:
+    paths: "{{ apache_modules_dir }}"
+    patterns: "mod_status.so"
+  register: find_mod_status_file
+
+- name: Download Apache Mod_Status library into modules directory
+  get_url:
+    url: "{{ mod_status_url }}"
+    dest: "{{ apache_modules_dir }}/mod_status.so"
+  when: find_mod_status_file.matched|int == 0
+
+- name: Check Mod Status is added to Apache's modules
+  command: grep "LoadModule status_module {{ apache_modules_dir }}/mod_status.so" {{ apache_modules_file }}
+  register: check_mod_status_is_loaded
+
+- name: Add Mod Status to Apache's modules
+  lineinfile:
+    dest: "{{ apache_modules_file }}"
+    insertafter: EOF
+    line: 'LoadModule status_module {{ apache_modules_dir }}/mod_status.so'
+  when: check_mod_status_is_loaded.rc|int != 0
+
+- name: Configure ExtendedStatus directive
+  lineinfile:
+    dest: "{{ apache_httpd_file }}"
+    line: 'ExtendedStatus On'
+    state: present
+
+- name: Create virtual host directory for status
+  file:
+    path: "{{ apache_vhosts_dir }}/{{ mod_status_server_name }}"
+    state: directory
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
+
+- name: Provide Authentication file
+  command: "{{ apache_home }}/bin/htpasswd -csb {{ apache_vhosts_dir }}/{{ mod_status_server_name }}/.htpasswd {{ vault_mod_status_authentication_login }} {{ vault_mod_status_authentication_passowrd }}"
+  when: mod_status_enable_authentication
+
+- name: Copy server status configuration file to Apache configuration directory
+  template:
+    src: server_status.conf.j2
+    dest: "{{ apache_conf_dir }}/server_status.conf"
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
+
+- name: Add vhost_server_status.conf to HTTPD
+  lineinfile:
+    dest: "{{ apache_httpd_file }}"
+    line: 'Include {{ apache_conf_dir }}/server_status.conf'
+    state: present
+
+- name: Restart Apache
+  command: echo "Restart Apache"
+  notify:
+    - Restart Apache

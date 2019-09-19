@@ -1,0 +1,37 @@
+---
+# defaults file for apache_mod_security
+root_user: root
+root_group: sys
+apache_home: /opt/apache2
+apache_logs_dir: "/var/log/apache2"
+apache_conf_dir: "{{ apache_home }}/conf"
+apache_modules_dir: "{{ apache_home }}/modules"
+apache_modules_file: "{{ apache_conf_dir }}/modules.conf"
+apache_httpd_file: "{{ apache_conf_dir }}/httpd.conf"
+mod_security_version: 2.9.1
+mod_security_url : "{{ nexus_public_repository }}/org/modsecurity/modsecurity/{{ mod_security_version }}/modsecurity-{{ mod_security_version }}.tar.gz"
+mod_security_tarball_name: "modsecurity-{{ mod_security_version }}.tar.gz"
+mod_security_required_packages:
+ - 'libapr1'
+ - 'libapr1-dev'
+ - 'libpcre3'
+ - 'libpcre3-dev'
+ - 'libxml2'
+ - 'libxml2-dev'
+ - 'libaprutil1'
+ - 'libaprutil1-dev'
+ - 'libcurl3'
+ - 'liblua5.1-0'
+ - 'liblua5.1-0-dev'
+mod_security_unzip_dir: /tmp/mod_security
+mod_security_dir: "{{ mod_security_unzip_dir }}/modsecurity-{{ mod_security_version }}"
+mod_security_logs_dir: "{{ apache_logs_dir }}/modsecurity"
+mod_security_conf_dir: "{{ apache_conf_dir }}/modsecurity"
+mod_security_conf_files:
+ - { src: 'modsecurity.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity.conf' }
+ - { src: 'modsecurity_crs_10_setup.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_10_setup.conf' }
+ - { src: 'modsecurity_crs_16_session_hijacking.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_16_session_hijacking.conf' }
+ - { src: 'modsecurity_crs_41_sql_injection_attacks.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_41_sql_injection_attacks.conf' }
+ - { src: 'modsecurity_crs_43_csrf_protection.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_43_csrf_protection.conf' }
+ - { src: 'modsecurity_crs_41_xss_attacks.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_41_xss_attacks.conf' }
+ - { src: 'modsecurity_crs_49_inbound_blocking.conf.j2', dest: '{{ mod_security_conf_dir }}/modsecurity_crs_49_inbound_blocking.conf' }

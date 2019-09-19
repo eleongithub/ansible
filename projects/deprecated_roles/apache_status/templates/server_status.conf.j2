@@ -1,0 +1,34 @@
+<VirtualHost *:{{ http_default_port }}>
+  
+  # ServerAdmin: Your address, where problems with the server should be
+  # e-mailed.  This address appears on some server-generated pages, such
+  # as error documents.  e.g. admin@your-domain.com
+  ServerAdmin {{ apache_server_admin }}
+  
+  # ServerName gives the name and port that the server uses to identify itself.
+  # This can often be determined automatically, but we recommend you specify
+  # it explicitly to prevent problems during startup.
+  # If your host doesn't have a registered DNS name, enter its IP address here.
+  ServerName {{ mod_status_server_name }}
+  ServerAlias {{ mod_status_server_alias }}
+  <Location /server-status>
+    SetHandler server-status
+    {% if mod_status_require_ip != "" %}
+    Require ip {{ mod_status_require_ip }}
+    {% endif %}
+    
+    {% if mod_status_require_host != "" %}
+    Require host {{ mod_status_require_host }}
+    {% endif %}
+    
+    {% if mod_status_enable_authentication %}
+    AuthType Basic
+    AuthName "Restricted Content"
+    AuthUserFile {{ apache_vhosts_dir }}/{{ mod_status_server_name }}/.htpasswd
+    Require valid-user
+    {% endif %}
+       
+  </Location>
+  RewriteEngine on
+  RewriteRule ^/ /server-status [L,PT]
+</VirtualHost>

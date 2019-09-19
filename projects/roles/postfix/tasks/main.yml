@@ -1,0 +1,13 @@
+---
+# tasks file for postfix
+
+# http://www.linux-france.org/article/mail/serveur-mdk/serveur-mdk.pdf
+# https://www.security-helpzone.com/2015/12/03/securiser-postfix-avec-lantispam-amavis/
+# http://www.serveur-linux.info/2012/01/postfix-avec-mysql-et-identification-sasl-smtp-auth/
+
+# https://fr.tuto.com/virtualbox/installation-et-configuration-d-un-serveur-de-mails-sous-linux-ubuntu-serveur-virtualbox,66931.html
+
+- name: Install postfix package
+  apt:
+    pkg: postfix
+    state: present

@@ -1,0 +1,27 @@
+---
+# tasks file for portsentry
+
+
+- name: Installing portsentry
+  apt:
+    pkg: "{{ portsentry_package }}"
+    state: present
+
+- name: Copy portsentry configuration files
+  template:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    owner: root
+    group: root
+    mode: "{{item.mode}}"
+  with_items:
+   - "{{ portsentry_files }}"
+
+- name: Restart portsentry
+  command: echo "Restart portsentry"
+  notify:
+    - Restart portsentry
+
+- name: Test with goss
+  include: goss.yml
+  when: portsentry_goss_enabled

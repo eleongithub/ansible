@@ -1,0 +1,32 @@
+---
+# defaults file for apache_vhosts_mod_jk
+
+http_default_port: 80
+https_default_port: 443
+apache_home: /opt/apache2
+java_home: /opt/java
+apache_vhosts_dir: "{{ apache_home }}/vhosts"
+apache_logs_dir: "{{ apache_home }}/logs"
+apache_conf_dir: "{{ apache_home }}/conf"
+apache_httpd_file: "{{ apache_conf_dir }}/httpd.conf"
+root_user: root
+root_group: sys
+mod_jk_port: '8009'
+apache_server_admin: admin@example.com
+apache_conf_log_level: warn
+apache_vhosts_conf_dir: "{{ apache_conf_dir }}/vhosts"
+ssl_country: FR
+ssl_state: Rhone
+ssl_locality: Lyon
+ssl_organisation: Syscom
+ssl_organisation_unit: IT
+apache_vhosts_mod_jk:
+  vhost1:
+    serverName: 'vhosts1.fr'
+    serverAlias: 'www.vhosts1.fr'
+    use_https: True
+    ssl_subj: "/C=\"{{ ssl_country }}\"/ST=\"{{ ssl_state }}\"/L=\"{{ ssl_locality }}\"/O=\"{{ ssl_organisation }}\"/OU=\"{{ ssl_organisation_unit }}\"/CN=vhosts1.fr"
+    webapps: 'docs'
+    workers:
+        - { name: 'worker1', host: 'st-db-villeurbanne', port: '{{ mod_jk_port }}' }
+        - { name: 'worker2', host: 'localhost', port: '{{ mod_jk_port }}' }

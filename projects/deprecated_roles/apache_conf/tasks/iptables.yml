@@ -1,0 +1,49 @@
+---
+
+- name: Add Iptables Input trafic rule for Apache HTTP
+  iptables:
+    action: insert
+    chain: INPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED
+    in_interface: "{{ apache_conf_network_interface }}"
+    destination_port: "{{ apache_conf_http_default_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - Apache Server HTTP Input trafic"
+
+- name: Add Iptables Output trafic rule for Apache HTTP
+  iptables:
+    action: insert
+    chain: OUTPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED
+    out_interface: "{{ apache_conf_network_interface }}"
+    source_port: "{{ apache_conf_http_default_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - Apache Server HTTP Output trafic"
+
+- name: Add Iptables Input trafic rule for Apache HTTPS
+  iptables:
+    action: insert
+    chain: INPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED
+    in_interface: "{{ apache_conf_network_interface }}"
+    destination_port: "{{ apache_conf_https_default_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - Apache Server HTTPS Input trafic"
+
+- name: Add Iptables Output trafic rule for Apache HTTPS
+  iptables:
+    action: insert
+    chain: OUTPUT
+    protocol: tcp
+    ctstate: NEW,ESTABLISHED
+    out_interface: "{{ apache_conf_network_interface }}"
+    source_port: "{{ apache_conf_https_default_port }}"
+    jump: ACCEPT
+    state: present
+    comment: "TCP - Apache Server HTTPS Output trafic"

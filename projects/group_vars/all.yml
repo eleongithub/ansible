@@ -1,0 +1,34 @@
+---       
+iptables_enabled: True
+nexus_port: "9081"
+firewall_nexus_port: "{{ nexus_port }}"
+nexus: "http://192.168.1.97:{{ nexus_port }}/nexus"
+nexus_repositories: "{{ nexus }}/content/repositories"
+nexus_public_repository: "{{ nexus_repositories }}/public"
+portsentry_config_file: "/etc/default/portsentry"
+
+jdk_java_version: 1.8.0_131
+jdk_java_home: "{{ jdk_versions }}/jdk{{ jdk_java_version }}"
+jdk_tarball_name_32: jdk-8u131-linux-i586.tar.gz
+jdk_tarball_name_64: jdk-8u131-linux-x64.tar.gz
+jdk_32_url: "{{ nexus }}/content/repositories/releases/jdk-8u131-linux-i586.tar.gz"
+jdk_64_url: "{{ nexus }}/content/repositories/releases/jdk-8u131-linux-x64.tar.gz"
+
+
+monit_goss_enabled: True
+monit_sshd_enabled: True
+fail2ban_ssh_enabled: True
+fail2ban_goss_enabled: True
+portsentry_goss_enabled: True
+
+#OS_FAMILY = dict(
+#RedHat = 'RedHat', Fedora = 'RedHat', CentOS = 'RedHat', Scientific = 'RedHat',
+#SLC = 'RedHat', Ascendos = 'RedHat', CloudLinux = 'RedHat', PSBM = 'RedHat',
+#OracleLinux = 'RedHat', OVS = 'RedHat', OEL = 'RedHat', Amazon = 'RedHat',
+#XenServer = 'RedHat', Ubuntu = 'Debian', Debian = 'Debian', SLES = 'Suse',
+#SLED = 'Suse', OpenSuSE = 'Suse', SuSE = 'Suse', Gentoo = 'Gentoo',
+#Archlinux = 'Archlinux', Mandriva = 'Mandrake', Mandrake = 'Mandrake',
+#Solaris = 'Solaris', Nexenta = 'Solaris', OmniOS = 'Solaris', OpenIndiana = 'Solaris',
+#SmartOS = 'Solaris', AIX = 'AIX', Alpine = 'Alpine', MacOSX = 'Darwin',
+#FreeBSD = 'FreeBSD', HPUX = 'HP-UX'
+#)

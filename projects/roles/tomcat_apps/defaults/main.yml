@@ -1,0 +1,11 @@
+---
+# defaults file for tomcat_apps
+tomcat_apps_home: "/opt/tomcat"
+tomcat_apps_webapps_directory: "{{ tomcat_apps_home }}/webapps"
+tomcat_apps_nexus_url: ""
+tomcat_apps_nexus_maven_api: "{{ tomcat_apps_nexus_url }}/service/local/artifact/maven/content"
+tomcat_apps_nexus_repository: "APPS-SNAPSHOTS"
+tomcat_apps_groupId: ""
+tomcat_apps_artifactId: ""
+tomcat_apps_version: ""
+tomcat_apps_package: ""

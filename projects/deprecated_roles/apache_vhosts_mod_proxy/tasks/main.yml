@@ -1,0 +1,70 @@
+---
+# tasks file for apache_vhosts_mod_proxy
+
+- name : Check virtual hosts configuration directory exists
+  stat:
+    path: "{{ apache_vhosts_conf_dir }}"
+  register: apache_vhosts_conf_dir_exists
+
+- name: Create virtual hosts configuration directories
+  file:
+    path: "{{ apache_vhosts_conf_dir }}"
+    state: directory
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
+    recurse: yes
+  when: not apache_vhosts_conf_dir_exists.stat.exists
+
+- name: Create logs directories for Mod_Proxy virtual hosts
+  file:
+    path: "{{ apache_logs_dir }}/{{ item.key }}"
+    state: directory
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
+    recurse: yes
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+
+- name: Create virtual hosts root directories
+  file:
+    path: "{{ apache_vhosts_dir }}/{{ item.key }}"
+    state: directory
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
+    recurse: yes
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+
+- name: Create virtual mutex directories
+  file: 
+    path: "{{ apache_vhosts_dir }}/{{ item.key }}/mutex"
+    state: directory
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
+    recurse: yes
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+
+- name: Mod Proxy configuration HTTP - Generate virtual hosts configuration files
+  template:
+    src: vhosts_mod_proxy.conf.j2
+    dest: "{{ apache_vhosts_conf_dir }}/{{ item.key }}_mod_proxy.conf"
+    owner: "{{ root_user }}"
+    group: "{{ root_group }}"
+  with_dict: "{{ apache_vhosts_mod_proxy }}"
+
+- name: Install SSL certificates for virtual hosts
+  include: ssl.yml
+
+- name: Count generate virtual hosts
+  shell: ls -l {{ apache_vhosts_conf_dir }}|grep "mod_proxy.conf"|wc -l
+  register: count_generate_vhosts_mod_proxy
+
+- name: Add Virtual hosts file to HTTPD
+  lineinfile:
+    dest: "{{ apache_httpd_file }}"
+    insertafter: EOF
+    line: 'Include {{ apache_vhosts_conf_dir }}/*_mod_proxy.conf'
+  when: count_generate_vhosts_mod_proxy.stdout|int > 0
+
+- name: Restart Apache
+  command: echo "Restart Apache..."
+  notify:
+    - Restart Apache

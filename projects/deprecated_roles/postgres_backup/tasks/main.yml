@@ -1,0 +1,40 @@
+---
+# tasks file for postgres_backup
+
+- name : Check backups directory exists
+  stat:
+    path: "{{ backup_dir }}"
+  register: backup_dir_exists
+
+- name: Create backups directory if not exists
+  file:
+    path: "{{ postgres_backup_dir }}"
+    owner: "root"
+    group: "root"
+    mode: "0744"
+    recurse: yes
+    state: directory
+  when: not backup_dir_exists.stat.exists
+
+- name: Deploy backup files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "postgres"
+    group: "postgres"
+  with_items: "{{ postgres_backup_files }}"
+
+- name: Define crontab for postgres backup
+  cron:
+    name: "Backup Database PostgreSQL"
+    job: "bash {{ postgres_backup_conf_dir }}/pg_backup_rotated.sh"
+    minute: "0"
+    hour: "0"
+    day: "*"
+    month: "*"
+    state: present
+
+- name: Restart PostgreSQL
+  command: echo "Restart PostgreSQL"
+  notify:
+    - Restart PostgreSQL

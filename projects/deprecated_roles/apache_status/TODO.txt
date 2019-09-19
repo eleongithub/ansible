@@ -1,0 +1,39 @@
+1°) S'assurer que le module mod_status.so est présent dans le repertoire des modules d'Apache
+
+2°) Rechercher la ligne  "LoadModule status_module modules/mod_status.so" dans le fichier des modules
+
+3°) Si la ligne "LoadModule status_module modules/mod_status.so" n'existe pas dans le fichier des modules, alors ajouter-le
+
+3°) Si la ligne "ExtendedStatus On" n'existe pas dans le fichier des modules, alors ajouter-le
+
+4°) Créer un fichier vhost_server_status.conf contenant les informations suivantes
+
+# ExtendedStatus controls whether Apache will generate "full" status
+# information (ExtendedStatus On) or just basic information (ExtendedStatus
+# Off) when the "server-status" handler is called. The default is Off.
+#
+<VirtualHost *:80>
+  
+  # ServerAdmin: Your address, where problems with the server should be
+  # e-mailed.  This address appears on some server-generated pages, such
+  # as error documents.  e.g. admin@your-domain.com
+  ServerAdmin {{ apache_server_admin }}
+  
+  # ServerName gives the name and port that the server uses to identify itself.
+  # This can often be determined automatically, but we recommend you specify
+  # it explicitly to prevent problems during startup.
+  # If your host doesn't have a registered DNS name, enter its IP address here.
+  ServerName {{ item.value.serverName }}
+  ServerAlias {{ item.value.serverAlias }}
+  ExtendedStatus On
+  <Location /server-status>
+    SetHandler server-status
+	AuthName "Apache status"
+	AuthUserFile /etc/httpd/conf/server-status_htpasswd
+	Require valid-user
+    Require host {list hosts accessible}
+  </Location>
+ </VirtualHost>
+ 
+ 5°) Ajouter ce fichier de configuration à httpd.conf
+

@@ -1,0 +1,50 @@
+---
+# tasks file for maven
+
+- name: Create maven directory
+  file:
+    path: "{{ maven_install_directory }}"
+    state: directory
+    owner: root
+    group: root
+    recurse: yes
+
+- name: Download, decompress and delete maven archive
+  unarchive:
+    src: "{{ maven_download_archive_url }}"
+    dest: "{{ maven_install_directory }}/"
+    remote_src: True
+
+- name: Check if settings backup file exist
+  stat:
+    path: "{{ maven_home }}/conf/settings.backup"
+  register: maven_settings_backup
+
+- name: Create backup file for settings.xml
+  copy:
+    src: "{{ maven_home }}/conf/settings.xml"
+    dest: "{{ maven_home }}/conf/settings.xml.backup"
+  when: not maven_settings_backup.stat.exists
+
+- name: Create custom settings.xml
+  template:
+    src: "settings.xml.j2"
+    dest: "{{ maven_home }}/conf/settings.xml"
+
+
+- name: Add/Update environments variables
+  blockinfile:
+    dest: "/etc/profile"
+    insertafter: EOF
+    block: |
+      # Maven Home
+      M2_HOME="{{ maven_home }}"
+      export M2_HOME
+      # Update PATH
+      PATH=$PATH:"$M2_HOME/bin"
+      export PATH
+    state: present
+
+- name: Relaod environments variables
+  shell: . /etc/profile
+

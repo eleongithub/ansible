@@ -1,0 +1,74 @@
+---
+# tasks file for spring_boot
+
+- name: Stop eventual Spring Boot process running
+  service:
+    name: springboot
+    state: stopped
+    enabled: no
+  ignore_errors: true
+  
+- name: Create Group for Spring Boot
+  group:
+    name: {{ spring_boot_group }}
+    state: present
+
+- name: Create User for Spring Boot
+  user:
+    name: {{ spring_boot_user }}
+    createhome: no
+    group: {{ spring_boot_group }}
+    shell: /bin/bash
+    state: present
+
+- name: Create Spring Boot directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: {{ spring_boot_user }}
+    group: {{ spring_boot_group }}
+    recurse: yes
+  with_items: 
+    - "{{ spring_boot_main_directory }}"
+    - "{{ spring_boot_jar_directory }}"
+    - "{{ spring_boot_conf_directory }}"
+    - "{{ spring_boot_logs_directory }}"
+
+- name: Copy Spring Boot application configuration directory
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: {{ spring_boot_user }}
+    group: {{ spring_boot_group }}
+    mod: "0750"
+  with_items: "{{ spring_boot_apps_conf_files }}"
+    
+- name: Download Spring Boot application jar
+  get_url:
+    url: "{{ spring_boot_nexus_url }}?r={{ spring_boot_apps_repository }}&g={{ spring_boot_apps_groupid }}&a={{ spring_boot_apps_artifactid }}&v={{ spring_boot_apps_version }}&p={{ spring_boot_apps_package }}"
+    dest: "{{ spring_boot_main_directory }}/"
+    owner: {{ spring_boot_user }}
+    group: {{ spring_boot_group }}
+    mode: 0755
+
+- name: Copy Spring Boot script shell
+  template:
+    src: springboot.sh.j2
+    dest: /etc/init.d/springboot
+    owner: root
+    group: root
+    mod: 0755
+
+- name: Add Iptables rule
+  include: iptables.yml
+  when: spring_boot_iptables_enabled
+
+- name: Enable Spring Boot service
+  service:
+    name: springboot
+    enabled: yes
+
+- name: Start Spring Boot service
+  service:
+    name: springboot
+    state: started

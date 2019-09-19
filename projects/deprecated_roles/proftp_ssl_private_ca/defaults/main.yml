@@ -1,0 +1,14 @@
+---
+# defaults file for proftp_ssl_private_ca
+proftp_tls_user: "proftpd"
+proftp_tls_group: "proftpd"
+proftp_tls_conf_dir: "/etc/proftpd/ssl"
+proftp_tls_cert_file: "{{ proftp_tls_conf_dir }}/ftp.cert.pem"
+proftp_tls_key_file: "{{ proftp_tls_conf_dir }}/ftp.key.pem"
+proftp_tls_dns: "vhosts1.fr"
+proftp_tls_subj: "/C=\"FR\"/ST=\"Rhone\"/L=\"Lyon\"/O=\"Syscom\"/OU=\"IT\"/CN={{ proftp_tls_dns }}"
+proftp_tls_config_file: "{{ proftp_tls_conf_dir }}/openssl_ca.conf"
+proftp_tls_files:
+ - { path: '{{ proftp_tls_cert_file }}', mode: '0644' }
+ - { path: '{{ proftp_tls_key_file }}', mode: '0400' }
+ - { path: '{{ proftp_tls_config_file }}', mode: '0644' }
